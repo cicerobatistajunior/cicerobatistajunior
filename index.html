@@ -12,25 +12,25 @@
         .container {
             max-width: 600px;
             margin: 0 auto;
-            text-align: center; /* Centraliza o conteúdo */
+            text-align: center;
         }
         h1 {
-            font-size: 16px; /* Tamanho da fonte ajustado */
+            font-size: 16px;
         }
         select {
             width: 100%;
             padding: 10px;
             margin-bottom: 20px;
-            font-size: 13px; /* Tamanho da fonte ajustado para 13px */
+            font-size: 13px;
         }
         .content-box {
             border: 1px solid #ccc;
             padding: 20px;
-            font-size: 13px; /* Tamanho da fonte ajustado para 13px */
+            font-size: 13px;
             background-color: #f9f9f9;
             margin-bottom: 20px;
-            white-space: pre-wrap; /* Preserve quebra de linha */
-            text-align: left; /* Alinhamento do texto à esquerda */
+            white-space: pre-wrap;
+            text-align: left;
         }
         .copy-button {
             padding: 10px 20px;
@@ -40,7 +40,7 @@
             border: none;
             cursor: pointer;
             display: block;
-            margin: 0 auto; /* Centraliza o botão */
+            margin: 0 auto;
         }
         .copy-button:hover {
             background-color: #0056b3;
@@ -56,8 +56,8 @@
             text-align: center;
         }
         .credits {
-            font-size: 10px; /* Tamanho da fonte dos créditos */
-            margin-top: 10px; /* Espaço superior para separar dos elementos anteriores */
+            font-size: 10px;
+            margin-top: 10px;
         }
     </style>
 </head>
@@ -72,35 +72,39 @@
         </div>
         <button id="copyButton" class="copy-button" style="display: none;">Copiar para a área de transferência</button>
         <div id="alertBox" class="alert">Texto copiado para a área de transferência!</div>
-        
-        <!-- Créditos do autor -->
         <div class="credits">Autor: Cícero Batista. Direitos reservados.</div>
     </div>
 
     <script>
-        const database = {};
+        // URL do arquivo CSV publicado no Google Sheets
+        const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSGL1Mcky-rNQvKn9iXgD_IUdSqqtfZEa1HLhT3JcDAybj1Vw12sPhWKynoy0XmjSERSTTvFoWVlD7z/pub?output=csv';
 
+        // Função para buscar e carregar dados do CSV
         function fetchData() {
-            const url = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQUBF76QaQ8aAKEqgvg_5cWp4lj1_yyq2kskv7ksJXzyrj505hVeT01xgkKRk3N-ngvviSO2q7XUejM/pub?output=csv';
-            fetch(url)
+            fetch(csvUrl)
                 .then(response => response.text())
                 .then(data => {
                     const rows = data.split('\n');
+                    const database = {};
                     rows.forEach(row => {
-                        const [key, value] = row.split(',');
-                        database[key.trim()] = value.trim();
-                        const option = document.createElement('option');
-                        option.value = key.trim();
-                        option.textContent = key.trim();
-                        document.getElementById('medicamentoSelect').appendChild(option);
+                        const [key, ...valueParts] = row.split(',');
+                        const value = valueParts.join(',').trim(); // Juntar o resto como valor
+                        if (key && value) {
+                            database[key.trim()] = value;
+                            const option = document.createElement('option');
+                            option.value = key.trim();
+                            option.textContent = key.trim();
+                            document.getElementById('medicamentoSelect').appendChild(option);
+                        }
                     });
+                    window.database = database; // Tornar acessível globalmente
                 });
         }
 
         function atualizarConteudo() {
             const selectedValue = document.getElementById('medicamentoSelect').value;
             if (selectedValue) {
-                document.getElementById('conteudo').textContent = database[selectedValue];
+                document.getElementById('conteudo').textContent = window.database[selectedValue];
                 document.getElementById('copyButton').style.display = 'block';
             } else {
                 document.getElementById('conteudo').textContent = 'Selecione uma opção para ver a prescrição.';
@@ -126,7 +130,7 @@
         document.getElementById('medicamentoSelect').addEventListener('change', atualizarConteudo);
         document.getElementById('copyButton').addEventListener('click', copiarTexto);
 
-        fetchData();
+        fetchData(); // Chamar a função para buscar os dados quando a página carrega
     </script>
 </body>
 </html>
