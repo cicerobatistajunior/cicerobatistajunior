@@ -15,7 +15,7 @@
             text-align: center; /* Centraliza o conteúdo */
         }
         h1 {
-            font-size: 18px; /* Tamanho da fonte ajustado */
+            font-size: 16px; /* Tamanho da fonte ajustado */
         }
         select {
             width: 100%;
@@ -55,11 +55,15 @@
             border-radius: 5px;
             text-align: center;
         }
+        .credits {
+            font-size: 10px; /* Tamanho da fonte dos créditos */
+            margin-top: 30px; /* Espaço superior para separar dos elementos anteriores */
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Sistemas de Prescrições V 0.9</h1>
+        <h1>SISTEMA DE PRESCRIÇÕES DA ROTINA</h1>
         <select id="medicamentoSelect">
             <option value="">Selecione...</option>
             <option value="abscesso_nao_flutuante">ABSCESSO NÃO-FLUTUANTE (CEFALEXINA + COMPRESSA MORNA)</option>
@@ -69,6 +73,7 @@
         </div>
         <button id="copyButton" class="copy-button" style="display: none;">Copiar para a área de transferência</button>
         <div id="alertBox" class="alert">Texto copiado para a área de transferência!</div>
+        <div class="credits">Autor: Cícero Batista. Direitos reservados.</div>
     </div>
 
     <script>
@@ -124,5 +129,7 @@ RETORNAR PARA REAVALIAÇÃO EM 72 HORAS SE NÃO HOUVER MELHORA.`
         // Adiciona o evento de clique ao botão de copiar
         copyButton.addEventListener('click', copiarTexto);
     </script>
+
+    <div class="credits">Autor: Cícero Batista. Direitos reservados.</div>
 </body>
 </html>
