@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Formulário de Inserção de Dados</title>
+<title>Gerador de Chave Única e Banco de Dados</title>
 <style>
   body {
     font-family: Arial, sans-serif;
@@ -14,8 +14,9 @@
     display: block;
     margin-bottom: 10px;
   }
-  input[type="text"], textarea {
+  textarea {
     width: 100%;
+    height: 200px;
     padding: 8px;
     margin-bottom: 20px;
     box-sizing: border-box;
@@ -41,61 +42,44 @@
 </head>
 <body>
 
-<form id="dataForm">
-  <label for="titulo">Título:</label>
-  <input type="text" id="titulo" name="titulo" required>
+<h2>Cole o texto abaixo:</h2>
 
-  <label for="uso">Uso:</label>
-  <input type="text" id="uso" name="uso" required>
+<textarea id="textInput" placeholder="Cole o texto aqui..." required></textarea>
 
-  <label for="medicamentos">Medicamentos:</label>
-  <textarea id="medicamentos" name="medicamentos" rows="6" required></textarea>
-
-  <button type="submit">Gerar Código HTML</button>
-</form>
+<button onclick="generateData()">Gerar Chave e Banco de Dados</button>
 
 <div id="result"></div>
 
 <script>
-  document.getElementById("dataForm").addEventListener("submit", function(event) {
-    event.preventDefault();
-    
-    var titulo = document.getElementById("titulo").value;
-    var uso = document.getElementById("uso").value;
-    var medicamentos = document.getElementById("medicamentos").value;
+function generateData() {
+  var textInput = document.getElementById("textInput").value.trim();
 
-    var htmlCode = generateHTML(titulo, uso, medicamentos);
-    document.getElementById("result").innerHTML = "<pre>" + htmlCode + "</pre>";
-    document.getElementById("result").style.display = "block";
-  });
-
-  function generateHTML(titulo, uso, medicamentos) {
-    var html = "<script>\n";
-    html += "var database = {\n";
-    html += "  \"" + generateKey(titulo) + "\": {\n";
-    html += "    \"titulo\": \"" + titulo + "\",\n";
-    html += "    \"uso\": \"" + uso + "\",\n";
-    html += "    \"medicamentos\": [\n";
-
-    var medsArray = medicamentos.split("\n");
-    for (var i = 0; i < medsArray.length; i++) {
-      var medInfo = medsArray[i].trim();
-      if (medInfo) {
-        html += "      " + medInfo + ",\n";
-      }
-    }
-
-    html += "    ]\n";
-    html += "  }\n";
-    html += "};\n";
-    html += "</script>";
-
-    return html;
+  if (!textInput) {
+    alert("Por favor, cole o texto antes de continuar.");
+    return;
   }
 
-  function generateKey(title) {
-    return title.toLowerCase().replace(/\s+/g, "_").replace(/[^a-z0-9_]/g, "");
-  }
+  var lines = textInput.split("\n");
+  var titulo = lines[0].trim();
+  var key = generateKey(titulo);
+
+  var databaseEntry = lines.slice(1).join("\n");
+
+  var htmlCode = `
+            <option value="${key}">${titulo}</option>
+
+        const database = {
+            '${key}': \`${databaseEntry}\`
+        };
+  `;
+
+  document.getElementById("result").innerHTML = "<pre>" + htmlCode + "</pre>";
+  document.getElementById("result").style.display = "block";
+}
+
+function generateKey(title) {
+  return title.toLowerCase().replace(/\s+/g, "_").replace(/[^a-z0-9_]/g, "");
+}
 </script>
 
 </body>
