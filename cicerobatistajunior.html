@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu Suspenso com Conteúdo Dinâmico</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+        .content-box {
+            border: 1px solid #ccc;
+            padding: 20px;
+            font-size: 6px; /* Tamanho da fonte ajustado para 6px */
+            background-color: #f9f9f9;
+            margin-bottom: 20px;
+            white-space: pre-wrap; /* Preserve quebra de linha */
+        }
+        .copy-button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+            display: block;
+            margin: 0 auto; /* Centraliza o botão */
+        }
+        .copy-button:hover {
+            background-color: #0056b3;
+        }
+        .alert {
+            display: none;
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            border-radius: 5px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Selecione um Medicamento</h1>
+        <select id="medicamentoSelect">
+            <option value="">Selecione...</option>
+            <option value="abscesso_nao_flutuante">ABSCESSO NÃO-FLUTUANTE (CEFALEXINA + COMPRESSA MORNA)</option>
+        </select>
+        <div id="conteudo" class="content-box">
+            Selecione um medicamento para ver a descrição.
+        </div>
+        <button id="copyButton" class="copy-button" style="display: none;">Copiar para a área de transferência</button>
+        <div id="alertBox" class="alert">Texto copiado para a área de transferência!</div>
+    </div>
+
+    <script>
+        // Simulação de um banco de dados com um objeto JavaScript
+        const database = {
+            'abscesso_nao_flutuante': `USO ORAL
+1 - CEFALEXINA 500 MG COMPRIMIDO ------------------------------------- 28-40 CPS
+TOMAR 1 COMPRIMIDO DE 6 – 6 H, 7 DIAS A 10 DIAS (OU ATÉ FLUTUAR / RESOLVER)
+
+- CUIDADOS GERAIS
+COMPRESSA MORNA --- APLICAR COMPRESSA MORNA SOBRE O ABSCESSO 6 VEZES ATÉ FLUTUAR / RESOLVER
+RETORNAR PARA REAVALIAÇÃO EM 72 HORAS SE NÃO HOUVER MELHORA.`
+        };
+
+        // Referências aos elementos HTML
+        const selectElement = document.getElementById('medicamentoSelect');
+        const conteudoElement = document.getElementById('conteudo');
+        const copyButton = document.getElementById('copyButton');
+        const alertBox = document.getElementById('alertBox');
+
+        // Função para atualizar o conteúdo com base na seleção
+        function atualizarConteudo() {
+            const selectedValue = selectElement.value;
+            if (selectedValue) {
+                conteudoElement.textContent = database[selectedValue];
+                copyButton.style.display = 'block';
+            } else {
+                conteudoElement.textContent = 'Selecione um medicamento para ver a descrição.';
+                copyButton.style.display = 'none';
+            }
+        }
+
+        // Função para copiar o texto para a área de transferência
+        function copiarTexto() {
+            const texto = conteudoElement.textContent;
+            const inputTemp = document.createElement('textarea');
+            inputTemp.value = texto;
+            document.body.appendChild(inputTemp);
+            inputTemp.select();
+            document.execCommand('copy');
+            document.body.removeChild(inputTemp);
+
+            // Exibir a mensagem de alerta
+            alertBox.style.display = 'block';
+            setTimeout(() => {
+                alertBox.style.display = 'none';
+            }, 3000); // A mensagem desaparecerá após 3 segundos
+        }
+
+        // Adiciona o evento de mudança ao menu suspenso
+        selectElement.addEventListener('change', atualizarConteudo);
+
+        // Adiciona o evento de clique ao botão de copiar
+        copyButton.addEventListener('click', copiarTexto);
+    </script>
+</body>
+</html>
