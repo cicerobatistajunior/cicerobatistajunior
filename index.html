@@ -1,44 +1,42 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Gerador de Chave Única e Banco de Dados</title>
 <style>
-  body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 20px;
-  }
-  label {
-    display: block;
-    margin-bottom: 10px;
-  }
-  textarea {
-    width: 100%;
-    height: 200px;
-    padding: 8px;
-    margin-bottom: 20px;
-    box-sizing: border-box;
-  }
-  button {
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  button:hover {
-    background-color: #0056b3;
-  }
-  #result {
-    margin-top: 30px;
-    padding: 20px;
-    border: 1px solid #ccc;
-    display: none;
-    white-space: pre-wrap; /* Para preservar quebras de linha */
-  }
+    body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+    }
+    label {
+        display: block;
+        margin-bottom: 10px;
+    }
+    textarea {
+        width: 100%;
+        height: 200px;
+        padding: 8px;
+        margin-bottom: 20px;
+        box-sizing: border-box;
+    }
+    button {
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    button:hover {
+        background-color: #0056b3;
+    }
+    #result {
+        margin-top: 30px;
+        padding: 20px;
+        border: 1px solid #ccc;
+        display: none;
+    }
 </style>
 </head>
 <body>
@@ -53,33 +51,36 @@
 
 <script>
 function generateData() {
-  var textInput = document.getElementById("textInput").value.trim();
+    var textInput = document.getElementById("textInput").value.trim();
 
-  if (!textInput) {
-    alert("Por favor, cole o texto antes de continuar.");
-    return;
-  }
+    if (!textInput) {
+        alert("Por favor, cole o texto antes de continuar.");
+        return;
+    }
 
-  var lines = textInput.split("\n");
-  var titulo = lines[0].trim();
-  var key = generateKey(titulo);
-  var optionHTML = `<option value="${key}">${titulo}</option>`;
-  var databaseEntry = lines.slice(1).join("\n");
+    var lines = textInput.split("\n");
+    var titulo = lines[0].trim();
+    var key = generateKey(titulo);
+    var optionHTML = `<option value="${key}">${titulo}</option>`;
+    var databaseEntry = lines.slice(1).join("\n");
 
-  var htmlCode = `
-${optionHTML}
+    var resultHTML = `
+        <div>
+            <h3>Chave Única:</h3>
+            <p>${optionHTML}</p>
+        </div>
+        <div>
+            <h3>Inserir no Banco de Dados:</h3>
+            <p>'${key}': \`${databaseEntry}\`</p>
+        </div>
+    `;
 
-const database = {
-    '${key}': \`${databaseEntry}\`
-};
-  `;
-
-  document.getElementById("result").innerHTML = htmlCode;
-  document.getElementById("result").style.display = "block";
+    document.getElementById("result").innerHTML = resultHTML;
+    document.getElementById("result").style.display = "block";
 }
 
 function generateKey(title) {
-  return title.toLowerCase().replace(/\s+/g, "_").replace(/[^a-z0-9_]/g, "");
+    return title.toLowerCase().replace(/\s+/g, "_").replace(/[^a-z0-9_]/g, "");
 }
 </script>
 
