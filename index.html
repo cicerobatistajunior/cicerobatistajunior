@@ -12,25 +12,25 @@
         .container {
             max-width: 600px;
             margin: 0 auto;
-            text-align: center;
+            text-align: center; /* Centraliza o conteúdo */
         }
         h1 {
-            font-size: 16px;
+            font-size: 16px; /* Tamanho da fonte ajustado */
         }
         select {
             width: 100%;
             padding: 10px;
             margin-bottom: 20px;
-            font-size: 13px;
+            font-size: 13px; /* Tamanho da fonte ajustado para 13px */
         }
         .content-box {
             border: 1px solid #ccc;
             padding: 20px;
-            font-size: 13px;
+            font-size: 13px; /* Tamanho da fonte ajustado para 13px */
             background-color: #f9f9f9;
             margin-bottom: 20px;
-            white-space: pre-wrap;
-            text-align: left;
+            white-space: pre-wrap; /* Preserve quebra de linha */
+            text-align: left; /* Alinhamento do texto à esquerda */
         }
         .copy-button {
             padding: 10px 20px;
@@ -40,7 +40,7 @@
             border: none;
             cursor: pointer;
             display: block;
-            margin: 0 auto;
+            margin: 0 auto; /* Centraliza o botão */
         }
         .copy-button:hover {
             background-color: #0056b3;
@@ -56,8 +56,8 @@
             text-align: center;
         }
         .credits {
-            font-size: 10px;
-            margin-top: 10px;
+            font-size: 10px; /* Tamanho da fonte dos créditos */
+            margin-top: 10px; /* Espaço superior para separar dos elementos anteriores */
         }
     </style>
 </head>
@@ -72,6 +72,8 @@
         </div>
         <button id="copyButton" class="copy-button" style="display: none;">Copiar para a área de transferência</button>
         <div id="alertBox" class="alert">Texto copiado para a área de transferência!</div>
+        
+        <!-- Créditos do autor -->
         <div class="credits">Autor: Cícero Batista. Direitos reservados.</div>
     </div>
 
@@ -84,10 +86,9 @@
             fetch(csvUrl)
                 .then(response => response.text())
                 .then(data => {
-                    const rows = data.split('\n').slice(1); // Ignorar a primeira linha de cabeçalho
+                    const rows = parseCSV(data);
                     const database = {};
-                    rows.forEach(row => {
-                        const [key, value] = row.split(/,(.+)/); // Dividir na primeira vírgula
+                    rows.forEach(([key, value]) => {
                         if (key && value) {
                             database[key.trim()] = value.trim();
                             const option = document.createElement('option');
@@ -98,6 +99,34 @@
                     });
                     window.database = database; // Tornar acessível globalmente
                 });
+        }
+
+        // Função para parsear CSV, tratando quebras de linha dentro de valores
+        function parseCSV(data) {
+            const lines = data.split('\n');
+            const result = [];
+            let inQuotes = false;
+            let currentLine = [];
+
+            for (let line of lines) {
+                if (inQuotes) {
+                    currentLine[currentLine.length - 1] += '\n' + line;
+                    if (line.endsWith('"')) {
+                        inQuotes = false;
+                        result.push(currentLine.map(item => item.replace(/^"|"$/g, '').replace(/""/g, '"')));
+                        currentLine = [];
+                    }
+                } else {
+                    const columns = line.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
+                    if (columns.length > 1 && columns[1].startsWith('"') && !columns[1].endsWith('"')) {
+                        inQuotes = true;
+                        currentLine = columns;
+                    } else {
+                        result.push(columns.map(item => item.replace(/^"|"$/g, '').replace(/""/g, '"')));
+                    }
+                }
+            }
+            return result;
         }
 
         function atualizarConteudo() {
