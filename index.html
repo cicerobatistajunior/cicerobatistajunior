@@ -5,7 +5,60 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Menu Suspenso com Conteúdo Dinâmico</title>
     <style>
-        /* Estilos CSS aqui */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center; /* Centraliza o conteúdo */
+        }
+        h1 {
+            font-size: 16px; /* Tamanho da fonte ajustado */
+        }
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            font-size: 13px; /* Tamanho da fonte ajustado para 13px */
+        }
+        .content-box {
+            border: 1px solid #ccc;
+            padding: 20px;
+            font-size: 13px; /* Tamanho da fonte ajustado para 13px */
+            background-color: #f9f9f9;
+            margin-bottom: 20px;
+            white-space: pre-wrap; /* Preserve quebra de linha */
+            text-align: left; /* Alinhamento do texto à esquerda */
+        }
+        .copy-button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+            display: block;
+            margin: 0 auto; /* Centraliza o botão */
+        }
+        .copy-button:hover {
+            background-color: #0056b3;
+        }
+        .alert {
+            display: none;
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .credits {
+            font-size: 10px; /* Tamanho da fonte dos créditos */
+            margin-top: 10px; /* Espaço superior para separar dos elementos anteriores */
+        }
     </style>
 </head>
 <body>
@@ -13,7 +66,6 @@
         <h1>SISTEMA DE PRESCRIÇÕES DA ROTINA</h1>
         <select id="medicamentoSelect">
             <option value="">Selecione...</option>
-            <!-- As opções serão preenchidas dinamicamente com os dados da planilha -->
         </select>
         <div id="conteudo" class="content-box">
             Selecione uma opção para ver a prescrição.
@@ -26,50 +78,52 @@
     </div>
 
     <script>
-        // URL da planilha publicada
+        // URL da planilha do Google Sheets
         const spreadsheetURL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSGL1Mcky-rNQvKn9iXgD_IUdSqqtfZEa1HLhT3JcDAybj1Vw12sPhWKynoy0XmjSERSTTvFoWVlD7z/pubhtml';
 
-        // Função para buscar os dados da planilha e preencher o menu suspenso
-        async function preencherMenuSuspenso() {
-            try {
-                const response = await fetch(spreadsheetURL);
-                const data = await response.text();
-                const parser = new DOMParser();
-                const htmlDocument = parser.parseFromString(data, 'text/html');
-                const options = htmlDocument.querySelectorAll('td');
-                
-                const selectElement = document.getElementById('medicamentoSelect');
-                options.forEach((option, index) => {
-                    if (index % 2 === 0) { // Pula os valores repetidos
-                        const value = option.textContent.trim();
-                        const text = options[index + 1].textContent.trim();
-                        const optionElement = document.createElement('option');
-                        optionElement.value = value;
-                        optionElement.textContent = text;
-                        selectElement.appendChild(optionElement);
-                    }
-                });
-            } catch (error) {
-                console.error('Erro ao buscar os dados da planilha:', error);
-            }
+        // Referências aos elementos HTML
+        const selectElement = document.getElementById('medicamentoSelect');
+        const conteudoElement = document.getElementById('conteudo');
+        const copyButton = document.getElementById('copyButton');
+        const alertBox = document.getElementById('alertBox');
+
+        // Função para carregar os dados da planilha
+        function carregarDadosDaPlanilha() {
+            fetch(spreadsheetURL)
+                .then(response => response.text())
+                .then(data => {
+                    // Dividindo os dados da planilha em linhas
+                    const linhas = data.split('\n');
+                    // Removendo o cabeçalho
+                    linhas.shift();
+                    // Populando a lista suspensa e o banco de dados
+                    linhas.forEach(linha => {
+                        const [chave, valor] = linha.split('\t');
+                        const option = document.createElement('option');
+                        option.value = chave;
+                        option.textContent = chave;
+                        selectElement.appendChild(option);
+                        database[chave] = valor;
+                    });
+                })
+                .catch(error => console.error('Erro ao carregar os dados da planilha:', error));
         }
 
         // Função para atualizar o conteúdo com base na seleção
         function atualizarConteudo() {
-            const selectedValue = document.getElementById('medicamentoSelect').value;
-            const conteudoElement = document.getElementById('conteudo');
+            const selectedValue = selectElement.value;
             if (selectedValue) {
                 conteudoElement.textContent = database[selectedValue];
-                document.getElementById('copyButton').style.display = 'block';
+                copyButton.style.display = 'block';
             } else {
                 conteudoElement.textContent = 'Selecione uma opção para ver a prescrição.';
-                document.getElementById('copyButton').style.display = 'none';
+                copyButton.style.display = 'none';
             }
         }
 
         // Função para copiar o texto para a área de transferência
         function copiarTexto() {
-            const texto = document.getElementById('conteudo').textContent;
+            const texto = conteudoElement.textContent;
             const inputTemp = document.createElement('textarea');
             inputTemp.value = texto;
             document.body.appendChild(inputTemp);
@@ -78,18 +132,23 @@
             document.body.removeChild(inputTemp);
 
             // Exibir a mensagem de alerta
-            document.getElementById('alertBox').style.display = 'block';
+            alertBox.style.display = 'block';
             setTimeout(() => {
-                document.getElementById('alertBox').style.display = 'none';
+                alertBox.style.display = 'none';
             }, 3000); // A mensagem desaparecerá após 3 segundos
         }
 
-        // Adiciona os eventos necessários
-        document.getElementById('medicamentoSelect').addEventListener('change', atualizarConteudo);
-        document.getElementById('copyButton').addEventListener('click', copiarTexto);
+        // Adiciona o evento de mudança ao menu suspenso
+        selectElement.addEventListener('change', atualizarConteudo);
 
-        // Preencher o menu suspenso ao carregar a página
-        preencherMenuSuspenso();
+        // Adiciona o evento de clique ao botão de copiar
+        copyButton.addEventListener('click', copiarTexto);
+
+        // Objeto para armazenar os dados da planilha
+        const database = {};
+
+        // Carregar os dados da planilha ao carregar a página
+        carregarDadosDaPlanilha();
     </script>
 </body>
 </html>
