@@ -5,60 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Menu Suspenso com Conteúdo Dinâmico</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-            text-align: center; /* Centraliza o conteúdo */
-        }
-        h1 {
-            font-size: 16px; /* Tamanho da fonte ajustado */
-        }
-        select {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 20px;
-            font-size: 13px; /* Tamanho da fonte ajustado para 13px */
-        }
-        .content-box {
-            border: 1px solid #ccc;
-            padding: 20px;
-            font-size: 13px; /* Tamanho da fonte ajustado para 13px */
-            background-color: #f9f9f9;
-            margin-bottom: 20px;
-            white-space: pre-wrap; /* Preserve quebra de linha */
-            text-align: left; /* Alinhamento do texto à esquerda */
-        }
-        .copy-button {
-            padding: 10px 20px;
-            font-size: 16px;
-            background-color: #007BFF;
-            color: white;
-            border: none;
-            cursor: pointer;
-            display: block;
-            margin: 0 auto; /* Centraliza o botão */
-        }
-        .copy-button:hover {
-            background-color: #0056b3;
-        }
-        .alert {
-            display: none;
-            margin-top: 20px;
-            padding: 10px;
-            background-color: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-            border-radius: 5px;
-            text-align: center;
-        }
-        .credits {
-            font-size: 10px; /* Tamanho da fonte dos créditos */
-            margin-top: 10px; /* Espaço superior para separar dos elementos anteriores */
-        }
+        /* Estilos CSS aqui */
     </style>
 </head>
 <body>
@@ -66,6 +13,7 @@
         <h1>SISTEMA DE PRESCRIÇÕES DA ROTINA</h1>
         <select id="medicamentoSelect">
             <option value="">Selecione...</option>
+            <!-- As opções serão preenchidas dinamicamente com os dados da planilha -->
         </select>
         <div id="conteudo" class="content-box">
             Selecione uma opção para ver a prescrição.
@@ -78,68 +26,48 @@
     </div>
 
     <script>
-        // URL do arquivo CSV publicado no Google Sheets
-        const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSGL1Mcky-rNQvKn9iXgD_IUdSqqtfZEa1HLhT3JcDAybj1Vw12sPhWKynoy0XmjSERSTTvFoWVlD7z/pub?output=csv';
+        // URL da planilha publicada
+        const spreadsheetURL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSGL1Mcky-rNQvKn9iXgD_IUdSqqtfZEa1HLhT3JcDAybj1Vw12sPhWKynoy0XmjSERSTTvFoWVlD7z/pubhtml';
 
-        // Função para buscar e carregar dados do CSV
-        function fetchData() {
-            fetch(csvUrl)
-                .then(response => response.text())
-                .then(data => {
-                    const rows = parseCSV(data);
-                    const database = {};
-                    rows.forEach(([key, value]) => {
-                        if (key && value) {
-                            database[key.trim()] = value.trim();
-                            const option = document.createElement('option');
-                            option.value = key.trim();
-                            option.textContent = key.trim();
-                            document.getElementById('medicamentoSelect').appendChild(option);
-                        }
-                    });
-                    window.database = database; // Tornar acessível globalmente
+        // Função para buscar os dados da planilha e preencher o menu suspenso
+        async function preencherMenuSuspenso() {
+            try {
+                const response = await fetch(spreadsheetURL);
+                const data = await response.text();
+                const parser = new DOMParser();
+                const htmlDocument = parser.parseFromString(data, 'text/html');
+                const options = htmlDocument.querySelectorAll('td');
+                
+                const selectElement = document.getElementById('medicamentoSelect');
+                options.forEach((option, index) => {
+                    if (index % 2 === 0) { // Pula os valores repetidos
+                        const value = option.textContent.trim();
+                        const text = options[index + 1].textContent.trim();
+                        const optionElement = document.createElement('option');
+                        optionElement.value = value;
+                        optionElement.textContent = text;
+                        selectElement.appendChild(optionElement);
+                    }
                 });
-        }
-
-        // Função para parsear CSV, tratando quebras de linha dentro de valores
-        function parseCSV(data) {
-            const lines = data.split('\n');
-            const result = [];
-            let inQuotes = false;
-            let currentLine = [];
-
-            for (let line of lines) {
-                if (inQuotes) {
-                    currentLine[currentLine.length - 1] += '\n' + line;
-                    if (line.endsWith('"')) {
-                        inQuotes = false;
-                        result.push(currentLine.map(item => item.replace(/^"|"$/g, '').replace(/""/g, '"')));
-                        currentLine = [];
-                    }
-                } else {
-                    const columns = line.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
-                    if (columns.length > 1 && columns[1].startsWith('"') && !columns[1].endsWith('"')) {
-                        inQuotes = true;
-                        currentLine = columns;
-                    } else {
-                        result.push(columns.map(item => item.replace(/^"|"$/g, '').replace(/""/g, '"')));
-                    }
-                }
+            } catch (error) {
+                console.error('Erro ao buscar os dados da planilha:', error);
             }
-            return result;
         }
 
+        // Função para atualizar o conteúdo com base na seleção
         function atualizarConteudo() {
             const selectedValue = document.getElementById('medicamentoSelect').value;
+            const conteudoElement = document.getElementById('conteudo');
             if (selectedValue) {
-                document.getElementById('conteudo').textContent = window.database[selectedValue];
+                conteudoElement.textContent = database[selectedValue];
                 document.getElementById('copyButton').style.display = 'block';
             } else {
-                document.getElementById('conteudo').textContent = 'Selecione uma opção para ver a prescrição.';
+                conteudoElement.textContent = 'Selecione uma opção para ver a prescrição.';
                 document.getElementById('copyButton').style.display = 'none';
             }
         }
 
+        // Função para copiar o texto para a área de transferência
         function copiarTexto() {
             const texto = document.getElementById('conteudo').textContent;
             const inputTemp = document.createElement('textarea');
@@ -149,16 +77,19 @@
             document.execCommand('copy');
             document.body.removeChild(inputTemp);
 
+            // Exibir a mensagem de alerta
             document.getElementById('alertBox').style.display = 'block';
             setTimeout(() => {
                 document.getElementById('alertBox').style.display = 'none';
-            }, 3000);
+            }, 3000); // A mensagem desaparecerá após 3 segundos
         }
 
+        // Adiciona os eventos necessários
         document.getElementById('medicamentoSelect').addEventListener('change', atualizarConteudo);
         document.getElementById('copyButton').addEventListener('click', copiarTexto);
 
-        fetchData(); // Chamar a função para buscar os dados quando a página carrega
+        // Preencher o menu suspenso ao carregar a página
+        preencherMenuSuspenso();
     </script>
 </body>
 </html>
