@@ -62,15 +62,15 @@ function generateData() {
   var lines = textInput.split("\n");
   var titulo = lines[0].trim();
   var key = generateKey(titulo);
-
+  var optionHTML = `<option value="${key}">${titulo}</option>`;
   var databaseEntry = lines.slice(1).join("\n");
 
   var htmlCode = `
-            <option value="${key}">${titulo}</option>
+${optionHTML}
 
-        const database = {
-            '${key}': \`${databaseEntry}\`
-        };
+const database = {
+    '${key}': \`${databaseEntry}\`
+};
   `;
 
   document.getElementById("result").innerHTML = "<pre>" + htmlCode + "</pre>";
