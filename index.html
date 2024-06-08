@@ -1,154 +1,66 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Menu Suspenso com Conteúdo Dinâmico</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-            text-align: center; /* Centraliza o conteúdo */
-        }
-        h1 {
-            font-size: 16px; /* Tamanho da fonte ajustado */
-        }
-        select {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 20px;
-            font-size: 13px; /* Tamanho da fonte ajustado para 13px */
-        }
-        .content-box {
-            border: 1px solid #ccc;
-            padding: 20px;
-            font-size: 13px; /* Tamanho da fonte ajustado para 13px */
-            background-color: #f9f9f9;
-            margin-bottom: 20px;
-            white-space: pre-wrap; /* Preserve quebra de linha */
-            text-align: left; /* Alinhamento do texto à esquerda */
-        }
-        .copy-button {
-            padding: 10px 20px;
-            font-size: 16px;
-            background-color: #007BFF;
-            color: white;
-            border: none;
-            cursor: pointer;
-            display: block;
-            margin: 0 auto; /* Centraliza o botão */
-        }
-        .copy-button:hover {
-            background-color: #0056b3;
-        }
-        .alert {
-            display: none;
-            margin-top: 20px;
-            padding: 10px;
-            background-color: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-            border-radius: 5px;
-            text-align: center;
-        }
-        .credits {
-            font-size: 10px; /* Tamanho da fonte dos créditos */
-            margin-top: 10px; /* Espaço superior para separar dos elementos anteriores */
-        }
-    </style>
+    <title>Planilha Interativa</title>
 </head>
 <body>
-    <div class="container">
-        <h1>SISTEMA DE PRESCRIÇÕES DA ROTINA</h1>
-        <select id="medicamentoSelect">
-            <option value="">Selecione...</option>
-        </select>
-        <div id="conteudo" class="content-box">
-            Selecione uma opção para ver a prescrição.
-        </div>
-        <button id="copyButton" class="copy-button" style="display: none;">Copiar para a área de transferência</button>
-        <div id="alertBox" class="alert">Texto copiado para a área de transferência!</div>
-        
-        <!-- Créditos do autor -->
-        <div class="credits">Autor: Cícero Batista. Direitos reservados.</div>
-    </div>
+    <h1>Planilha Interativa</h1>
 
+    <label for="items">Escolha um item:</label>
+    <select id="items" onchange="showNextItem()">
+        <option value="">Selecione...</option>
+    </select>
+
+    <p id="nextItem"></p>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tabletop.js/1.5.1/tabletop.min.js"></script>
     <script>
-        // URL da planilha do Google Sheets
-        const spreadsheetURL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSGL1Mcky-rNQvKn9iXgD_IUdSqqtfZEa1HLhT3JcDAybj1Vw12sPhWKynoy0XmjSERSTTvFoWVlD7z/pubhtml';
+        // URL da sua planilha do Google Sheets
+        var publicSpreadsheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSGL1Mcky-rNQvKn9iXgD_IUdSqqtfZEa1HLhT3JcDAybj1Vw12sPhWKynoy0XmjSERSTTvFoWVlD7z/pubhtml';
 
-        // Referências aos elementos HTML
-        const selectElement = document.getElementById('medicamentoSelect');
-        const conteudoElement = document.getElementById('conteudo');
-        const copyButton = document.getElementById('copyButton');
-        const alertBox = document.getElementById('alertBox');
+        function init() {
+            Tabletop.init({
+                key: publicSpreadsheetUrl,
+                callback: showData,
+                simpleSheet: true
+            });
+        }
 
-        // Função para carregar os dados da planilha
-        function carregarDadosDaPlanilha() {
-            fetch(spreadsheetURL)
-                .then(response => response.text())
-                .then(data => {
-                    // Dividindo os dados da planilha em linhas
-                    const linhas = data.split('\n');
-                    // Removendo o cabeçalho
-                    linhas.shift();
-                    // Populando a lista suspensa e o banco de dados
-                    linhas.forEach(linha => {
-                        const [chave, valor] = linha.split('\t');
-                        const option = document.createElement('option');
-                        option.value = chave;
-                        option.textContent = chave;
-                        selectElement.appendChild(option);
-                        database[chave] = valor.trim(); // Remover espaços extras
+        function showData(data, tabletop) {
+            var select = document.getElementById('items');
+
+            // Adiciona as entradas da planilha na lista suspensa
+            data.forEach(function(row) {
+                var option = document.createElement('option');
+                option.text = row['Coluna 1']; // Coluna 1 da planilha
+                option.value = row['Coluna 1']; // Coluna 1 da planilha
+                select.add(option);
+            });
+        }
+
+        function showNextItem() {
+            var selectedItem = document.getElementById('items').value;
+
+            // Procura na planilha o próximo item ao lado do selecionado
+            Tabletop.init({
+                key: publicSpreadsheetUrl,
+                callback: function(data, tabletop) {
+                    data.forEach(function(row) {
+                        if (row['Coluna 1'] === selectedItem) {
+                            var nextItem = row['Coluna 2']; // Próxima coluna
+                            document.getElementById('nextItem').innerText = 'Próximo item: ' + nextItem;
+                        }
                     });
-                })
-                .catch(error => console.error('Erro ao carregar os dados da planilha:', error));
+                },
+                simpleSheet: true
+            });
         }
 
-        // Função para atualizar o conteúdo com base na seleção
-        function atualizarConteudo() {
-            const selectedValue = selectElement.value;
-            if (selectedValue) {
-                conteudoElement.textContent = database[selectedValue];
-                copyButton.style.display = 'block';
-            } else {
-                conteudoElement.textContent = 'Selecione uma opção para ver a prescrição.';
-                copyButton.style.display = 'none';
-            }
-        }
-
-        // Função para copiar o texto para a área de transferência
-        function copiarTexto() {
-            const texto = conteudoElement.textContent;
-            const inputTemp = document.createElement('textarea');
-            inputTemp.value = texto;
-            document.body.appendChild(inputTemp);
-            inputTemp.select();
-            document.execCommand('copy');
-            document.body.removeChild(inputTemp);
-
-            // Exibir a mensagem de alerta
-            alertBox.style.display = 'block';
-            setTimeout(() => {
-                alertBox.style.display = 'none';
-            }, 3000); // A mensagem desaparecerá após 3 segundos
-        }
-
-        // Adiciona o evento de mudança ao menu suspenso
-        selectElement.addEventListener('change', atualizarConteudo);
-
-        // Adiciona o evento de clique ao botão de copiar
-        copyButton.addEventListener('click', copiarTexto);
-
-        // Objeto para armazenar os dados da planilha
-        const database = {};
-
-        // Carregar os dados da planilha ao carregar a página
-        carregarDadosDaPlanilha();
+        window.onload = function() {
+            init();
+        };
     </script>
 </body>
 </html>
