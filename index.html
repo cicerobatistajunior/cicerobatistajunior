@@ -1,88 +1,132 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Gerador de Chave Única e Banco de Dados</title>
-<style>
-    body {
-        font-family: Arial, sans-serif;
-        margin: 20px;
-    }
-    label {
-        display: block;
-        margin-bottom: 10px;
-    }
-    textarea {
-        width: 100%;
-        height: 200px;
-        padding: 8px;
-        margin-bottom: 20px;
-        box-sizing: border-box;
-    }
-    button {
-        padding: 10px 20px;
-        background-color: #007bff;
-        color: #fff;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-    }
-    button:hover {
-        background-color: #0056b3;
-    }
-    #result {
-        margin-top: 30px;
-        padding: 20px;
-        border: 1px solid #ccc;
-        display: none;
-    }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu Suspenso com Conteúdo Dinâmico</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center; /* Centraliza o conteúdo */
+        }
+        h1 {
+            font-size: 16px; /* Tamanho da fonte ajustado */
+        }
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            font-size: 13px; /* Tamanho da fonte ajustado para 13px */
+        }
+        .content-box {
+            border: 1px solid #ccc;
+            padding: 20px;
+            font-size: 13px; /* Tamanho da fonte ajustado para 13px */
+            background-color: #f9f9f9;
+            margin-bottom: 20px;
+            white-space: pre-wrap; /* Preserve quebra de linha */
+            text-align: left; /* Alinhamento do texto à esquerda */
+        }
+        .copy-button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+            display: block;
+            margin: 0 auto; /* Centraliza o botão */
+        }
+        .copy-button:hover {
+            background-color: #0056b3;
+        }
+        .alert {
+            display: none;
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .credits {
+            font-size: 10px; /* Tamanho da fonte dos créditos */
+            margin-top: 10px; /* Espaço superior para separar dos elementos anteriores */
+        }
+    </style>
 </head>
 <body>
-
-<h2>Cole o texto abaixo:</h2>
-
-<textarea id="textInput" placeholder="Cole o texto aqui..." required></textarea>
-
-<button onclick="generateData()">Gerar Chave e Banco de Dados</button>
-
-<div id="result"></div>
-
-<script>
-function generateData() {
-    var textInput = document.getElementById("textInput").value.trim();
-
-    if (!textInput) {
-        alert("Por favor, cole o texto antes de continuar.");
-        return;
-    }
-
-    var lines = textInput.split("\n");
-    var titulo = lines[0].trim();
-    var key = generateKey(titulo);
-    var optionHTML = `<option value="${key}">${titulo}</option>`;
-    var databaseEntry = lines.slice(1).join("\n");
-
-    var resultHTML = `
-        <div>
-            <h3>Chave Única:</h3>
-            <p>${optionHTML}</p>
+    <div class="container">
+        <h1>SISTEMA DE PRESCRIÇÕES DA ROTINA</h1>
+        <select id="medicamentoSelect">
+            <option value="">Selecione...</option>
+        </select>
+        <div id="conteudo" class="content-box">
+            Selecione uma opção para ver a prescrição.
         </div>
-        <div>
-            <h3>Inserir no Banco de Dados:</h3>
-            <p>'${key}': \`${databaseEntry}\`</p>
-        </div>
-    `;
+        <button id="copyButton" class="copy-button" style="display: none;">Copiar para a área de transferência</button>
+        <div id="alertBox" class="alert">Texto copiado para a área de transferência!</div>
+        
+        <!-- Créditos do autor -->
+        <div class="credits">Autor: Cícero Batista. Direitos reservados.</div>
+    </div>
 
-    document.getElementById("result").innerHTML = resultHTML;
-    document.getElementById("result").style.display = "block";
-}
+    <script>
+        const database = {};
 
-function generateKey(title) {
-    return title.toLowerCase().replace(/\s+/g, "_").replace(/[^a-z0-9_]/g, "");
-}
-</script>
+        function fetchData() {
+            const url = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQUBF76QaQ8aAKEqgvg_5cWp4lj1_yyq2kskv7ksJXzyrj505hVeT01xgkKRk3N-ngvviSO2q7XUejM/pub?output=csv';
+            fetch(url)
+                .then(response => response.text())
+                .then(data => {
+                    const rows = data.split('\n');
+                    rows.forEach(row => {
+                        const [key, value] = row.split(',');
+                        database[key.trim()] = value.trim();
+                        const option = document.createElement('option');
+                        option.value = key.trim();
+                        option.textContent = key.trim();
+                        document.getElementById('medicamentoSelect').appendChild(option);
+                    });
+                });
+        }
 
+        function atualizarConteudo() {
+            const selectedValue = document.getElementById('medicamentoSelect').value;
+            if (selectedValue) {
+                document.getElementById('conteudo').textContent = database[selectedValue];
+                document.getElementById('copyButton').style.display = 'block';
+            } else {
+                document.getElementById('conteudo').textContent = 'Selecione uma opção para ver a prescrição.';
+                document.getElementById('copyButton').style.display = 'none';
+            }
+        }
+
+        function copiarTexto() {
+            const texto = document.getElementById('conteudo').textContent;
+            const inputTemp = document.createElement('textarea');
+            inputTemp.value = texto;
+            document.body.appendChild(inputTemp);
+            inputTemp.select();
+            document.execCommand('copy');
+            document.body.removeChild(inputTemp);
+
+            document.getElementById('alertBox').style.display = 'block';
+            setTimeout(() => {
+                document.getElementById('alertBox').style.display = 'none';
+            }, 3000);
+        }
+
+        document.getElementById('medicamentoSelect').addEventListener('change', atualizarConteudo);
+        document.getElementById('copyButton').addEventListener('click', copiarTexto);
+
+        fetchData();
+    </script>
 </body>
 </html>
