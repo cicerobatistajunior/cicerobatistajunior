@@ -1,154 +1,102 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Menu Suspenso com Conteúdo Dinâmico</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-            text-align: center; /* Centraliza o conteúdo */
-        }
-        h1 {
-            font-size: 16px; /* Tamanho da fonte ajustado */
-        }
-        select {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 20px;
-            font-size: 13px; /* Tamanho da fonte ajustado para 13px */
-        }
-        .content-box {
-            border: 1px solid #ccc;
-            padding: 20px;
-            font-size: 13px; /* Tamanho da fonte ajustado para 13px */
-            background-color: #f9f9f9;
-            margin-bottom: 20px;
-            white-space: pre-wrap; /* Preserve quebra de linha */
-            text-align: left; /* Alinhamento do texto à esquerda */
-        }
-        .copy-button {
-            padding: 10px 20px;
-            font-size: 16px;
-            background-color: #007BFF;
-            color: white;
-            border: none;
-            cursor: pointer;
-            display: block;
-            margin: 0 auto; /* Centraliza o botão */
-        }
-        .copy-button:hover {
-            background-color: #0056b3;
-        }
-        .alert {
-            display: none;
-            margin-top: 20px;
-            padding: 10px;
-            background-color: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-            border-radius: 5px;
-            text-align: center;
-        }
-        .credits {
-            font-size: 10px; /* Tamanho da fonte dos créditos */
-            margin-top: 10px; /* Espaço superior para separar dos elementos anteriores */
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Formulário de Inserção de Dados</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+  }
+  label {
+    display: block;
+    margin-bottom: 10px;
+  }
+  input[type="text"], textarea {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 20px;
+    box-sizing: border-box;
+  }
+  button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  button:hover {
+    background-color: #0056b3;
+  }
+  #result {
+    margin-top: 30px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    display: none;
+  }
+</style>
 </head>
 <body>
-    <div class="container">
-        <h1>SISTEMA DE PRESCRIÇÕES DA ROTINA</h1>
-        <select id="medicamentoSelect">
-            <option value="">Selecione...</option>
-<option value="abscesso_nao_flutuante">ABSCESSO NÃO-FLUTUANTE (CEFALEXINA + COMPRESSA MORNA)</option>
-<option value="abscesso_flutuante_cefalexina_pos_drenagem">ABSCESSO FLUTUANTE – CEFALEXINA (PÓS-DRENAGEM)</option>
-<option value="afta_estomatite_tipo_1_triancinolona_acetonida_corticoide_generico">AFTA / ESTOMATITE – TIPO 1 (TRIANCINOLONA ACETONIDA - CORTICOIDE 
 
-GENÉRICO)</option>
-<option value="afta_estomatite_tipo_2_omcilon_orabase_corticoide_marca">AFTA / ESTOMATITE – TIPO 2 (OMCILON ORABASE - CORTICOIDE MARCA)</option>
-<option value="afta_estomatite_tipo_3_lidocaina_topica_anestesico">AFTA / ESTOMATITE – TIPO 3 (LIDOCAÍNA TÓPICA - ANESTÉSICO)</option>
-<option value="afta_estomatite_combinacao_gotas_criancas_mais_3_anos">AFTA / ESTOMATITE – COMBINAÇÃO EM GOTAS, CRIANÇAS > 3 ANOS</option>
-<option value="afta_estomatite_combinacao_spray_criancas_mais_3_anos">AFTA / ESTOMATITE - COMBINAÇÃO - SPRAY $$$, CRIANÇAS > 3 ANOS</option>
-<option value="afta_estomatite_corticoide_mucosa_oral_dexametasona_bochecho">AFTA / ESTOMATITE - CORTICOIDE PARA MUCOSA ORAL (DEXAMETASONA, 
+<form id="dataForm">
+  <label for="titulo">Título:</label>
+  <input type="text" id="titulo" name="titulo" required>
 
-BOCHECHO)</option>
-<option value="ameaca_abortamento_sintomaticos_tipo_1_buscoduo_bromoprida">AMEAÇA DE ABORTAMENTO (SINTOMÁTICOS) – TIPO 1 – BUSCODUO + 
+  <label for="uso">Uso:</label>
+  <input type="text" id="uso" name="uso" required>
 
-BROMOPRIDA</option>
-<option value="ameaca_abortamento_sintomaticos_tipo_2_buscoduo_meclin">AMEAÇA DE ABORTAMENTO (SINTOMÁTICOS) – TIPO 2 - BUSCODUO + MECLIN</option>
-<option value="ameaca_abortamento_progesterona_micronizada_vo_utrogestan">AMEAÇA DE ABORTAMENTO – PROGESTERONA MICRONIZADA VO (UTROGESTAN)</option>
-<option value="ameaca_abortamento_progesterona_micronizada_vaginal_utrogestan">AMEAÇA DE ABORTAMENTO – PROGESTERONA MICRONIZADA VAGINAL (UTROGESTAN)
+  <label for="medicamentos">Medicamentos:</label>
+  <textarea id="medicamentos" name="medicamentos" rows="6" required></textarea>
 
-</option>
-        </select>
-        <div id="conteudo" class="content-box">
-            Selecione uma opção para ver a prescrição.
-        </div>
-        <button id="copyButton" class="copy-button" style="display: none;">Copiar para a área de transferência</button>
-        <div id="alertBox" class="alert">Texto copiado para a área de transferência!</div>
-        
-        <!-- Créditos do autor -->
-        <div class="credits">Autor: Cícero Batista. Direitos reservados.</div>
-    </div>
+  <button type="submit">Gerar Código HTML</button>
+</form>
 
-    <script>
-        // Simulação de um banco de dados com um objeto JavaScript
-        const database = {
-            'abscesso_nao_flutuante': `USO ORAL
-1 - CEFALEXINA 500 MG COMPRIMIDO ------------------------------------- 28-40 CPS
-TOMAR 1 COMPRIMIDO DE 6 – 6 H, 7 DIAS A 10 DIAS (OU ATÉ FLUTUAR / RESOLVER)
+<div id="result"></div>
 
-- CUIDADOS GERAIS
-COMPRESSA MORNA --- APLICAR COMPRESSA MORNA SOBRE O ABSCESSO 6 VEZES ATÉ FLUTUAR / RESOLVER
-RETORNAR PARA REAVALIAÇÃO EM 72 HORAS SE NÃO HOUVER MELHORA.`
-        };
+<script>
+  document.getElementById("dataForm").addEventListener("submit", function(event) {
+    event.preventDefault();
+    
+    var titulo = document.getElementById("titulo").value;
+    var uso = document.getElementById("uso").value;
+    var medicamentos = document.getElementById("medicamentos").value;
 
-        // Referências aos elementos HTML
-        const selectElement = document.getElementById('medicamentoSelect');
-        const conteudoElement = document.getElementById('conteudo');
-        const copyButton = document.getElementById('copyButton');
-        const alertBox = document.getElementById('alertBox');
+    var htmlCode = generateHTML(titulo, uso, medicamentos);
+    document.getElementById("result").innerHTML = "<pre>" + htmlCode + "</pre>";
+    document.getElementById("result").style.display = "block";
+  });
 
-        // Função para atualizar o conteúdo com base na seleção
-        function atualizarConteudo() {
-            const selectedValue = selectElement.value;
-            if (selectedValue) {
-                conteudoElement.textContent = database[selectedValue];
-                copyButton.style.display = 'block';
-            } else {
-                conteudoElement.textContent = 'Selecione uma opção para ver a prescrição.';
-                copyButton.style.display = 'none';
-            }
-        }
+  function generateHTML(titulo, uso, medicamentos) {
+    var html = "<script>\n";
+    html += "var database = {\n";
+    html += "  \"" + generateKey(titulo) + "\": {\n";
+    html += "    \"titulo\": \"" + titulo + "\",\n";
+    html += "    \"uso\": \"" + uso + "\",\n";
+    html += "    \"medicamentos\": [\n";
 
-        // Função para copiar o texto para a área de transferência
-        function copiarTexto() {
-            const texto = conteudoElement.textContent;
-            const inputTemp = document.createElement('textarea');
-            inputTemp.value = texto;
-            document.body.appendChild(inputTemp);
-            inputTemp.select();
-            document.execCommand('copy');
-            document.body.removeChild(inputTemp);
+    var medsArray = medicamentos.split("\n");
+    for (var i = 0; i < medsArray.length; i++) {
+      var medInfo = medsArray[i].trim();
+      if (medInfo) {
+        html += "      " + medInfo + ",\n";
+      }
+    }
 
-            // Exibir a mensagem de alerta
-            alertBox.style.display = 'block';
-            setTimeout(() => {
-                alertBox.style.display = 'none';
-            }, 3000); // A mensagem desaparecerá após 3 segundos
-        }
+    html += "    ]\n";
+    html += "  }\n";
+    html += "};\n";
+    html += "</script>";
 
-        // Adiciona o evento de mudança ao menu suspenso
-        selectElement.addEventListener('change', atualizarConteudo);
+    return html;
+  }
 
-        // Adiciona o evento de clique ao botão de copiar
-        copyButton.addEventListener('click', copiarTexto);
-    </script>
+  function generateKey(title) {
+    return title.toLowerCase().replace(/\s+/g, "_").replace(/[^a-z0-9_]/g, "");
+  }
+</script>
+
 </body>
 </html>
