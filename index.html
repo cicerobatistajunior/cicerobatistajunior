@@ -37,6 +37,7 @@
     padding: 20px;
     border: 1px solid #ccc;
     display: none;
+    white-space: pre-wrap; /* Para preservar quebras de linha */
   }
 </style>
 </head>
@@ -73,7 +74,7 @@ const database = {
 };
   `;
 
-  document.getElementById("result").innerHTML = "<pre>" + htmlCode + "</pre>";
+  document.getElementById("result").innerHTML = htmlCode;
   document.getElementById("result").style.display = "block";
 }
 
