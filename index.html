@@ -103,7 +103,7 @@
                         option.value = chave;
                         option.textContent = chave;
                         selectElement.appendChild(option);
-                        database[chave] = valor;
+                        database[chave] = valor.trim(); // Remover espaços extras
                     });
                 })
                 .catch(error => console.error('Erro ao carregar os dados da planilha:', error));
