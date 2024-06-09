@@ -29,13 +29,15 @@
         }
 
         function showData(data, tabletop) {
+            console.log(data); // Adiciona log para verificar os dados carregados
             var select = document.getElementById('items');
 
             // Adiciona as entradas da primeira coluna (coluna A) na lista suspensa
             data.forEach(function(row) {
+                var firstColumn = Object.keys(row)[0]; // Obtém a primeira chave da linha
                 var option = document.createElement('option');
-                option.text = row[Object.keys(row)[0]]; // Pega o valor da primeira coluna
-                option.value = row[Object.keys(row)[0]]; // Usa o valor da primeira coluna
+                option.text = row[firstColumn]; // Pega o valor da primeira coluna
+                option.value = row[firstColumn]; // Usa o valor da primeira coluna
                 select.add(option);
             });
         }
