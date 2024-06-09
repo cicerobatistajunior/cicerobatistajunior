@@ -16,27 +16,29 @@
     <p id="nextItem"></p>
 
     <script>
-        // URL da sua planilha do Google Sheets em formato CSV
-        const sheetURL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSGL1Mcky-rNQvKn9iXgD_IUdSqqtfZEa1HLhT3JcDAybj1Vw12sPhWKynoy0XmjSERSTTvFoWVlD7z/pub?output=csv';
+        const sheetID = '2PACX-1vSGL1Mcky-rNQvKn9iXgD_IUdSqqtfZEa1HLhT3JcDAybj1Vw12sPhWKynoy0XmjSERSTTvFoWVlD7z';
+        const sheetURL = `https://spreadsheets.google.com/feeds/list/${sheetID}/1/public/values?alt=json`;
 
         let rowData = {};
 
         function loadSheet() {
             fetch(sheetURL)
-                .then(response => response.text())
-                .then(csvText => {
-                    const rows = csvText.split('\n').map(row => row.split(','));
+                .then(response => response.json())
+                .then(data => {
+                    const entries = data.feed.entry;
                     const select = document.getElementById('items');
 
-                    // Preenche a lista suspensa com valores da primeira coluna (coluna A)
-                    rows.forEach((row, index) => {
-                        if (index > 0) { // Ignora o cabeçalho
-                            rowData[row[0]] = row[1]; // Mapeia coluna A para coluna B
-                            const option = document.createElement('option');
-                            option.text = row[0];
-                            option.value = row[0];
-                            select.add(option);
-                        }
+                    // Processa os dados da planilha
+                    entries.forEach(entry => {
+                        const colA = entry.gsx$chave.$t; // Substitua "nome" pelo título real da coluna A
+                        const colB = entry.gsx$valor.$t; // Substitua "descrição" pelo título real da coluna B
+
+                        rowData[colA] = colB; // Mapeia coluna A para coluna B
+
+                        const option = document.createElement('option');
+                        option.text = colA;
+                        option.value = colA;
+                        select.add(option);
                     });
                 })
                 .catch(error => {
