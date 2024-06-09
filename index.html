@@ -31,11 +31,11 @@
         function showData(data, tabletop) {
             var select = document.getElementById('items');
 
-            // Adiciona as entradas da planilha na lista suspensa
+            // Adiciona as entradas da primeira coluna (coluna A) na lista suspensa
             data.forEach(function(row) {
                 var option = document.createElement('option');
-                option.text = row['1']; // Nome da primeira coluna na planilha
-                option.value = row['1'];
+                option.text = row[Object.keys(row)[0]]; // Pega o valor da primeira coluna
+                option.value = row[Object.keys(row)[0]]; // Usa o valor da primeira coluna
                 select.add(option);
             });
         }
