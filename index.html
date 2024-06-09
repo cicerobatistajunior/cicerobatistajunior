@@ -15,7 +15,7 @@
 
     <p id="nextItem"></p>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tabletop.js/1.5.1/tabletop.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tabletop.js/1.6.1/tabletop.min.js"></script>
     <script>
         // URL da sua planilha do Google Sheets
         var publicSpreadsheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSGL1Mcky-rNQvKn9iXgD_IUdSqqtfZEa1HLhT3JcDAybj1Vw12sPhWKynoy0XmjSERSTTvFoWVlD7z/pubhtml';
@@ -34,8 +34,8 @@
             // Adiciona as entradas da planilha na lista suspensa
             data.forEach(function(row) {
                 var option = document.createElement('option');
-                option.text = row['Coluna 1']; // Coluna 1 da planilha
-                option.value = row['Coluna 1']; // Coluna 1 da planilha
+                option.text = row['Coluna1']; // Coluna 1 da planilha
+                option.value = row['Coluna1']; // Coluna 1 da planilha
                 select.add(option);
             });
         }
@@ -48,8 +48,8 @@
                 key: publicSpreadsheetUrl,
                 callback: function(data, tabletop) {
                     data.forEach(function(row) {
-                        if (row['Coluna 1'] === selectedItem) {
-                            var nextItem = row['Coluna 2']; // Próxima coluna
+                        if (row['Coluna1'] === selectedItem) {
+                            var nextItem = row['Coluna2']; // Próxima coluna
                             document.getElementById('nextItem').innerText = 'Próximo item: ' + nextItem;
                         }
                     });
