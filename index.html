@@ -1,59 +1,52 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Planilha Interativa</title>
+    <title>Lista Suspensa</title>
 </head>
 <body>
-    <h1>Planilha Interativa</h1>
-
-    <label for="items">Escolha um item:</label>
-    <select id="items" onchange="showNextItem()">
-        <option value="">Selecione...</option>
+    <h2>Lista Suspensa</h2>
+    <label for="opcoes">Escolha uma opção:</label>
+    <select id="opcoes">
+        <option value="">Carregando opções...</option>
     </select>
 
-    <p id="nextItem"></p>
-
     <script>
-        const sheetID = '2PACX-1vSGL1Mcky-rNQvKn9iXgD_IUdSqqtfZEa1HLhT3JcDAybj1Vw12sPhWKynoy0XmjSERSTTvFoWVlD7z';
-        const sheetURL = `https://spreadsheets.google.com/feeds/list/${sheetID}/1/public/values?alt=json`;
+        // Função para carregar os dados da planilha e preencher a lista suspensa
+        function carregarOpcoes() {
+            // URL da sua planilha do Google Sheets
+            var url = "https://spreadsheets.google.com/feeds/cells/1KT3NARZegMVg66LS0u3kgvGbqGwWHdHq6r8COxVVAKw/1/public/full?alt=json";
 
-        let rowData = {};
+            // Requisição para obter os dados da planilha
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', url, true);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    var data = JSON.parse(xhr.responseText);
+                    var entries = data.feed.entry;
+                    var options = document.getElementById("opcoes");
 
-        function loadSheet() {
-            fetch(sheetURL)
-                .then(response => response.json())
-                .then(data => {
-                    const entries = data.feed.entry;
-                    const select = document.getElementById('items');
+                    // Limpar as opções existentes
+                    options.innerHTML = "";
 
-                    // Processa os dados da planilha
-                    entries.forEach(entry => {
-                        const colA = entry.gsx$nome.$t; // Substitua "nome" pelo título real da coluna A
-                        const colB = entry.gsx$descrição.$t; // Substitua "descrição" pelo título real da coluna B
-
-                        rowData[colA] = colB; // Mapeia coluna A para coluna B
-
-                        const option = document.createElement('option');
-                        option.text = colA;
-                        option.value = colA;
-                        select.add(option);
-                    });
-                })
-                .catch(error => {
-                    console.error('Erro ao carregar a planilha:', error);
-                });
+                    // Preencher a lista suspensa com os dados da coluna A
+                    for (var i = 0; i < entries.length; i++) {
+                        if (entries[i].gs$cell.col == "1") {
+                            var option = document.createElement("option");
+                            option.value = entries[i].gs$cell.$t;
+                            option.text = entries[i].gs$cell.$t;
+                            options.appendChild(option);
+                        }
+                    }
+                }
+            };
+            xhr.send();
         }
 
-        function showNextItem() {
-            const selectedItem = document.getElementById('items').value;
-            const nextItem = rowData[selectedItem] || 'Item não encontrado';
-            document.getElementById('nextItem').innerText = 'Próximo item: ' + nextItem;
-        }
-
+        // Chamar a função para carregar as opções quando a página carregar
         window.onload = function() {
-            loadSheet();
+            carregarOpcoes();
         };
     </script>
 </body>
