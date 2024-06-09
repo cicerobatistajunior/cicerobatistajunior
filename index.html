@@ -38,13 +38,15 @@
             max-height: 200px;
             overflow-y: auto;
             box-sizing: border-box;
+            text-align: left;
         }
         .dropdown-content div {
             color: black;
-            padding: 12px 16px;
+            padding: 8px 16px;
             text-decoration: none;
             display: block;
             cursor: pointer;
+            font-size: 13px;
         }
         .dropdown-content div:hover {
             background-color: #f1f1f1;
@@ -91,7 +93,7 @@
     <div class="container">
         <h1>SISTEMA DE PRESCRIÇÕES DA ROTINA</h1>
         <div class="dropdown">
-            <input type="text" id="searchInput" placeholder="Digite para buscar...">
+            <input type="text" id="searchInput" placeholder="Digite para buscar..." onclick="mostrarOpcoes()">
             <div id="dropdownContent" class="dropdown-content"></div>
         </div>
         <div id="conteudo" class="content-box">
@@ -205,9 +207,12 @@ REPOUSO --- DESCANSAR EM UM LOCAL SILENCIOSO E ESCURO ATÉ MELHORA DOS SINTOMAS.
         // Adiciona o evento de input ao campo de busca
         searchInput.addEventListener('input', mostrarOpcoes);
 
+        // Mostra as opções ao clicar no campo de busca
+        searchInput.addEventListener('click', mostrarOpcoes);
+
         // Esconde o dropdown se o usuário clicar fora dele
         document.addEventListener('click', function(event) {
-            if (!event.target.matches('#searchInput')) {
+            if (!event.target.closest('.dropdown')) {
                 ocultarOpcoes();
             }
         });
