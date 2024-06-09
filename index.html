@@ -1,53 +1,194 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lista Suspensa</title>
+    <title>Menu Suspenso com Conteúdo Dinâmico</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center; /* Centraliza o conteúdo */
+        }
+        h1 {
+            font-size: 16px; /* Tamanho da fonte ajustado */
+        }
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            font-size: 13px; /* Tamanho da fonte ajustado para 13px */
+        }
+        .content-box {
+            border: 1px solid #ccc;
+            padding: 20px;
+            font-size: 13px; /* Tamanho da fonte ajustado para 13px */
+            background-color: #f9f9f9;
+            margin-bottom: 20px;
+            white-space: pre-wrap; /* Preserve quebra de linha */
+            text-align: left; /* Alinhamento do texto à esquerda */
+        }
+        .copy-button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+            display: block;
+            margin: 0 auto; /* Centraliza o botão */
+        }
+        .copy-button:hover {
+            background-color: #0056b3;
+        }
+        .alert {
+            display: none;
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .credits {
+            font-size: 10px; /* Tamanho da fonte dos créditos */
+            margin-top: 10px; /* Espaço superior para separar dos elementos anteriores */
+        }
+    </style>
 </head>
 <body>
-    <h2>Lista Suspensa</h2>
-    <label for="opcoes">Escolha uma opção:</label>
-    <select id="opcoes">
-        <option value="">Carregando opções...</option>
-    </select>
+    <div class="container">
+        <h1>SISTEMA DE PRESCRIÇÕES DA ROTINA</h1>
+        <select id="medicamentoSelect">
+            <option value="">Selecione...</option>
+<option value="abscesso_nao_flutuante_cefalexina_compressa_morna">ABSCESSO NÃO-FLUTUANTE (CEFALEXINA + COMPRESSA MORNA)</option>
+<option value="abscesso_flutuante_cefalexina_pos_drenagem">ABSCESSO FLUTUANTE – CEFALEXINA (PÓS-DRENAGEM)</option>
+<option value="afta_estomatite_tipo_1_triancinolona_acetonida_corticoide_generico">AFTA / ESTOMATITE – TIPO 1 (TRIANCINOLONA ACETONIDA - CORTICOIDE GENÉRICO)
+
+</option>
+<option value="afta_estomatite_tipo_2_omcilon_orabase_corticoide_marca">AFTA / ESTOMATITE – TIPO 2 (OMCILON ORABASE - CORTICOIDE MARCA)</option>
+<option value="afta_estomatite_tipo_3_lidocaina_topica_anestesico">AFTA / ESTOMATITE – TIPO 3 (LIDOCAÍNA TÓPICA - ANESTÉSICO)</option>
+<option value="afta_estomatite_combinacao_gotas_criancas_mais_3_anos">AFTA / ESTOMATITE – COMBINAÇÃO EM GOTAS, CRIANÇAS > 3 ANOS</option>
+<option value="afta_estomatite_combinacao_spray_criancas_mais_3_anos">AFTA / ESTOMATITE - COMBINAÇÃO - SPRAY $$$, CRIANÇAS > 3 ANOS</option>
+<option value="afta_estomatite_corticoide_mucosa_oral_dexametasona_bochecho">AFTA / ESTOMATITE - CORTICOIDE PARA MUCOSA ORAL (DEXAMETASONA, BOCHECHO)</option>
+<option value="ameaca_abortamento_sintomaticos_tipo_1_buscoduo_bromoprida">AMEAÇA DE ABORTAMENTO (SINTOMÁTICOS) – TIPO 1 – BUSCODUO + BROMOPRIDA</option>
+<option value="ameaca_abortamento_sintomaticos_tipo_2_buscoduo_meclin">AMEAÇA DE ABORTAMENTO (SINTOMÁTICOS) – TIPO 2 - BUSCODUO + MECLIN</option>
+<option value="ameaca_abortamento_progesterona_micronizada_vo_utrogestan">AMEAÇA DE ABORTAMENTO – PROGESTERONA MICRONIZADA VO (UTROGESTAN)</option>
+<option value="ameaca_abortamento_progesterona_micronizada_vaginal_utrogestan">AMEAÇA DE ABORTAMENTO – PROGESTERONA MICRONIZADA VAGINAL (UTROGESTAN)</option>
+        </select>
+        <div id="conteudo" class="content-box">
+            Selecione uma opção para ver a prescrição.
+        </div>
+        <button id="copyButton" class="copy-button" style="display: none;">Copiar para a área de transferência</button>
+        <div id="alertBox" class="alert">Texto copiado para a área de transferência!</div>
+        
+        <!-- Créditos do autor -->
+        <div class="credits">Autor: Cícero Batista. Direitos reservados.</div>
+    </div>
 
     <script>
-        // Função para carregar os dados da planilha e preencher a lista suspensa
-        function carregarOpcoes() {
-            // URL da sua planilha do Google Sheets
-            var url = "https://spreadsheets.google.com/feeds/cells/1KT3NARZegMVg66LS0u3kgvGbqGwWHdHq6r8COxVVAKw/1/public/full?alt=json";
+        // Simulação de um banco de dados com um objeto JavaScript
+        const database = {
+'abscesso_nao_flutuante_cefalexina_compressa_morna': `USO ORAL
+1 - CEFALEXINA 500 MG COMPRIMIDO ------------------------------------- 28-40 CPS
+TOMAR 1 COMPRIMIDO DE 6 – 6 H, 7 DIAS A 10 DIAS (OU ATÉ FLUTUAR / RESOLVER) 
 
-            // Requisição para obter os dados da planilha
-            var xhr = new XMLHttpRequest();
-            xhr.open('GET', url, true);
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState == 4 && xhr.status == 200) {
-                    var data = JSON.parse(xhr.responseText);
-                    var entries = data.feed.entry;
-                    var options = document.getElementById("opcoes");
+- CUIDADOS GERAIS
+COMPRESSA MORNA --- APLICAR COMPRESSA MORNA SOBRE O ABSCESSO 6 VEZES AO DIA, ATÉ FLUTUAR / RESOLVER
+RETORNAR PARA REAVALIAÇÃO EM 72 HORAS SE NÃO HOUVER MELHORA.',
+'abscesso_flutuante_cefalexina_pos_drenagem': `USO ORAL
+1 - CEFALEXINA 500 MG COMPRIMIDO ------------------------------------- 28-40 CPS
+TOMAR 1 COMPRIMIDO DE 6 – 6 H, 7 DIAS A 10 DIAS.
 
-                    // Limpar as opções existentes
-                    options.innerHTML = "";
+ORIENTAÇÃO: PROCURAR UBS OU EMERGÊNCIA PARA RETIRADA DE PONTOS / DRENO EM 7 DIAS.',
+'afta_estomatite_tipo_1_triancinolona_acetonida_corticoide_generico': `USO TÓPICO
+1 - TRIANCINOLONA ACETONIDA 1MG/G POMADA ------------------- 01 BISNAGA
+APLICAR UMA PEQUENA QUANTIDADE, SEM ESFREGAR, SOBRE A LESÃO 2 A 3 VEZES AO DIA.',
+'afta_estomatite_tipo_2_omcilon_orabase_corticoide_marca': `USO TÓPICO
+1 - OMCILON®-A ORABASE --------------------------------------------------- 01 BISNAGA
+APLICAR UMA PEQUENA QUANTIDADE, SEM ESFREGAR, SOBRE A LESÃO 2 A 3 VEZES AO DIA.',
+'afta_estomatite_tipo_3_lidocaina_topica_anestesico': `USO TÓPICO
+1 - LIDOCAÍNA 50MG/G CREME ----------------------------------- 01 BISNAGA
+ALICAR UMA PEQUENA QUANTIDADE SOBRE A LESÃO, 2 A 3 VEZES AO DIA.',
+'afta_estomatite_combinacao_gotas_criancas_mais_3_anos': `USO TÓPICO
+1 - BISMU-JET (NEOMICINA + BISMUTO E SÓDIO + PROCAÍNA) GOTAS —- 01 FRASCO
+APLICAR 1 A 2 GOTAS, 3 A 6 VEZES AO DIA NA LESÃO.',
+'afta_estomatite_combinacao_spray_criancas_mais_3_anos': `USO TÓPICO
+1 - HEXOMEDINE (HEXAMIDINA + TETRACAÍNA) SPRAY -----------------—- 01 FRASCO
+APLICAR 3 BORRIFADAS NA BOCA 3 A 4 VEZES AO DIA.',
+'afta_estomatite_corticoide_mucosa_oral_dexametasona_bochecho': `USO TÓPICO
+1 - DEXAMETASONA ELIXIR 0.5MG/5ML —-------------------------------------- 01 FRASCO
+REALIZAR BOCHECHO COM 5ML DA SOLUÇÃO, DE 8/8H, POR 7 DIAS.
+OBS.: NÃO DEGLUTIR A SOLUÇÃO, CUSPIR APÓS.',
+'ameaca_abortamento_sintomaticos_tipo_1_buscoduo_bromoprida': `USO ORAL
+1 - BUSCODUO 10MG+500MG ----------------------------------------- 01 CX
+TOMAR 01 COMPRIMIDO DE 8/8H
 
-                    // Preencher a lista suspensa com os dados da coluna A
-                    for (var i = 0; i < entries.length; i++) {
-                        if (entries[i].gs$cell.col == "1") {
-                            var option = document.createElement("option");
-                            option.value = entries[i].gs$cell.$t;
-                            option.text = entries[i].gs$cell.$t;
-                            options.appendChild(option);
-                        }
-                    }
-                }
-            };
-            xhr.send();
+2 - BROMOPRIDA 10MG ----------------------------------------- 01 CX
+TOMAR 01 COMPRIMIDO DE 8/8H SE NÁUSEAS OU VÔMITOS ',
+'ameaca_abortamento_sintomaticos_tipo_2_buscoduo_meclin': `USO ORAL
+1 - BUSCODUO 10MG+500MG ----------------------------------------- 01 CX
+TOMAR 01 COMPRIMIDO DE 8/8H
+
+2 - MECLIN ® (MECLOZINA) 25MG COMPRIMIDO --- 01 CX
+TOMAR 1 COMPRIMIDO ATÉ 4 VEZES AO DIA SE NÁUSEAS OU VÔMITOS',
+'ameaca_abortamento_progesterona_micronizada_vo_utrogestan': `USO ORAL
+1 - UTROGESTAN -------------------------------------- 01 CX
+(PROGESTERONA MICRONIZADA 200 MCG)
+TOMAR 1 A 2 COMPRIMIDOS POR DIA.
+ACOMPANHAR CONTINUIDADE DO USO JUNTO AO PRÉ-NATAL.',
+'ameaca_abortamento_progesterona_micronizada_vaginal_utrogestan': `USO VAGINAL
+1 - UTROGESTAN -------------------------------------- 01 CX
+(PROGESTERONA MICRONIZADA 200 MCG)
+APLICAR 1 COMPRIMIDO VIA VAGINAL DUAS VEZES POR DIA.
+ACOMPANHAR CONTINUIDADE DO USO JUNTO AO PRÉ-NATAL.',
+        };
+
+        // Referências aos elementos HTML
+        const selectElement = document.getElementById('medicamentoSelect');
+        const conteudoElement = document.getElementById('conteudo');
+        const copyButton = document.getElementById('copyButton');
+        const alertBox = document.getElementById('alertBox');
+
+        // Função para atualizar o conteúdo com base na seleção
+        function atualizarConteudo() {
+            const selectedValue = selectElement.value;
+            if (selectedValue) {
+                conteudoElement.textContent = database[selectedValue];
+                copyButton.style.display = 'block';
+            } else {
+                conteudoElement.textContent = 'Selecione uma opção para ver a prescrição.';
+                copyButton.style.display = 'none';
+            }
         }
 
-        // Chamar a função para carregar as opções quando a página carregar
-        window.onload = function() {
-            carregarOpcoes();
-        };
+        // Função para copiar o texto para a área de transferência
+        function copiarTexto() {
+            const texto = conteudoElement.textContent;
+            const inputTemp = document.createElement('textarea');
+            inputTemp.value = texto;
+            document.body.appendChild(inputTemp);
+            inputTemp.select();
+            document.execCommand('copy');
+            document.body.removeChild(inputTemp);
+
+            // Exibir a mensagem de alerta
+            alertBox.style.display = 'block';
+            setTimeout(() => {
+                alertBox.style.display = 'none';
+            }, 3000); // A mensagem desaparecerá após 3 segundos
+        }
+
+        // Adiciona o evento de mudança ao menu suspenso
+        selectElement.addEventListener('change', atualizarConteudo);
+
+        // Adiciona o evento de clique ao botão de copiar
+        copyButton.addEventListener('click', copiarTexto);
     </script>
 </body>
 </html>
