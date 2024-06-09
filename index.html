@@ -103,6 +103,7 @@
         .selected-option {
             font-weight: bold;
             margin-top: 10px;
+            text-align: left;
         }
     </style>
 </head>
@@ -220,9 +221,10 @@ REPOUSO --- DESCANSAR EM UM LOCAL SILENCIOSO E ESCURO ATÉ MELHORA DOS SINTOMAS.
             dropdownContent.innerHTML = '';
             let options = Object.keys(database);
             options = options.filter(option => option.toLowerCase().includes(filter));
-            options.forEach((option, index) => {
+            options.forEach((key, index) => {
+                const text = key.replace(/_/g, ' ');
                 const optionDiv = document.createElement('div');
-                optionDiv.textContent = option.replace(/_/g, ' ');
+                optionDiv.textContent = text;
                 optionDiv.onclick = () => selecionarOpcao(index);
                 dropdownContent.appendChild(optionDiv);
             });
