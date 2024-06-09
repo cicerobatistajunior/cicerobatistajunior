@@ -114,37 +114,345 @@
     <script>
         // Simulação de um banco de dados com um objeto JavaScript
         const database = {
-            'abscesso_nao_flutuante': `USO ORAL
+'Abscesso_não-flutuante_(cefalexina_+_compressa_morna)': `USO ORAL
 1 - CEFALEXINA 500 MG COMPRIMIDO ------------------------------------- 28-40 CPS
-TOMAR 1 COMPRIMIDO DE 6 – 6 H, 7 DIAS A 10 DIAS (OU ATÉ FLUTUAR / RESOLVER)
+TOMAR 1 COMPRIMIDO DE 6 – 6 H, 7 DIAS A 10 DIAS (OU ATÉ FLUTUAR / RESOLVER) 
 
 - CUIDADOS GERAIS
-COMPRESSA MORNA --- APLICAR COMPRESSA MORNA SOBRE O ABSCESSO 6 VEZES ATÉ FLUTUAR / RESOLVER
+COMPRESSA MORNA --- APLICAR COMPRESSA MORNA SOBRE O ABSCESSO 6 VEZES AO DIA, ATÉ FLUTUAR / RESOLVER
 RETORNAR PARA REAVALIAÇÃO EM 72 HORAS SE NÃO HOUVER MELHORA.`,
-            'gripe': `USO ORAL
-1 - PARACETAMOL 500 MG COMPRIMIDO ------------------------------------- 10 CPS
-TOMAR 1 COMPRIMIDO DE 6 – 6 H, 5 DIAS
+'Abscesso_flutuante_–_cefalexina_(pós-drenagem)': `USO ORAL
+1 - CEFALEXINA 500 MG COMPRIMIDO ------------------------------------- 28-40 CPS
+TOMAR 1 COMPRIMIDO DE 6 – 6 H, 7 DIAS A 10 DIAS.
 
-- CUIDADOS GERAIS
-DESCANSO --- DESCANSAR E EVITAR ESFORÇOS FÍSICOS DURANTE O PERÍODO DE RECUPERAÇÃO.`,
-            'dor_de_garganta': `USO ORAL
-1 - IBUPROFENO 400 MG COMPRIMIDO ------------------------------------- 20 CPS
-TOMAR 1 COMPRIMIDO DE 8 – 8 H, 7 DIAS
+ORIENTAÇÃO: PROCURAR UBS OU EMERGÊNCIA PARA RETIRADA DE PONTOS / DRENO EM 7 DIAS.`,
+'Afta_/_estomatite_–_tipo_1_(triancinolona_acetonida_-_corticoide_genérico)': `USO TÓPICO
+1 - TRIANCINOLONA ACETONIDA 1MG/G POMADA ------------------- 01 BISNAGA
+APLICAR UMA PEQUENA QUANTIDADE, SEM ESFREGAR, SOBRE A LESÃO 2 A 3 VEZES AO DIA.`,
+'Afta_/_estomatite_–_tipo_2_(omcilon_orabase_-_corticoide_marca)': `USO TÓPICO
+1 - OMCILON®-A ORABASE --------------------------------------------------- 01 BISNAGA
+APLICAR UMA PEQUENA QUANTIDADE, SEM ESFREGAR, SOBRE A LESÃO 2 A 3 VEZES AO DIA.`,
+'Afta_/_estomatite_–_tipo_3_(lidocaína_tópica_-_anestésico)': `USO TÓPICO
+1 - LIDOCAÍNA 50MG/G CREME ----------------------------------- 01 BISNAGA
+ALICAR UMA PEQUENA QUANTIDADE SOBRE A LESÃO, 2 A 3 VEZES AO DIA.`,
+'Afta_/_estomatite_–_combinação_em_gotas,_crianças_>_3_anos': `USO TÓPICO
+1 - BISMU-JET (NEOMICINA + BISMUTO E SÓDIO + PROCAÍNA) GOTAS —- 01 FRASCO
+APLICAR 1 A 2 GOTAS, 3 A 6 VEZES AO DIA NA LESÃO.`,
+'Afta_/_estomatite_-_combinação_-_spray_$$$,_crianças_>_3_anos': `USO TÓPICO
+1 - HEXOMEDINE (HEXAMIDINA + TETRACAÍNA) SPRAY -----------------—- 01 FRASCO
+APLICAR 3 BORRIFADAS NA BOCA 3 A 4 VEZES AO DIA.`,
+'Afta_/_estomatite_-_corticoide_para_mucosa_oral_(dexametasona,_bochecho)': `USO TÓPICO
+1 - DEXAMETASONA ELIXIR 0.5MG/5ML —-------------------------------------- 01 FRASCO
+REALIZAR BOCHECHO COM 5ML DA SOLUÇÃO, DE 8/8H, POR 7 DIAS.
+OBS.: NÃO DEGLUTIR A SOLUÇÃO, CUSPIR APÓS.`,
+'Ameaça_de_abortamento_(sintomáticos)_–_tipo_1_–_buscoduo_+_bromoprida': `USO ORAL
+1 - BUSCODUO 10MG+500MG ----------------------------------------- 01 CX
+TOMAR 01 COMPRIMIDO DE 8/8H
 
-- CUIDADOS GERAIS
-ÁGUA MORNA COM SAL --- FAZER GARGAREJO COM ÁGUA MORNA E SAL 3 VEZES AO DIA.`,
-            'alergia': `USO ORAL
-1 - LORATADINA 10 MG COMPRIMIDO ------------------------------------- 10 CPS
-TOMAR 1 COMPRIMIDO DE 24 – 24 H, 10 DIAS
+2 - BROMOPRIDA 10MG ----------------------------------------- 01 CX
+TOMAR 01 COMPRIMIDO DE 8/8H SE NÁUSEAS OU VÔMITOS `,
+'Ameaça_de_abortamento_(sintomáticos)_–_tipo_2_-_buscoduo_+_meclin': `USO ORAL
+1 - BUSCODUO 10MG+500MG ----------------------------------------- 01 CX
+TOMAR 01 COMPRIMIDO DE 8/8H
 
-- CUIDADOS GERAIS
-HIDRATAÇÃO --- BEBER PELO MENOS 2 LITROS DE ÁGUA POR DIA.`,
-            'dor_de_cabeca': `USO ORAL
-1 - DIPIRONA 500 MG COMPRIMIDO ------------------------------------- 10 CPS
-TOMAR 1 COMPRIMIDO DE 6 – 6 H, SE NECESSÁRIO
+2 - MECLIN ® (MECLOZINA) 25MG COMPRIMIDO --- 01 CX
+TOMAR 1 COMPRIMIDO ATÉ 4 VEZES AO DIA SE NÁUSEAS OU VÔMITOS`,
+'Ameaça_de_abortamento_–_progesterona_micronizada_vo_(utrogestan)': `USO ORAL
+1 - UTROGESTAN -------------------------------------- 01 CX
+(PROGESTERONA MICRONIZADA 200 MCG)
+TOMAR 1 A 2 COMPRIMIDOS POR DIA.
+ACOMPANHAR CONTINUIDADE DO USO JUNTO AO PRÉ-NATAL.`,
+'Ameaça_de_abortamento_–_progesterona_micronizada_vaginal_(utrogestan)': `USO VAGINAL
+1 - UTROGESTAN -------------------------------------- 01 CX
+(PROGESTERONA MICRONIZADA 200 MCG)
+APLICAR 1 COMPRIMIDO VIA VAGINAL DUAS VEZES POR DIA.
+ACOMPANHAR CONTINUIDADE DO USO JUNTO AO PRÉ-NATAL.`,
+'Anticoagulação_vo:_dabigatrana': `USO ORAL
+1 - DABIGATRANA (PRADAXA) 75MG / 110MG / 150MG COMPRIMIDO ----------- 01 CX
+TOMAR ___ COMPRIMIDOS, DE 12/12H.
+(DOSE: 150MG/DOSE)`,
+'Anticoagulação_vo:_rivaroxabana': `USO ORAL
+1 - RIVAROXABANA (RIVAXA) 10MG / 15MG / 20MG COMPRIMIDO ----------- 01 CX
+TOMAR ___ COMPRIMIDOS, 1 VEZ AO DIA.
+(DOSE: 20MG/DIA)`,
+'Anticoagulação_vo:_apixabana': `USO ORAL
+1 - APIXABANA (ELIQUIS) 2.5MG / 5MG COMPRIMIDO ----------- 01 CX
+TOMAR ___ COMPRIMIDOS, DE 12/12H.
+(DOSE: 5MG/DOSE)`,
+'Anticoagulação_vo:_edoxabana': `USO ORAL
+1 - EDOXABANA 15MG / 30MG / 60MG COMPRIMIDO ----------- 01 CX
+TOMAR ___ COMPRIMIDO, 1 VEZ AO DIA.
+(DOSE: 60MG/DIA)`,
+'Anticoagulação_vo:_varfarina': `USO ORAL
+1 - VARFARINA (MAREVAN) 2.5MG / 5.0MG / 7.5MG COMPRIMIDO ----------- 01 CX
+TOMAR ___ COMPRIMIDO, 1 VEZ AO DIA.
+(DOSE: 2.5-10MG/DIA)
+DOSAR INR DE 3/3 DIAS, AJUSTAR PARA VALOR DE 2-3.`,
+'Alergia_(reação)_–_adulto_–_receita:_prednisona_+_dexclorfeniramina': `USO ORAL
+1 - PREDNISONA 20MG --------------------- 01 CX 
+TOMAR ___ COMPRIMIDOS AO DIA POR 5-7 DIAS. 
+(SUG.: 2 COMPRIMIDOS, OU CALCULAR 0.5-1.0MG/KG/DIA)
 
-- CUIDADOS GERAIS
-REPOUSO --- DESCANSAR EM UM LOCAL SILENCIOSO E ESCURO ATÉ MELHORA DOS SINTOMAS.`
+2 - DEXCLORFENIRAMINA (HISTAMIN) 2MG --------------------- 01 CX 
+TOMAR 1 COMPRIMIDO DE 6/6-8/8H POR 3-5 DIAS.`,
+'Alergia_(reação)_–_adulto_–_receita:_prednisona_+_hixizine_(hidroxizine)': `USO ORAL
+1 - PREDNISONA 20MG --------------------- 01 CX 
+TOMAR ___ COMPRIMIDOS AO DIA POR 5-7 DIAS. 
+(SUG.: 2 COMPRIMIDOS, OU CALCULAR 0.5-1.0MG/KG/DIA)
+
+2 - HIDROXIZINE (HIXIZINE) 25MG COMPRIMIDOS --------------------- 01 CX 
+TOMAR 1 COMPRIMIDO DE 6/6-8/8H POR 3-5 DIAS.`,
+'Alergia_(reação)_–_adulto_–_receita:_prednisona_+_fexofenadina': `USO ORAL
+1 - PREDNISONA 20MG --------------------- 01 CX 
+TOMAR ___ COMPRIMIDOS AO DIA POR 5-7 DIAS. 
+(SUG.: 2 COMPRIMIDOS, OU CALCULAR 0.5-1.0MG/KG/DIA)
+
+2 - FEXOFENADINA (ALLEGRA) 180MG --------------------- 01 CX 
+TOMAR 01 COMPRIMIDO 01 VEZ AO DIA, POR 5 DIAS`,
+'Alergia_(reação)_–_adulto_–_receita:_prednisona_+_loratadina': `USO ORAL
+1 - PREDNISONA 20MG --------------------- 01 CX 
+TOMAR ___ COMPRIMIDOS AO DIA POR 5-7 DIAS. 
+(SUG.: 2 COMPRIMIDOS, OU CALCULAR 0.5-1.0MG/KG/DIA)
+
+2 - LORATADINA 10MG COMPRIMIDO --------------------- 01 CX 
+TOMAR 01 COMPRIMIDO 01 VEZ AO DIA, POR 5 DIAS.`,
+'Alergia_(reação)_–_adulto_–_receita:_prednisona_+_desloratadina': `USO ORAL
+1 - PREDNISONA 20MG --------------------- 01 CX 
+TOMAR ___ COMPRIMIDOS AO DIA POR 5-7 DIAS. 
+(SUG.: 2 COMPRIMIDOS, OU CALCULAR 0.5-1.0MG/KG/DIA)
+
+2 - DESLORATADINA 0,5MG/ML SOLUÇÃO ---------------- 01 CX
+TOMAR 10ML POR DIA, DURANTE 3-5 DIAS.`,
+'Alergia_(reação)_–_#PED_–_receita:_prednisolona_+_dexclorfeniramina_solução': `USO ORAL
+1 - PREDNISOLONA 3MG/ML SOLUÇÃO ------------------------ 01 FRASCO
+FAZER ___ ML, UMA VEZ AO DIA, POR 5 DIAS. (PESO/3 = ML/DOSE)
+
+2 - DEXCLORFENIRAMINA 0.4MG/ML SOLUÇÃO --------------------- 01 FRASCO
+DAR ___ ML, 3 VEZES AO DIA.
+(2-6A: 1.5ML | 6-12A: 2.5ML | >12A: 5ML)`,
+'Alergia_(reação)_–_#PED_–_receita:_prednisolona_+_dexclorfeniramina_gotas': `USO ORAL
+1 - PREDNISOLONA 3MG/ML SOLUÇÃO ------------------------ 01 FRASCO
+FAZER ___ ML, UMA VEZ AO DIA, POR 5 DIAS. (PESO/3 = ML/DOSE)
+
+2 - DEXCLORFENIRAMINA 2.8MG/ML GOTAS --------------------- 01 FRASCO
+DAR ___ GOTAS, 3 VEZES AO DIA.
+(2-6A: 5GTS | 6-12A: 10GTS | >12A: 20GTS)`,
+'Alergia_(reação)_–_#PED_–_receita:_prednisolona_+_hidroxizine': `USO ORAL
+1 - PREDNISOLONA 3MG/ML SOLUÇÃO ------------------------ 01 FRASCO
+FAZER ___ ML, UMA VEZ AO DIA, POR 5 DIAS. (PESO/3 = ML/DOSE)
+
+2 - HIDROXIZINE XAROPE 2MG/ML ---------------------------- 01 FRASCO (120 ML) 
+DAR ___ ML DE 6/6 OU 8/6 HORAS POR 5 DIAS.
+(PESO/4 = ML/DOSE)`,
+'Alergia_(reação)_–_#PED_–_receita:_prednisolona_+_fexofenadina_(allegra)': `USO ORAL
+1 - PREDNISOLONA 3MG/ML SOLUÇÃO ------------------------ 01 FRASCO
+FAZER ___ ML, UMA VEZ AO DIA, POR 5 DIAS. (PESO/3 = ML/DOSE)
+
+2 - FEXOFENADINA (ALLEGRA) 6MG/ML ---------------- 01 FRASCO
+DAR ___ ML DE 12/12 HORAS POR 5 DIAS.
+(6M-2ANOS: 2,5 ML | 2-11 ANOS : 5 ML | >12 ANOS E ADULTOS : 10 ML OU 20 ML)`,
+'Alergia_(reação)_–_#PED_–_receita:_prednisolona_+_loratadina': `USO ORAL
+1 - PREDNISOLONA 3MG/ML SOLUÇÃO ------------------------ 01 FRASCO
+FAZER ___ ML, UMA VEZ AO DIA, POR 5 DIAS. (PESO/3 = ML/DOSE)
+
+2 - LORATADINA 1 MG/ML ------------------------------- 01 FRASCO
+DAR ___ ML, UMA VEZ AO DIA POR 5 DIAS
+(DOSE: 2-5A: 5ML; > 6A OU > 30KG: 10ML)`,
+'Alergia_(reação)_–_#PED_–_receita:_prednisolona_+_desloratadina': `USO ORAL
+1 - PREDNISOLONA 3MG/ML SOLUÇÃO ------------------------ 01 FRASCO
+FAZER ___ ML, UMA VEZ AO DIA, POR 5 DIAS. (PESO/3 = ML/DOSE)
+
+2 - DESLORATADINA 0,5MG/ML ------------------------ 01 FRASCO
+TOMAR ___ ML, 01 VEZ AO DIA POR 5 DIAS
+(6M-2A: 2ML | 2-5A: 2,5ML | 5-10A: 5ML | > 10A: 10ML)`,
+'Analgesia_/_dor_-_dipirona_gotas_adulto': `USO ORAL
+1 - DIPIRONA 500MG/ML FRASCO GOTAS ------------------ 01 FRASCO
+TOMAR 20 – 40 GOTAS DE 6/6 HORAS SE DOR OU FEBRE`,
+'Analgesia_/_dor_-_dipirona_comprimido_adulto_500mg': `USO ORAL
+1 - DIPIRONA 500MG COMPRIMIDO ----------------------------- 01 CX 
+TOMAR 1-2 COMPRIMIDOS DE 6/6 HORAS SE DOR OU FEBRE`,
+'Analgesia_/_dor_-_dipirona_comprimido_adulto_1g': `USO ORAL
+1 - DIPIRONA 1G COMPRIMIDO ----------------------------- 01 CX
+TOMAR 1 COMPRIMIDO DE 6/6 HORAS SE DOR OU FEBRE`,
+'Analgesia_/_dor_-_aas_comprimido_adulto_500mg': `USO ORAL
+1 - AAS (ÁCIDO ACETILSALICÍLICO) 500MG COMPRIMIDO ----------------------------- 01 CX 
+TOMAR 1 A 2 COMPRIMIDOS, PODENDO REPETIR A DOSE A CADA 4 OU 6 HORAS ATÉ UM MÁXIMO DE 8 COMPRIMIDOS AO DIA`,
+'Analgesia_/_dor_–_paracetamol_comprimido_adulto_500mg': `USO ORAL
+1 - PARACETAMOL 500 MG COMPRIMIDO -------------------------------- 01 CX
+TOMAR 1 COMPRIMIDO DE 6/6 HORAS SE DOR OU FEBRE`,
+'Analgesia_/_dor_–_paracetamol_comprimido_adulto_750mg': `USO ORAL
+1 - PARACETAMOL 750 MG COMPRIMIDO -------------------------------- 01 CX 
+TOMAR 1 COMPRIMIDO DE 6/6 HORAS SE DOR OU FEBRE`,
+'Analgesia_/_dor_–_paracetamol_gotas_adulto': `USO ORAL
+1 - PARACETAMOL 200MG/ML -------------------------------- 01 FRASCO
+TOMAR 35-55 GOTAS DE 6/6 HORAS SE DOR OU FEBRE`,
+'Analgesia_/_dor_–_buscopan_adulto': `USO ORAL
+1 - ESCOPOLAMINA (BUSCOPAN) 10 MG COMPRIMIDO ----------------- 01 CX
+TOMAR 01 COMPRIMIDO DE 8/8 HORAS SE DOR ABDOMINAL (CÓLICA)`,
+'Analgesia_/_dor_–_buscopan_composto_adulto': `USO ORAL
+1 - BUSCOPAN COMPOSTO 10 MG + 250 MG COMPRIMIDO ----------------- 01 CX
+TOMAR 01 COMPRIMIDO DE 8/8 HORAS SE DOR ABDOMINAL (CÓLICA)`,
+'Analgesia_/_dor_–_buscoduo_adulto': `USO ORAL
+1 - BUSCODUO 10 MG + 500 MG COMPRIMIDO ----------------- 01 CX 
+TOMAR 01 COMPRIMIDO DE 8/8 HORAS SE DOR ABDOMINAL (CÓLICA)`,
+'Analgesia_/_dor_forte_–_codeína_30mg_(receituário_especial!)': `USO ORAL
+1 - CODEINA 30 MG COMPRIMIDO ----------------- 01 CX 
+TOMAR 1 COMPRIMIDO DE 6/6 HORAS SE DOR INTENSA (OU FIXO)`,
+'Analgesia_/_dor_forte_–_codeína_60mg_(receituário_especial!)': `USO ORAL
+1 - CODEINA 60 MG COMPRIMIDO ----------------- 01 CX 
+TOMAR 1 COMPRIMIDO DE 6/6 HORAS SE DOR INTENSA (OU FIXO)`,
+'Analgesia_/_dor_forte_–_paracetamol_+_codeína_(receituário_especial!)': `USO ORAL
+1 - PARACETAMOL+CODEÍNA (PACO) 500MG+30MG COMPRIMIDO —--------- 01 CX
+TOMAR 1 COMPRIMIDO DE 6/6 HORAS SE DOR INTENSA`,
+'Analgesia_/_dor_forte_–_tramadol_comprimido_(receituário_especial!)': `USO ORAL
+1 - TRAMADOL 50MG COMPRIMIDO ----------- 01 CX
+TOMAR 1-2 COMPRIMIDOS DE 4/4 – 6/6 HORAS (MÁX.: 400MG/DIA)`,
+'Analgesia_/_dor_forte_–_tramadol_gotas_(receituário_especial!)': `USO ORAL
+1 - TRAMADOL 100MG/ML GOTAS FRASCO 10 ML ---------- 01 CX 
+TOMAR 20 GOTAS ATÉ 8 VEZES AO DIA.`,
+'Analgesia_/_dor_forte_–_tramadol_com_paracetamol_(receituário_especial!)': `USO ORAL
+1 - REVANGE OU GÉSICO DUO (TRAMADOL + PARACETAMOL 37.5+325MG) ------- 01 CX
+TOMAR 1-2 COMPRIMIDOS DE 4/4 – 6/6 HORAS (MÁX.: 8CP/DIA)`,
+'Analgesia_/_dor_forte_–_morfina_(receituário_azul_ou_amarelo!)': `USO ORAL
+1 - MORFINA 10MG COMPRIMIDO --------- 01 CX
+TOMAR 1-2 COMPRIMIDOS DE 4/4 HORAS.`,
+'Analgesia_/_dor_forte_–_adesivo_restiva_(buprenorfina)_–_liberação_lenta_(receituário_especial)': `USO TÓPICO
+1 - RESTIVA (BUPRENORFINA) 5MG / 10MG / 15MG ADESIVO TRANSDÉRMICO --- 01 CX
+APLICAR UM ADESIVO NO CORPO E DEIXAR DURANTE 7 DIAS. 
+APÓS, TROCAR O ADESIVO E DEIXAR POR MAIS 7 DIAS.`,
+'Analgesia_/_dor_/_inflamação_(AINE)_–_ibuprofeno_comp._-_febre,_mialgia,_odinofagia,_cefaleia,_dismenorreia': `USO ORAL
+1 - IBUPROFENO 400MG / 600MG COMPRIMIDO ------------ 01 CX 
+TOMAR 1 COMPRIMIDO DE 6/6 HORAS POR 5 DIAS`,
+'Analgesia_/_dor_/_inflamação_(AINE)_–_ibuprofeno_gotas_-_febre,_mialgia,_odinofagia,_cefaleia,_dismenorreia': `USO ORAL
+1 - IBUPROFENO 100MG/ML SUSPENSÃO —---------- 01 CX 
+TOMAR 20 A 80 GOTAS / DOSE, ATÉ 4 VEZES AO DIA.`,
+'Analgesia_/_dor_/_inflamação_(AINE)_–_naproxeno_250mg_–_reumatismos,_cefaleia,_art._Reumatoide,_espondilite_anquilosante,_gota,_osteoartrite': `USO ORAL
+1 - NAPROXENO 250MG COMPRIMIDO ----------- 01 CX 
+TOMAR 1 COMPRIMIDO DE 12/12 HORAS POR 5 DIAS `,
+'Analgesia_/_dor_/_inflamação_(AINE)_–_naproxeno_500mg_–_reumatismos,_cefaleia,_art._Reumatoide,_espondilite_anquilosante,_gota,_osteoartrite': `USO ORAL
+1 - NAPROXENO 500MG COMPRIMIDO ----------- 01 CX 
+TOMAR 1 COMPRIMIDO DE 12/12 HORAS POR 5 DIAS `,
+'Analgesia_/_dor_/_inflamação_(AINE)_–_naproxeno_550mg_–_reumatismos,_cefaleia,_art._Reumatoide,_espondilite_anquilosante,_gota,_osteoartrite': `USO ORAL
+1 - NAPROXENO 550MG COMPRIMIDO ----------- 01 CX 
+TOMAR 1 COMPRIMIDO DE 12/12 HORAS POR 5 DIAS`,
+'Analgesia_/_dor_/_inflamação_(AINE)_–_diclofenaco_–_artralgia,_reumatismos,_gota,_ouvido-nariz-garganta': `USO ORAL
+1 - DICLOFENACO 50MG COMPRIMIDO ------------ 01 CX 
+TOMAR 01 COMPRIMIDO DE 8/8 HORAS POR 5 DIAS`,
+'Analgesia_/_dor_/_inflamação_(AINE)_–_piroxicam_–_reumatismos,_artralgia,_gota,_crise_de_doenças_reumáticas': `USO ORAL
+1 - PIROXICAM 20MG COMPRIMIDO ------------ 01 CX
+TOMAR 01 COMPRIMIDO DE 12/12 HORAS POR 2 DIAS. A PARTIR DO 3º DIA, TOMAR 01 COMPRIMIDO AO DIA ATÉ O 7° OU 14° DIA`,
+'Analgesia_/_dor_/_inflamação_(AINE)_–_meloxicam_–_artrite_reumatoide_e_osteoartrite': `USO ORAL
+1 - MELOXICAM 7.5 MG / 15MG COMPRIMIDO ------------ 01 CX
+TOMAR 15MG AO DIA, POR 5 DIAS.`,
+'Analgesia_/_dor_/_inflamação_(AINE)_–_cetoprofeno_50mg_–_otorrinolaringo,_gineco,_urológico,_odonto,_reumático,_ortopédico,_enxaqueca': `USO ORAL
+1 - CETOPROFENO 50MG COMPRIMIDO ------------ 01 CX
+TOMAR 1 COMPRIMIDO DE 6/6 HORAS.`,
+'Analgesia_/_dor_/_inflamação_(AINE)_–_cetoprofeno_100mg_–_otorrinolaringo,_gineco,_urológico,_odonto,_reumático,_ortopédico,_enxaqueca': `USO ORAL
+1 - CETOPROFENO 100MG COMPRIMIDO ------------ 01 CX
+TOMAR 1 COMPRIMIDO DE 12/12 HORAS. 
+CASOS SELECIONADOS (DOR INTENSA): TOMAR 3 COMPRIMIDOS DE 100MG AO DIA.`,
+'Analgesia_/_dor_/_inflamação_(AINE)_–_cetoprofeno_150mg_–_otorrinolaringo,_gineco,_urológico,_odonto,_reumático,_ortopédico,_enxaqueca': `USO ORAL
+1 - CETOPROFENO 150MG COMPRIMIDO ------------ 01 CX
+TOMAR 1 COMPRIMIDO AO DIA. 
+CASOS SELECIONADOS (DOR INTENSA): TOMAR 2 COMPRIMIDOS DE 150MG AO DIA.`,
+'Analgesia_/_dor_/_inflamação_(AINE)_–_indometacina_–_crise_de_doenças_reumáticas,_pós-trauma,_reumatismos': `USO ORAL
+1 - INDOMETACINA 50MG COMPRIMIDO ------------ 01 CX 
+TOMAR 1-2 COMPRIMIDOS DE 6/6-8/8-12/12H (MÁX.: 200MG/DIA) POR 5 DIAS`,
+'Analgesia_/_dor_/_inflamação_(AINE)_–_cetorolaco_–_analgesia_equivalente_a_opioide': `USO ORAL
+1 - TROMETAMOL CETOROLACO (TORMIV SL) ------------ 01 CX 
+USAR 1-2 COMPRIMIDOS VIA SUBLINGUAL, ATÉ DE 6/6-8/8H (MÁX.: 40MG/DIA). DURANTE 5 DIAS.`,
+'Analgesia_/_dor_/_inflamação_(AINE)_–_etodolaco_–_processos_inflamatórios_e_reumáticos_em_geral': `USO ORAL
+1 - ETODOLACO 400MG COMPRIMIDO ------------ 01 CX 
+TOMAR 01 COMPRIMIDO DE 8/8 HORAS, POR 5 DIAS.`,
+'Analgesia_/_dor_/_inflamação_(AINE)_–_nimesulida_–_processos_gerais_–_dor,_inflamação,_febre': `USO ORAL
+1 - NIMESULIDA 100MG COMPRIMIDO ------------ 01 CX
+TOMAR ½ A 1 COMPRIMIDO DE 12/12 HORAS, POR 5 DIAS.`,
+'Analgesia_/_dor_/_inflamação_(AINE)_–_celecoxibe_–_(receita_especial!)_inibidor_cox-2_–_ind.:_paciente_com_intolerância_gástrica': `USO ORAL
+1 - CELECOXIBE 200MG COMPRIMIDO ------------ 01 CX 
+TOMAR 01 COMPRIMIDO DE 12/12 HORAS, POR 5 DIAS.`,
+'Analgesia_/_dor_–_relaxantes_musculares_-_dorflex': `USO ORAL
+1 - ORFENADRINA + DIPIRONA + CAFEÍNA 300/35/50MG --------- 01 CX
+(DORFLEX, MIORRELAX, NEVRALGEX)
+TOMAR 01 COMPRIMIDO DE 6/6 HORAS SE DOR`,
+'Analgesia_/_dor_–_relaxantes_musculares_–_dorflex_max': `USO ORAL
+1 - DORFLEX MAX (ORFENADRINA + DIPIRONA + CAFEÍNA 600/70/100MG) ------------ 01 CX 
+TOMAR 01 COMPRIMIDO DE 6/6-8/8 HORAS SE DOR FORTE`,
+'Analgesia_/_dor_–_relaxantes_musculares_–_tandene_ou_torsilax': `USO ORAL
+1 - PARACETAMOL + CARISOPRODOL+ DICLOFENACO + CAFEÍNA ------------ 01 CX
+(TANDENE, TORSILAX, SEDILAX) 
+TOMAR 01 COMPRIMIDO DE 8/8 HORAS SE DOR`,
+'Analgesia_/_dor_–_relaxantes_musculares_–_musculare_5mg': `USO ORAL
+1 - CICLOBENZAPRINA (MUSCULARE) 5 MG --------------- 01 CX 
+TOMAR 01 COMPRIMIDO À NOITE`,
+'Analgesia_/_dor_–_relaxantes_musculares_–_musculare_10mg': `USO ORAL
+1 - CICLOBENZAPRINA (MUSCULARE) 10 MG --------------- 01 CX 
+TOMAR 01 COMPRIMIDO À NOITE`,
+'Analgesia_/_dor_–_terapias_tópicas_–_AINE:_diclofenaco_11.6mg/g': `USO TÓPICO
+1 - DICLOFENACO 11.6 MG/G CREME OU SPRAY ------------------------- 01 TUBO
+PASSAR NA REGIÃO AFETADA 3 A 4 VEZES AO DIA`,
+'Analgesia_/_dor_–_terapias_tópicas_–_AINE:_diclofenaco_23.2mg/g_(cataflam_pro_xt)': `USO TÓPICO
+1 – CATAFLAM PRO XT (DICLOFENACO) 23.2 MG/G CREME --------------- 01 BISNAGA
+PASSAR NA REGIÃO AFETADA 3 A 4 VEZES AO DIA`,
+'Analgesia_/_dor_–_terapias_tópicas_–_reparil_gel_–_trauma,_edema,_dor,_equimoses': `USO TÓPICO
+1 – REPARIL GEL CREME ------------------------------ 01 BISNAGA
+(ESCINA 10MG/G E SALICILATO DIETILAMÔNIO 50MG/G)
+PASSAR NA REGIÃO AFETADA 2 A 3 VEZES AO DIA`,
+'Analgesia_/_dor_–_terapias_tópicas_–_salicilato_de_metila': `USO TÓPICO
+1 - SALICILATO DE METILA (BENGUÉ, SALONPAS, GELOL) CREME OU SPRAY --- 01 TUBO
+PASSAR NA REGIÃO AFETADA 3 A 4 VEZES AO DIA`,
+'Analgesia_/_dor_–_terapias_tópicas_–_salonpas': `USO TÓPICO
+1 - SALONPAS EMPLASTRO ------------------------------------ 01 ENVELOPE
+APLICAR NA REGIÃO AFETADA. TROCAR ADESIVO A CADA 8 HORAS`,
+'Analgesia_/_dor_–_terapias_tópicas_–_crioterapia_(gelo)': `ORIENTAÇÃO: CRIOTERAPIA
+1 – COMPRESSA DE GELO ------------------------------------ 15-20 MIN / 4X AO DIA
+APLICAR NA REGIÃO AFETADA E MANTER DURANTE 15 A 20 MINUTOS.
+REALIZAR VÁRIAS SESSÕES AO LONGO DO DIA (MÍNIMO RECOMENDADO: 4 VEZES).
+
+OBS.: NÃO APLICAR O GELO DIRETAMENTE SOBRE A PELA, EVITE LESÕES DE PELE! PROTEJA A PELE COM UM PEDAÇO DE TECIDO ANTES DA COMPRESSA DE GELO. `,
+'Analgesia_/_dor_–_terapias_tópicas_–_termoterapia_(calor)': `ORIENTAÇÃO: TERMOTERAPIA
+1 – COMPRESSA MORNA ------------------------------------ 15-20 MIN / 4X AO DIA
+APLICAR NA REGIÃO AFETADA E MANTER DURANTE 15 A 20 MINUTOS.
+REALIZAR VÁRIAS SESSÕES AO LONGO DO DIA (MÍNIMO RECOMENDADO: 4 VEZES).
+SUGESTÃO: UTILIZAR UM PEDAÇO DE TECIDO EMBEBIDO EM ÁGUA MORNA. 
+
+OBS.: UTILIZE ÁGUA MORNA, NÃO ÁGUA QUENTE! COM TEMPERATURA TOLERÁVEL! EVITE QUEIMADURAS. TESTE A TEMPERATURA DA ÁGUA ANTES DE REALIZAR A COMPRESSA. `,
+'Analgesia_/_dor_–_pós-trauma:_orientações_-_price': `ORIENTAÇÕES PÓS-TRAUMA: MÉTODO PRICE
+
+P - PROTEGER LOCAL ACOMETIDO ------------------------------- CONTÍNUO
+PROTEGER DE NOVOS TRAUMAS, EVITANDO PIORA, RECIDIVA E ACELERANDO A RECUPERAÇÃO.
+ 
+R – REPOUSO E RESTRIÇÃO DAS ATIVIDADES ----------------------- 24-72 HORAS
+REPOUSO TOTAL DE TODAS AS ATIVIDADES; DIMINUIR MOVIMENTO E SOBRECARGAS DESNECESSÁRIAS.
+
+I - “ICE” – COMPRESSA DE GELO ------------------------------------ 15-20 MIN / 4X AO DIA
+APLICAR NA REGIÃO AFETADA E MANTER DURANTE 15 A 20 MINUTOS.
+REALIZAR VÁRIAS SESSÕES AO LONGO DO DIA (MÍNIMO RECOMENDADO: 4 VEZES).
+
+OBS.: NÃO APLICAR O GELO DIRETAMENTE SOBRE A PELA, EVITE LESÕES DE PELE! PROTEJA A PELE COM UM PEDAÇO DE TECIDO ANTES DA COMPRESSA DE GELO. 
+
+C – COMPRESSÃO ------------------------------------------------ CONTÍNUO
+APLICAR COMPRESSÃO NO LOCAL ACOMETIDO, POR MEIO DE ATADURAS OU ÓRTESE FLEXÍVEL DE NEOPRENE. 
+
+E – ELEVAÇÃO --------------------------------------------------- CONTÍNUO
+MANTER LOCAL AFETADO ELEVADO PARA EVITAR INCHAÇO E FACILITAR A CIRCULAÇÃO. `,
+'Analgesia_/_dor_–_prednisona_5mg': `USO ORAL
+1 - PREDNISONA 5MG ------------------ 01 CX
+TOMAR ___ COMPRIMIDOS AO DIA POR ___ DIAS. `,
+'Analgesia_/_dor_–_prednisona_20mg': `USO ORAL
+1 - PREDNISONA 20MG --------------------- 01 CX 
+TOMAR ___ COMPRIMIDOS AO DIA POR ___ DIAS. `,
+'Analgesia_/_dor_–_prednisona_5mg+20mg': `USO ORAL
+1 - PREDNISONA 20MG --------------------- 01 CX 
+TOMAR ___ COMPRIMIDOS AO DIA POR ___ DIAS. 
+
+2 - PREDNISONA 5MG --------------------- 01 CX 
+TOMAR ___ COMPRIMIDOS AO DIA POR ___ DIAS. `,
+'Analgesia_/_dor_–_dexametasona_4mg': `USO ORAL
+1 - DEXAMETASONA 4MG ---------------------- 01 CX 
+TOMAR ___ COMPRIMIDOS AO DIA POR ___ DIAS. `,
+'Analgesia_/_dor_–_dexametasona_injetável': `USO INJETÁVEL
+1 - DEXAMETASONA (DECADRON) 4MG/ML AMPOLA 2.5ML ------- 01 AMPOLA 
+APLICAR ___ ML, INTRAMUSCULAR (GLÚTEO PROFUNDO).`
         };
 
         // Referências aos elementos HTML
