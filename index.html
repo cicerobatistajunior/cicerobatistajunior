@@ -9,41 +9,49 @@
     <h1>Planilha Interativa</h1>
 
     <label for="items">Escolha um item:</label>
-    <select id="items">
+    <select id="items" onchange="showNextItem()">
         <option value="">Selecione...</option>
     </select>
 
     <p id="nextItem"></p>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tabletop.js/1.6.1/tabletop.min.js"></script>
     <script>
-        // URL da sua planilha do Google Sheets
-        var publicSpreadsheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSGL1Mcky-rNQvKn9iXgD_IUdSqqtfZEa1HLhT3JcDAybj1Vw12sPhWKynoy0XmjSERSTTvFoWVlD7z/pubhtml';
+        // URL da sua planilha do Google Sheets em formato CSV
+        const sheetURL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSGL1Mcky-rNQvKn9iXgD_IUdSqqtfZEa1HLhT3JcDAybj1Vw12sPhWKynoy0XmjSERSTTvFoWVlD7z/pub?output=csv';
 
-        function init() {
-            Tabletop.init({
-                key: publicSpreadsheetUrl,
-                callback: showData,
-                simpleSheet: true
-            });
+        let rowData = {};
+
+        function loadSheet() {
+            fetch(sheetURL)
+                .then(response => response.text())
+                .then(csvText => {
+                    const rows = csvText.split('\n').map(row => row.split(','));
+                    const select = document.getElementById('items');
+
+                    // Preenche a lista suspensa com valores da primeira coluna (coluna A)
+                    rows.forEach((row, index) => {
+                        if (index > 0) { // Ignora o cabeçalho
+                            rowData[row[0]] = row[1]; // Mapeia coluna A para coluna B
+                            const option = document.createElement('option');
+                            option.text = row[0];
+                            option.value = row[0];
+                            select.add(option);
+                        }
+                    });
+                })
+                .catch(error => {
+                    console.error('Erro ao carregar a planilha:', error);
+                });
         }
 
-        function showData(data, tabletop) {
-            console.log(data); // Adiciona log para verificar os dados carregados
-            var select = document.getElementById('items');
-
-            // Adiciona as entradas da primeira coluna (coluna A) na lista suspensa
-            data.forEach(function(row) {
-                var firstColumn = Object.keys(row)[0]; // Obtém a primeira chave da linha
-                var option = document.createElement('option');
-                option.text = row[firstColumn]; // Pega o valor da primeira coluna
-                option.value = row[firstColumn]; // Usa o valor da primeira coluna
-                select.add(option);
-            });
+        function showNextItem() {
+            const selectedItem = document.getElementById('items').value;
+            const nextItem = rowData[selectedItem] || 'Item não encontrado';
+            document.getElementById('nextItem').innerText = 'Próximo item: ' + nextItem;
         }
 
         window.onload = function() {
-            init();
+            loadSheet();
         };
     </script>
 </body>
