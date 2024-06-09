@@ -87,6 +87,10 @@
             font-size: 10px;
             margin-top: 10px;
         }
+        .selected-option {
+            font-weight: bold;
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
@@ -96,6 +100,7 @@
             <input type="text" id="searchInput" placeholder="Digite para buscar..." onclick="mostrarOpcoes()">
             <div id="dropdownContent" class="dropdown-content"></div>
         </div>
+        <div id="selectedOption" class="selected-option"></div>
         <div id="conteudo" class="content-box">
             Selecione uma opção para ver a prescrição.
         </div>
@@ -148,6 +153,7 @@ REPOUSO --- DESCANSAR EM UM LOCAL SILENCIOSO E ESCURO ATÉ MELHORA DOS SINTOMAS.
         const alertBox = document.getElementById('alertBox');
         const searchInput = document.getElementById('searchInput');
         const dropdownContent = document.getElementById('dropdownContent');
+        const selectedOption = document.getElementById('selectedOption');
 
         // Função para mostrar as opções do dropdown
         function mostrarOpcoes() {
@@ -165,9 +171,11 @@ REPOUSO --- DESCANSAR EM UM LOCAL SILENCIOSO E ESCURO ATÉ MELHORA DOS SINTOMAS.
             if (key) {
                 conteudoElement.textContent = database[key];
                 copyButton.style.display = 'block';
+                selectedOption.textContent = key.replace(/_/g, ' ');
             } else {
                 conteudoElement.textContent = 'Selecione uma opção para ver a prescrição.';
                 copyButton.style.display = 'none';
+                selectedOption.textContent = '';
             }
             ocultarOpcoes();
         }
@@ -191,7 +199,7 @@ REPOUSO --- DESCANSAR EM UM LOCAL SILENCIOSO E ESCURO ATÉ MELHORA DOS SINTOMAS.
             const filter = searchInput.value.toLowerCase();
             dropdownContent.innerHTML = '';
             for (const key in database) {
-                const text = key.replace(/_/g, ' ') + ' (' + database[key].split('\n')[0] + ')';
+                const text = key.replace(/_/g, ' ');
                 if (text.toLowerCase().includes(filter)) {
                     const optionDiv = document.createElement('div');
                     optionDiv.textContent = text;
