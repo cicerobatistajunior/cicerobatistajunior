@@ -114,6 +114,43 @@
         <div class="credits">Autor: Cícero Batista. Direitos reservados.</div>
     </div>
 
+<script>
+// Variável para armazenar o índice do item selecionado na lista suspensa
+let selectedIndex = -1;
+
+// Função para atualizar o índice selecionado e realçar o item na lista suspensa
+function atualizarSelecao(index) {
+    const options = dropdownContent.querySelectorAll('div');
+    if (index >= 0 && index < options.length) {
+        options[selectedIndex]?.classList.remove('selected');
+        selectedIndex = index;
+        options[selectedIndex]?.classList.add('selected');
+        // Atualiza o conteúdo com base no item selecionado
+        atualizarConteudo(options[selectedIndex].textContent);
+    }
+}
+
+// Adiciona evento de teclado para navegação com setas
+searchInput.addEventListener('keydown', function(event) {
+    if (event.key === 'ArrowDown') {
+        event.preventDefault();
+        atualizarSelecao(selectedIndex + 1);
+    } else if (event.key === 'ArrowUp') {
+        event.preventDefault();
+        atualizarSelecao(selectedIndex - 1);
+    }
+});
+
+// Adiciona evento de clique para seleção de item na lista suspensa
+dropdownContent.addEventListener('click', function(event) {
+    if (event.target.tagName === 'DIV') {
+        const index = Array.from(dropdownContent.children).indexOf(event.target);
+        atualizarSelecao(index);
+    }
+});
+
+</script>
+    
     <script>
         // Simulação de um banco de dados com um objeto JavaScript
         const database = {
