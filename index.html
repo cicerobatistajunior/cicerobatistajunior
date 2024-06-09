@@ -68,10 +68,23 @@
             border: none;
             cursor: pointer;
             display: block;
-            margin: 0 auto;
+            margin: 10px auto 0;
         }
         .copy-button:hover {
             background-color: #0056b3;
+        }
+        .nav-button {
+            padding: 8px 16px;
+            font-size: 14px;
+            background-color: #808080;
+            color: white;
+            border: none;
+            cursor: pointer;
+            display: inline-block;
+            margin: 0 5px;
+        }
+        .nav-button:hover {
+            background-color: #666666;
         }
         .alert {
             display: none;
@@ -104,10 +117,12 @@
         <div id="conteudo" class="content-box">
             Selecione uma opção para ver a prescrição.
         </div>
+        <div>
+            <button id="anteriorButton" class="nav-button" onclick="navegarAnterior()">Anterior</button>
+            <button id="proximoButton" class="nav-button" onclick="navegarProximo()">Próximo</button>
+        </div>
         <button id="copyButton" class="copy-button" style="display: none;" onclick="copiarTexto()">Copiar para a área de transferência</button>
         <div id="alertBox" class="alert">Texto copiado para a área de transferência!</div>
-        <button id="anteriorButton" class="copy-button" onclick="navegarAnterior()">Anterior</button>
-        <button id="proximoButton" class="copy-button" onclick="navegarProximo()">Próximo</button>
         <!-- Créditos do autor -->
         <div class="credits">Autor: Cícero Batista. Direitos reservados.</div>
     </div>
@@ -151,118 +166,119 @@ REPOUSO --- DESCANSAR EM UM LOCAL SILENCIOSO E ESCURO ATÉ MELHORA DOS SINTOMAS.
         // Referências aos elementos HTML
         const conteudoElement = document.getElementById('conteudo');
         const copyButton = document.getElementById('copyButton');
-        const alertBox = document.getElementById('alertBox'); const searchInput = 
-document.getElementById('searchInput'); const dropdownContent = 
-document.getElementById('dropdownContent'); const selectedOption = 
-document.getElementById('selectedOption'); const anteriorButton = 
-document.getElementById('anteriorButton'); const proximoButton = 
-document.getElementById('proximoButton');    let currentOptionIndex = -1; // Índice da opção atualmente selecionada
+        const alertBox = document.getElementById('alertBox');
+        const searchInput = document.getElementById('searchInput');
+        const dropdownContent = document.getElementById('dropdownContent');
+        const selectedOption = document.getElementById('selectedOption');
+        const anteriorButton = document.getElementById('anteriorButton');
+        const proximoButton = document.getElementById('proximoButton');
 
-    // Função para mostrar as opções do dropdown
-    function mostrarOpcoes() {
-        dropdownContent.style.display = 'block';
-        filtrarOpcoes();
-    }
+        let currentOptionIndex = -1; // Índice da opção atualmente selecionada
 
-    // Função para ocultar as opções do dropdown
-    function ocultarOpcoes() {
-        dropdownContent.style.display = 'none';
-    }
-
-    // Função para atualizar o conteúdo com base na seleção
-    function atualizarConteudo(key) {
-        if (key) {
-            conteudoElement.textContent = database[key];
-            copyButton.style.display = 'block';
-            selectedOption.textContent = key.replace(/_/g, ' ');
-        } else {
-            conteudoElement.textContent = 'Selecione uma opção para ver a prescrição.';
-            copyButton.style.display = 'none';
-            selectedOption.textContent = '';
+        // Função para mostrar as opções do dropdown
+        function mostrarOpcoes() {
+            dropdownContent.style.display = 'block';
+            filtrarOpcoes();
         }
-        ocultarOpcoes();
-    }
 
-    // Função para copiar o texto para a área de transferência
-    function copiarTexto() {
-        const texto = conteudoElement.textContent;
-        navigator.clipboard.writeText(texto).then(() => {
-            // Exibir a mensagem de alerta
-            alertBox.style.display = 'block';
-            setTimeout(() => {
-                alertBox.style.display = 'none';
-            }, 3000);
-        }).catch(err => {
-            console.error('Erro ao copiar texto: ', err);
-        });
-    }
-
-    // Função para filtrar as opções do menu suspenso
-    function filtrarOpcoes() {
-        const filter = searchInput.value.toLowerCase();
-        dropdownContent.innerHTML = '';
-        let options = Object.keys(database);
-        options = options.filter(option => option.toLowerCase().includes(filter));
-        options.forEach((option, index) => {
-            const optionDiv = document.createElement('div');
-            optionDiv.textContent = option.replace(/_/g, ' ');
-            optionDiv.onclick = () => selecionarOpcao(index);
-            dropdownContent.appendChild(optionDiv);
-        });
-        currentOptionIndex = -1;
-    }
-
-    // Função para selecionar uma opção
-    function selecionarOpcao(index) {
-        const options = Object.keys(database).filter(option => option.toLowerCase().includes(searchInput.value.toLowerCase()));
-        if (index >= 0 && index < options.length) {
-            const key = options[index];
-            atualizarConteudo(key);
-            currentOptionIndex = index;
+        // Função para ocultar as opções do dropdown
+        function ocultarOpcoes() {
+            dropdownContent.style.display = 'none';
         }
-    }
 
-    // Função para navegar para a opção anterior
-    function navegarAnterior() {
-        const options = Object.keys(database).filter(option => option.toLowerCase().includes(searchInput.value.toLowerCase()));
-        if (options.length === 0) return;
-        currentOptionIndex = (currentOptionIndex - 1 + options.length) % options.length;
-        selecionarOpcao(currentOptionIndex);
-    }
-
-    // Função para navegar para a próxima opção
-    function navegarProximo() {
-        const options = Object.keys(database).filter(option => option.toLowerCase().includes(searchInput.value.toLowerCase()));
-        if (options.length === 0) return;
-        currentOptionIndex = (currentOptionIndex + 1) % options.length;
-        selecionarOpcao(currentOptionIndex);
-    }
-
-    // Função para navegar pelas opções usando as setas do teclado
-    function navegarTeclado(event) {
-        const key = event.key;
-        if (key === 'ArrowDown') {
-            event.preventDefault();
-            navegarProximo();
-        } else if (key === 'ArrowUp') {
-            event.preventDefault();
-            navegarAnterior();
-        }
-    }
-
-    // Adiciona o evento de input ao campo de busca
-    searchInput.addEventListener('input', mostrarOpcoes);
-
-    // Mostra as opções ao clicar no campo de busca
-    searchInput.addEventListener('click', mostrarOpcoes);
-
-    // Esconde o dropdown se o usuário clicar fora dele
-    document.addEventListener('click', function(event) {
-        if (!event.target.closest('.dropdown')) {
+        // Função para atualizar o conteúdo com base na seleção
+        function atualizarConteudo(key) {
+            if (key) {
+                conteudoElement.textContent = database[key];
+                copyButton.style.display = 'block';
+                selectedOption.textContent = key.replace(/_/g, ' ');
+            } else {
+                conteudoElement.textContent = 'Selecione uma opção para ver a prescrição.';
+                copyButton.style.display = 'none';
+                selectedOption.textContent = '';
+            }
             ocultarOpcoes();
         }
-    });
-</script>
-</body>
 
+        // Função para copiar o texto para a área de transferência
+        function copiarTexto() {
+            const texto = conteudoElement.textContent;
+            navigator.clipboard.writeText(texto).then(() => {
+                // Exibir a mensagem de alerta
+                alertBox.style.display = 'block';
+                setTimeout(() => {
+                    alertBox.style.display = 'none';
+                }, 3000);
+            }).catch(err => {
+                console.error('Erro ao copiar texto: ', err);
+            });
+        }
+
+        // Função para filtrar as opções do menu suspenso
+        function filtrarOpcoes() {
+            const filter = searchInput.value.toLowerCase();
+            dropdownContent.innerHTML = '';
+            let options = Object.keys(database);
+            options = options.filter(option => option.toLowerCase().includes(filter));
+            options.forEach((option, index) => {
+                const optionDiv = document.createElement('div');
+                optionDiv.textContent = option.replace(/_/g, ' ');
+                optionDiv.onclick = () => selecionarOpcao(index);
+                dropdownContent.appendChild(optionDiv);
+            });
+            currentOptionIndex = -1;
+        }
+
+        // Função para selecionar uma opção
+        function selecionarOpcao(index) {
+            const options = Object.keys(database).filter(option => option.toLowerCase().includes(searchInput.value.toLowerCase()));
+            if (index >= 0 && index < options.length) {
+                const key = options[index];
+                atualizarConteudo(key);
+                currentOptionIndex = index;
+            }
+        }
+
+        // Função para navegar para a opção anterior
+        function navegarAnterior() {
+            const options = Object.keys(database).filter(option => option.toLowerCase().includes(searchInput.value.toLowerCase()));
+            if (options.length === 0) return;
+            currentOptionIndex = (currentOptionIndex - 1 + options.length) % options.length;
+            selecionarOpcao(currentOptionIndex);
+        }
+
+        // Função para navegar para a próxima opção
+        function navegarProximo() {
+            const options = Object.keys(database).filter(option => option.toLowerCase().includes(searchInput.value.toLowerCase()));
+            if (options.length === 0) return;
+            currentOptionIndex = (currentOptionIndex + 1) % options.length;
+            selecionarOpcao(currentOptionIndex);
+        }
+
+        // Função para navegar pelas opções usando as setas do teclado
+        function navegarTeclado(event) {
+            const key = event.key;
+            if (key === 'ArrowDown' || key === 'ArrowRight') {
+                event.preventDefault();
+                navegarProximo();
+            } else if (key === 'ArrowUp' || key === 'ArrowLeft') {
+                event.preventDefault();
+                navegarAnterior();
+            }
+        }
+
+        // Adiciona o evento de input ao campo de busca
+        searchInput.addEventListener('input', mostrarOpcoes);
+
+        // Mostra as opções ao clicar no campo de busca
+        searchInput.addEventListener('click', mostrarOpcoes);
+
+        // Esconde o dropdown se o usuário clicar fora dele
+        document.addEventListener('click', function(event) {
+            if (!event.target.closest('.dropdown')) {
+                ocultarOpcoes();
+            }
+        });
+    </script>
+</body>
 </html>
