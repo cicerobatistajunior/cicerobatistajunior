@@ -30,8 +30,8 @@
 
                     // Processa os dados da planilha
                     entries.forEach(entry => {
-                        const colA = entry.gsx$chave.$t; // Substitua "nome" pelo título real da coluna A
-                        const colB = entry.gsx$valor.$t; // Substitua "descrição" pelo título real da coluna B
+                        const colA = entry.gsx$nome.$t; // Substitua "nome" pelo título real da coluna A
+                        const colB = entry.gsx$descrição.$t; // Substitua "descrição" pelo título real da coluna B
 
                         rowData[colA] = colB; // Mapeia coluna A para coluna B
 
