@@ -9,7 +9,7 @@
     <h1>Planilha Interativa</h1>
 
     <label for="items">Escolha um item:</label>
-    <select id="items" onchange="showNextItem()">
+    <select id="items">
         <option value="">Selecione...</option>
     </select>
 
@@ -34,27 +34,9 @@
             // Adiciona as entradas da planilha na lista suspensa
             data.forEach(function(row) {
                 var option = document.createElement('option');
-                option.text = row['Coluna1']; // Coluna 1 da planilha
-                option.value = row['Coluna1']; // Coluna 1 da planilha
+                option.text = row['1']; // Nome da primeira coluna na planilha
+                option.value = row['1'];
                 select.add(option);
-            });
-        }
-
-        function showNextItem() {
-            var selectedItem = document.getElementById('items').value;
-
-            // Procura na planilha o próximo item ao lado do selecionado
-            Tabletop.init({
-                key: publicSpreadsheetUrl,
-                callback: function(data, tabletop) {
-                    data.forEach(function(row) {
-                        if (row['Coluna1'] === selectedItem) {
-                            var nextItem = row['Coluna2']; // Próxima coluna
-                            document.getElementById('nextItem').innerText = 'Próximo item: ' + nextItem;
-                        }
-                    });
-                },
-                simpleSheet: true
             });
         }
 
