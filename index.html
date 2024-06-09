@@ -51,9 +51,6 @@
         .dropdown-content div:hover {
             background-color: #f1f1f1;
         }
-        .dropdown-content div:focus {
-            background-color: #ccc;
-        }
         .content-box {
             border: 1px solid #ccc;
             padding: 20px;
@@ -100,7 +97,7 @@
     <div class="container">
         <h1>SISTEMA DE PRESCRIÇÕES DA ROTINA</h1>
         <div class="dropdown">
-            <input type="text" id="searchInput" placeholder="Digite para buscar..." onclick="mostrarOpcoes()" onkeydown="navegarLista(event)">
+            <input type="text" id="searchInput" placeholder="Digite para buscar..." onclick="mostrarOpcoes()">
             <div id="dropdownContent" class="dropdown-content"></div>
         </div>
         <div id="selectedOption" class="selected-option"></div>
@@ -114,43 +111,6 @@
         <div class="credits">Autor: Cícero Batista. Direitos reservados.</div>
     </div>
 
-<script>
-// Variável para armazenar o índice do item selecionado na lista suspensa
-let selectedIndex = -1;
-
-// Função para atualizar o índice selecionado e realçar o item na lista suspensa
-function atualizarSelecao(index) {
-    const options = dropdownContent.querySelectorAll('div');
-    if (index >= 0 && index < options.length) {
-        options[selectedIndex]?.classList.remove('selected');
-        selectedIndex = index;
-        options[selectedIndex]?.classList.add('selected');
-        // Atualiza o conteúdo com base no item selecionado
-        atualizarConteudo(options[selectedIndex].textContent);
-    }
-}
-
-// Adiciona evento de teclado para navegação com setas
-searchInput.addEventListener('keydown', function(event) {
-    if (event.key === 'ArrowDown') {
-        event.preventDefault();
-        atualizarSelecao(selectedIndex + 1);
-    } else if (event.key === 'ArrowUp') {
-        event.preventDefault();
-        atualizarSelecao(selectedIndex - 1);
-    }
-});
-
-// Adiciona evento de clique para seleção de item na lista suspensa
-dropdownContent.addEventListener('click', function(event) {
-    if (event.target.tagName === 'DIV') {
-        const index = Array.from(dropdownContent.children).indexOf(event.target);
-        atualizarSelecao(index);
-    }
-});
-
-</script>
-    
     <script>
         // Simulação de um banco de dados com um objeto JavaScript
         const database = {
@@ -160,7 +120,7 @@ TOMAR 1 COMPRIMIDO DE 6 – 6 H, 7 DIAS A 10 DIAS (OU ATÉ FLUTUAR / RESOLVER)
 
 - CUIDADOS GERAIS
 COMPRESSA MORNA --- APLICAR COMPRESSA MORNA SOBRE O ABSCESSO 6 VEZES ATÉ FLUTUAR / RESOLVER
-RETORNAR PARA REAVALIAÇÃO EM 72 HORAS SE`,
+RETORNAR PARA REAVALIAÇÃO EM 72 HORAS SE NÃO HOUVER MELHORA.`,
             'gripe': `USO ORAL
 1 - PARACETAMOL 500 MG COMPRIMIDO ------------------------------------- 10 CPS
 TOMAR 1 COMPRIMIDO DE 6 – 6 H, 5 DIAS
@@ -194,120 +154,73 @@ REPOUSO --- DESCANSAR EM UM LOCAL SILENCIOSO E ESCURO ATÉ MELHORA DOS SINTOMAS.
         const searchInput = document.getElementById('searchInput');
         const dropdownContent = document.getElementById('dropdownContent');
         const selectedOption = document.getElementById('selectedOption');
-// Variável para armazenar o índice do item atualmente focado
-let focusedIndex = -1;
 
-// Função para mostrar as opções do dropdown
-function mostrarOpcoes() {
-    dropdownContent.style.display = 'block';
-    filtrarOpcoes();
-}
+        // Função para mostrar as opções do dropdown
+        function mostrarOpcoes() {
+            dropdownContent.style.display = 'block';
+            filtrarOpcoes();
+        }
 
-// Função para ocultar as opções do dropdown
-function ocultarOpcoes() {
-    dropdownContent.style.display = 'none';
-}
+        // Função para ocultar as opções do dropdown
+        function ocultarOpcoes() {
+            dropdownContent.style.display = 'none';
+        }
 
-// Função para atualizar o conteúdo com base na seleção
-function atualizarConteudo(key) {
-    if (key) {
-        conteudoElement.textContent = database[key];
-        copyButton.style.display = 'block';
-        selectedOption.textContent = key.replace(/_/g, ' ');
-    } else {
-        conteudoElement.textContent = 'Selecione uma opção para ver a prescrição.';
-        copyButton.style.display = 'none';
-        selectedOption.textContent = '';
-    }
-    ocultarOpcoes();
-}
+        // Função para atualizar o conteúdo com base na seleção
+        function atualizarConteudo(key) {
+            if (key) {
+                conteudoElement.textContent = database[key];
+                copyButton.style.display = 'block';
+                selectedOption.textContent = key.replace(/_/g, ' ');
+            } else {
+                conteudoElement.textContent = 'Selecione uma opção para ver a prescrição.';
+                copyButton.style.display = 'none';
+                selectedOption.textContent = '';
+            }
+            ocultarOpcoes();
+        }
 
-// Função para copiar o texto para a área de transferência
-function copiarTexto() {
-    const texto = conteudoElement.textContent;
-    navigator.clipboard.writeText(texto).then(() => {
-        // Exibir a mensagem de alerta
-        alertBox.style.display = 'block';
-        setTimeout(() => {
-            alertBox.style.display = 'none';
-        }, 3000);
-    }).catch(err => {
-        console.error('Erro ao copiar texto: ', err);
-    });
-}
-
-// Função para filtrar as opções do menu suspenso
-function filtrarOpcoes() {
-    const filter = searchInput.value.toLowerCase();
-    dropdownContent.innerHTML = '';
-    focusedIndex = -1; // Redefine o índice focado ao filtrar novamente
-    for (const key in database) {
-        const text = key.replace(/_/g, ' ');
-        if (text.toLowerCase().includes(filter)) {
-            const optionDiv = document.createElement('div');
-            optionDiv.textContent = text;
-            optionDiv.onclick = () => atualizarConteudo(key);
-            optionDiv.addEventListener('mouseover', () => {
-                // Atualiza o índice focado quando o mouse passa sobre o elemento
-                focusedIndex = Array.from(dropdownContent.children).indexOf(optionDiv);
-                // Remove a classe de foco dos outros itens
-                Array.from(dropdownContent.children).forEach((child, index) => {
-                    if (index !== focusedIndex) {
-                        child.classList.remove('focused');
-                    }
-                });
-                // Adiciona a classe de foco ao item atual
-                optionDiv.classList.add('focused');
+        // Função para copiar o texto para a área de transferência
+        function copiarTexto() {
+            const texto = conteudoElement.textContent;
+            navigator.clipboard.writeText(texto).then(() => {
+                // Exibir a mensagem de alerta
+                alertBox.style.display = 'block';
+                setTimeout(() => {
+                    alertBox.style.display = 'none';
+                }, 3000);
+            }).catch(err => {
+                console.error('Erro ao copiar texto: ', err);
             });
-            dropdownContent.appendChild(optionDiv);
         }
-    }
-}
 
-// Função para navegar pela lista suspensa usando as setas do teclado
-function navegarLista(event) {
-    if (event.key === 'ArrowDown') {
-        // Mover para baixo
-        focusedIndex = Math.min(focusedIndex + 1, dropdownContent.children.length - 1);
-        atualizarFoco();
-        event.preventDefault(); // Evita que o cursor se mova no campo de entrada
-    } else if (event.key === 'ArrowUp') {
-        // Mover para cima
-        focusedIndex = Math.max(focusedIndex - 1, 0);
-        atualizarFoco();
-        event.preventDefault(); // Evita que o cursor se mova no campo de entrada
-    } else if (event.key === 'Enter' && focusedIndex !== -1) {
-        // Selecionar o item quando Enter for pressionado
-        const selectedOption = dropdownContent.children[focusedIndex];
-        const key = selectedOption.textContent.replace(/ /g, '_');
-        atualizarConteudo(key);
-    }
-}
-
-// Função para atualizar o foco na lista suspensa com base no índice focado
-function atualizarFoco() {
-    Array.from(dropdownContent.children).forEach((child, index) => {
-        if (index === focusedIndex) {
-            child.classList.add('focused');
-            child.focus(); // Define o foco no item atual
-        } else {
-            child.classList.remove('focused');
+        // Função para filtrar as opções do menu suspenso
+        function filtrarOpcoes() {
+            const filter = searchInput.value.toLowerCase();
+            dropdownContent.innerHTML = '';
+            for (const key in database) {
+                const text = key.replace(/_/g, ' ');
+                if (text.toLowerCase().includes(filter)) {
+                    const optionDiv = document.createElement('div');
+                    optionDiv.textContent = text;
+                    optionDiv.onclick = () => atualizarConteudo(key);
+                    dropdownContent.appendChild(optionDiv);
+                }
+            }
         }
-    });
-}
 
-// Adiciona o evento de input ao campo de busca
-searchInput.addEventListener('input', mostrarOpcoes);
+        // Adiciona o evento de input ao campo de busca
+        searchInput.addEventListener('input', mostrarOpcoes);
 
-// Mostra as opções ao clicar no campo de busca
-searchInput.addEventListener('click', mostrarOpcoes);
+        // Mostra as opções ao clicar no campo de busca
+        searchInput.addEventListener('click', mostrarOpcoes);
 
-// Esconde o dropdown se o usuário clicar fora dele
-document.addEventListener('click', function(event) {
-    if (!event.target.closest('.dropdown')) {
-        ocultarOpcoes();
-    }
-});
-</script>
+        // Esconde o dropdown se o usuário clicar fora dele
+        document.addEventListener('click', function(event) {
+            if (!event.target.closest('.dropdown')) {
+                ocultarOpcoes();
+            }
+        });
+    </script>
 </body>
 </html>
