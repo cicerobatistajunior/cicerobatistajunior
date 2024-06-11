@@ -166,7 +166,7 @@
         <div class="welcome-message">Seja bem-vindo(a) ao</div>
         <h1>SISTEMA DE PRESCRIÇÕES DA ROTINA</h1>
         <div class="dropdown">
-            <input type="text" id="searchInput" placeholder="Digite para pesquisar / Clique aqui e tecle ↑↓ para navegar" oninput="mostrarOpcoes()" onkeydown="navegarTeclado(event)">
+            <input type="text" id="searchInput" placeholder="Digite para pesquisar / Clique aqui e tecle ↑↓ para navegar" oninput="filtrarOpcoes()" onkeydown="navegarTeclado(event)">
             <div id="dropdownContent" class="dropdown-content"></div>
         </div>
         <div>
@@ -233,9 +233,10 @@ APLICAR 3 BORRIFADAS NA BOCA 3 A 4 VEZES AO DIA.`
 
     let currentOptionIndex = -1;
 
-    function mostrarOpcoes() {
-        dropdownContent.style.display = 'block';
-    }
+function mostrarOpcoes() {
+    dropdownContent.style.display = 'block';
+    // Remover a chamada para filtrarOpcoes()
+}
 
     function ocultarOpcoes() {
         dropdownContent.style.display = 'none';
@@ -291,24 +292,23 @@ APLICAR 3 BORRIFADAS NA BOCA 3 A 4 VEZES AO DIA.`
         deleteButton.style.display = 'none';
     }
 
-    function filtrarOpcoes() {
-        const filter = searchInput.value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-        const filterWords = filter.split(/\s+/);
-        dropdownContent.innerHTML = '';
-        let options = Object.keys(database);
-        options = options.filter(option => {
-            const normalizedOption = option.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/_/g, ' ');
-            return filterWords.every(word => normalizedOption.includes(word));
-        });
-        options.forEach((key, index) => {
-            const text = key.replace(/_/g, ' ');
-            const optionDiv = document.createElement('div');
+function filtrarOpcoes() {
+    const filter = searchInput.value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    const filterWords = filter.split(/\s+/);
+    dropdownContent.innerHTML = '';
+    let options = Object.keys(database);
+    options.forEach((key, index) => {
+        const text = key.replace(/_/g, ' ');
+        const normalizedOption = text.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+        const optionDiv = document.createElement('div');
+        if (filterWords.every(word => normalizedOption.includes(word))) {
             optionDiv.textContent = text;
             optionDiv.onclick = () => selecionarOpcao(index);
             dropdownContent.appendChild(optionDiv);
-        });
-        currentOptionIndex = -1;
-    }
+        }
+    });
+    currentOptionIndex = -1;
+}
 
     function selecionarOpcao(index) {
         const filter = searchInput.value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
