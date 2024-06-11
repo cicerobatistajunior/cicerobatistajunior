@@ -70,7 +70,7 @@
             white-space: pre-wrap;
             text-align: left;
         }
-        .copy-button, .add-button {
+        .copy-button {
             padding: 8px 16px;
             font-size: 14px;
             background-color: #007BFF;
@@ -80,13 +80,21 @@
             display: block;
             margin: 10px auto;
         }
-        .copy-button:hover, .add-button:hover {
+        .copy-button:hover {
             background-color: #0056b3;
         }
         .add-button {
+            padding: 6px 12px;
+            font-size: 12px;
             background-color: #555;
-            margin-top: 5px;
-            margin-bottom: 15px;
+            color: white;
+            border: none;
+            cursor: pointer;
+            display: block;
+            margin: 15px auto;
+        }
+        .add-button:hover {
+            background-color: #333;
         }
         .editor-box {
             border: 1px solid #ccc;
@@ -96,6 +104,7 @@
             margin-bottom: 20px;
             white-space: pre-wrap;
             text-align: left;
+            min-height: 100px;
         }
         .nav-button {
             padding: 8px 16px;
@@ -157,7 +166,7 @@
         <button id="copyButton" class="copy-button" style="display: none;" onclick="copiarTexto()">Copiar para a área de transferência</button>
         <button id="addButton" class="add-button" style="display: none;" onclick="adicionarAoEditor()">Adicionar ao editor</button>
         <div id="editorBox" class="editor-box" contenteditable="true" style="display: none;"></div>
-        <button id="copyEditedButton" class="copy-button" style="display: none;" onclick="copiarTextoEditado()">Copiar texto editado para a área de transferência</button>
+        <button id="copyEditedButton" class="copy-button" style="display: none; background-color: #0056b3;" onclick="copiarTextoEditado()">Copiar texto editado para a área de transferência</button>
         <div id="alertBox" class="alert">Texto copiado para a área de transferência!</div>
         <!-- Créditos do autor -->
         <div class="credits">Autor: Cícero Batista. Direitos reservados.</div>
@@ -188,7 +197,7 @@ APLICAR UMA PEQUENA QUANTIDADE, SEM ESFREGAR, SOBRE A LESÃO 2 A 3 VEZES AO DIA.
 1 - LIDOCAÍNA 50MG/G CREME ----------------------------------- 01 BISNAGA
 ALICAR UMA PEQUENA QUANTIDADE SOBRE A LESÃO, 2 A 3 VEZES AO DIA.`,
             'Afta_/_estomatite_–_combinação_em_gotas,_crianças_>_3_anos': `USO TÓPICO
-1 - BISMU-JET (NEOMICINA + BISMUTO + TETRACAÍNA) GTS ---------------- 01 FRASCO
+1 - BISMUGEL - NEO (NEOMICINA + BISMUTO + TETRACAÍNA) GTS ---------------- 01 FRASCO
 PINGAR 2 GOTAS SOBRE A LESÃO, 3 VEZES AO DIA.`,
             'Afta_/_estomatite_–_combinação_em_gotas,_crianças_<_3_anos': `USO TÓPICO
 1 - BISMUGEL - NEO (NEOMICINA + BISMUTO + TETRACAÍNA) GEL ---------------- 01 FRASCO
@@ -248,7 +257,7 @@ APLICAR UMA PEQUENA QUANTIDADE SOBRE A LESÃO, 3 VEZES AO DIA.`
         function copiarTextoEditado() {
             const text = editorBox.textContent;
             navigator.clipboard.writeText(text).then(() => {
-                mostrarAlerta();
+                mostrarAlertaEditado();
             });
         }
 
@@ -256,6 +265,15 @@ APLICAR UMA PEQUENA QUANTIDADE SOBRE A LESÃO, 3 VEZES AO DIA.`
             alertBox.style.display = 'block';
             setTimeout(() => {
                 alertBox.style.display = 'none';
+            }, 2000);
+        }
+
+        function mostrarAlertaEditado() {
+            alertBox.textContent = 'Texto editado copiado para a área de transferência!';
+            alertBox.style.display = 'block';
+            setTimeout(() => {
+                alertBox.style.display = 'none';
+                alertBox.textContent = 'Texto copiado para a área de transferência!';
             }, 2000);
         }
 
