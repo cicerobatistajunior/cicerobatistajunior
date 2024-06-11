@@ -70,18 +70,32 @@
             white-space: pre-wrap;
             text-align: left;
         }
-        .copy-button {
-            padding: 10px 20px;
-            font-size: 16px;
+        .copy-button, .add-button {
+            padding: 8px 16px;
+            font-size: 14px;
             background-color: #007BFF;
             color: white;
             border: none;
             cursor: pointer;
             display: block;
-            margin: 10px auto 0;
+            margin: 10px auto;
         }
-        .copy-button:hover {
+        .copy-button:hover, .add-button:hover {
             background-color: #0056b3;
+        }
+        .add-button {
+            background-color: #555;
+            margin-top: 5px;
+            margin-bottom: 15px;
+        }
+        .editor-box {
+            border: 1px solid #ccc;
+            padding: 20px;
+            font-size: 11px;
+            background-color: #f9f9f9;
+            margin-bottom: 20px;
+            white-space: pre-wrap;
+            text-align: left;
         }
         .nav-button {
             padding: 8px 16px;
@@ -122,31 +136,6 @@
             color: gray;
             white-space: pre-wrap;
         }
-        /* Estilo para o botão "Adicionar ao editor" */
-        #addEditorButton {
-            background-color: #4B4B4B; /* Cinza escuro */
-            padding: 5px 10px;
-            font-size: 14px; /* Tamanho reduzido da fonte */
-            margin-top: 10px; /* Espaçamento acima */
-            margin-bottom: 10px; /* Espaçamento abaixo */
-        }
-        #addEditorButton:hover {
-            background-color: #3a3a3a;
-        }
-        /* Estilo para o novo botão "Copiar para a área de transferência" */
-        #copyEditorButton {
-            background-color: #004080; /* Azul mais escuro */
-            padding: 10px 20px;
-            font-size: 16px;
-            color: white;
-            border: none;
-            cursor: pointer;
-            display: block;
-            margin: 20px auto 0;
-        }
-        #copyEditorButton:hover {
-            background-color: #003366;
-        }
     </style>
 </head>
 <body>
@@ -166,21 +155,16 @@
             Selecione uma opção para ver a prescrição.
         </div>
         <button id="copyButton" class="copy-button" style="display: none;" onclick="copiarTexto()">Copiar para a área de transferência</button>
+        <button id="addButton" class="add-button" style="display: none;" onclick="adicionarAoEditor()">Adicionar ao editor</button>
+        <div id="editorBox" class="editor-box" contenteditable="true" style="display: none;"></div>
+        <button id="copyEditedButton" class="copy-button" style="display: none;" onclick="copiarTextoEditado()">Copiar texto editado para a área de transferência</button>
         <div id="alertBox" class="alert">Texto copiado para a área de transferência!</div>
-
-        <!-- Novo bloco HTML -->
-        <button id="addEditorButton" class="copy-button" style="display: none;" onclick="adicionarAoEditor()">Adicionar ao editor</button>
-        <div id="editorBox" class="content-box" contenteditable="true"></div>
-        <button id="copyEditorButton" class="copy-button" style="display: none;" onclick="copiarTextoEditor()">Copiar texto editado para a área de transferência</button>
-        <div id="editorAlertBox" class="alert">Texto copiado para a área de transferência!</div>
-
         <!-- Créditos do autor -->
         <div class="credits">Autor: Cícero Batista. Direitos reservados.</div>
         <div class="disclaimer">Aplicativo destinado apenas a profissionais médicos, para uso educacional.<br>O autor não se responsabiliza pelo uso indevido das informações aqui contidas.</div>
     </div>
 
     <script>
-        // Simulação de um banco de dados com um objeto JavaScript
         const database = {
             'Abscesso_não-flutuante_(cefalexina_+_compressa_morna)': `USO ORAL
 1 - CEFALEXINA 500 MG COMPRIMIDO ------------------------------------- 28-40 CPS
@@ -196,100 +180,108 @@ TOMAR 1 COMPRIMIDO DE 6 – 6 H, 7 DIAS A 10 DIAS.
 ORIENTAÇÃO: PROCURAR UBS OU EMERGÊNCIA PARA RETIRADA DE PONTOS / DRENO EM 7 DIAS.`,
             'Afta_/_estomatite_–_tipo_1_(triancinolona_acetonida_-_corticoide_genérico)': `USO TÓPICO
 1 - TRIANCINOLONA ACETONIDA 1MG/G POMADA ------------------- 01 BISNAGA
-APLICAR SOBRE A LESÃO DA MUCOSA ORAL, 3X/DIA, POR 5 A 7 DIAS
-EVITAR ALIMENTOS ÁCIDOS, MUITO TEMPERADOS OU QUENTES
-RETORNAR EM 1 SEMANA SE NÃO HOUVER MELHORA.`,
-            // Adicione mais itens conforme necessário...
+APLICAR UMA PEQUENA QUANTIDADE, SEM ESFREGAR, SOBRE A LESÃO 2 A 3 VEZES AO DIA.`,
+            'Afta_/_estomatite_–_tipo_2_(omcilon_orabase_-_corticoide_marca)': `USO TÓPICO
+1 - OMCILON®-A ORABASE --------------------------------------------------- 01 BISNAGA
+APLICAR UMA PEQUENA QUANTIDADE, SEM ESFREGAR, SOBRE A LESÃO 2 A 3 VEZES AO DIA.`,
+            'Afta_/_estomatite_–_tipo_3_(lidocaína_tópica_-_anestésico)': `USO TÓPICO
+1 - LIDOCAÍNA 50MG/G CREME ----------------------------------- 01 BISNAGA
+ALICAR UMA PEQUENA QUANTIDADE SOBRE A LESÃO, 2 A 3 VEZES AO DIA.`,
+            'Afta_/_estomatite_–_combinação_em_gotas,_crianças_>_3_anos': `USO TÓPICO
+1 - BISMU-JET (NEOMICINA + BISMUTO + TETRACAÍNA) GTS ---------------- 01 FRASCO
+PINGAR 2 GOTAS SOBRE A LESÃO, 3 VEZES AO DIA.`,
+            'Afta_/_estomatite_–_combinação_em_gotas,_crianças_<_3_anos': `USO TÓPICO
+1 - BISMUGEL - NEO (NEOMICINA + BISMUTO + TETRACAÍNA) GEL ---------------- 01 FRASCO
+APLICAR UMA PEQUENA QUANTIDADE SOBRE A LESÃO, 3 VEZES AO DIA.`
         };
 
-        const conteudoElement = document.getElementById('conteudo');
-        const copyButton = document.getElementById('copyButton');
-        const addEditorButton = document.getElementById('addEditorButton');
-        const copyEditorButton = document.getElementById('copyEditorButton');
-        const alertBox = document.getElementById('alertBox');
-        const editorAlertBox = document.getElementById('editorAlertBox');
         const searchInput = document.getElementById('searchInput');
         const dropdownContent = document.getElementById('dropdownContent');
-        const selectedOptionElement = document.getElementById('selectedOption');
+        const selectedOption = document.getElementById('selectedOption');
+        const conteudo = document.getElementById('conteudo');
+        const copyButton = document.getElementById('copyButton');
+        const addButton = document.getElementById('addButton');
         const editorBox = document.getElementById('editorBox');
-        let selectedOption = '';
+        const copyEditedButton = document.getElementById('copyEditedButton');
+        const alertBox = document.getElementById('alertBox');
 
         function mostrarOpcoes() {
+            const input = searchInput.value.toLowerCase();
             dropdownContent.innerHTML = '';
-            for (const key in database) {
-                const optionDiv = document.createElement('div');
-                optionDiv.textContent = key.replace(/_/g, ' ');
-                optionDiv.addEventListener('click', () => selecionarOpcao(key));
-                dropdownContent.appendChild(optionDiv);
+            for (let key in database) {
+                if (key.toLowerCase().includes(input)) {
+                    const div = document.createElement('div');
+                    div.innerText = key.replace(/_/g, ' ');
+                    div.onclick = function() {
+                        selecionarOpcao(key);
+                    };
+                    dropdownContent.appendChild(div);
+                }
             }
             dropdownContent.style.display = 'block';
         }
 
-        function selecionarOpcao(opcao) {
-            selectedOption = opcao;
-            conteudoElement.textContent = database[opcao];
-            selectedOptionElement.textContent = 'Prescrição selecionada: ' + opcao.replace(/_/g, ' ');
+        function selecionarOpcao(key) {
+            const texto = database[key];
+            conteudo.textContent = texto;
+            selectedOption.textContent = key.replace(/_/g, ' ');
+            copyButton.style.display = 'block';
+            addButton.style.display = 'block';
+            editorBox.style.display = 'block';
+            copyEditedButton.style.display = 'block';
             dropdownContent.style.display = 'none';
             searchInput.value = '';
-            copyButton.style.display = 'block';
-            addEditorButton.style.display = 'block';
         }
 
         function copiarTexto() {
-            navigator.clipboard.writeText(conteudoElement.textContent).then(() => {
-                alertBox.style.display = 'block';
-                setTimeout(() => alertBox.style.display = 'none', 2000);
-            }).catch(err => console.error('Erro ao copiar texto: ', err));
+            const text = conteudo.textContent;
+            navigator.clipboard.writeText(text).then(() => {
+                mostrarAlerta();
+            });
         }
 
         function adicionarAoEditor() {
-            const selectedText = conteudoElement.textContent;
-            if (selectedText.trim() !== "") {
-                editorBox.innerText += selectedText.trim() + "\n";
-                copyEditorButton.style.display = 'block';
-            }
+            const text = conteudo.textContent;
+            editorBox.textContent += (editorBox.textContent ? '\n' : '') + text;
         }
 
-        function copiarTextoEditor() {
-            const editorText = editorBox.innerText.trim();
-            navigator.clipboard.writeText(editorText).then(() => {
-                editorAlertBox.style.display = 'block';
-                setTimeout(() => editorAlertBox.style.display = 'none', 2000);
-            }).catch(err => console.error('Erro ao copiar texto: ', err));
+        function copiarTextoEditado() {
+            const text = editorBox.textContent;
+            navigator.clipboard.writeText(text).then(() => {
+                mostrarAlerta();
+            });
         }
 
-        // Navegação com teclado e botões
+        function mostrarAlerta() {
+            alertBox.style.display = 'block';
+            setTimeout(() => {
+                alertBox.style.display = 'none';
+            }, 2000);
+        }
+
         function navegarTeclado(event) {
-            const options = Array.from(dropdownContent.children);
-            let selectedIndex = options.findIndex(option => option.classList.contains('selected'));
             if (event.key === 'ArrowDown') {
-                selectedIndex = (selectedIndex + 1) % options.length;
-            } else if (event.key === 'ArrowUp') {
-                selectedIndex = (selectedIndex - 1 + options.length) % options.length;
-            } else if (event.key === 'Enter' && selectedIndex >= 0) {
-                options[selectedIndex].click();
-            } else {
-                return;
+                const firstItem = dropdownContent.querySelector('div');
+                if (firstItem) {
+                    firstItem.focus();
+                }
             }
-            options.forEach(option => option.classList.remove('selected'));
-            options[selectedIndex].classList.add('selected');
-        }
-
-        function navegarProximo() {
-            const options = Array.from(dropdownContent.children);
-            let selectedIndex = options.findIndex(option => option.classList.contains('selected'));
-            selectedIndex = (selectedIndex + 1) % options.length;
-            options.forEach(option => option.classList.remove('selected'));
-            options[selectedIndex].classList.add('selected');
         }
 
         function navegarAnterior() {
-            const options = Array.from(dropdownContent.children);
-            let selectedIndex = options.findIndex(option => option.classList.contains('selected'));
-            selectedIndex = (selectedIndex - 1 + options.length) % options.length;
-            options.forEach(option => option.classList.remove('selected'));
-            options[selectedIndex].classList.add('selected');
+            // Navegar para a opção anterior
         }
+
+        function navegarProximo() {
+            // Navegar para a próxima opção
+        }
+
+        document.addEventListener('click', function(event) {
+            if (!event.target.matches('#searchInput')) {
+                dropdownContent.style.display = 'none';
+            }
+        });
+
     </script>
 </body>
 </html>
