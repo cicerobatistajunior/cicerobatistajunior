@@ -307,6 +307,29 @@ APLICAR 1 A 2 GOTAS, 3 A 6 VEZES AO DIA NA LESÃO.`
             if (!event.target.closest('.dropdown')) {
                 ocultarOpcoes();
             }
+            // Função para adicionar o texto selecionado ao editor
+function adicionarAoEditor() {
+    const selectedText = document.getElementById('conteudo').textContent;
+    const editorBox = document.getElementById('editorBox');
+    
+    // Adiciona o texto ao editor
+    if (selectedText.trim() !== "") {
+        editorBox.innerText += selectedText.trim() + "\n";
+        // Mostra o botão de copiar para a área de transferência
+        document.getElementById('copyEditorButton').style.display = 'block';
+    }
+}
+
+// Função para copiar o texto do editor para a área de transferência
+function copiarTextoEditor() {
+    const editorText = document.getElementById('editorBox').innerText.trim();
+    
+    navigator.clipboard.writeText(editorText).then(() => {
+        alert('Texto copiado para a área de transferência!');
+    }).catch(err => {
+        console.error('Erro ao copiar texto: ', err);
+    });
+}
         });
     </script>
 </body>
