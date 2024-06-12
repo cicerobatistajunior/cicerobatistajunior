@@ -303,24 +303,24 @@ function mostrarOpcoes() {
         deleteButton.style.display = 'none';
     }
 
-    function filtrarOpcoes() {
-        const filter = searchInput.value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-        const filterWords = filter.split(/\s+/);
-        dropdownContent.innerHTML = '';
-        let options = Object.keys(database);
-        options.forEach((key, index) => {
-            const text = key.replace(/_/g, ' ');
-            const normalizedOption = text.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-            const optionDiv = document.createElement('div');
-            if (filterWords.every(word => normalizedOption.includes(word))) {
-                optionDiv.textContent = text;
-                optionDiv.onclick = () => selecionarOpcao(index);
-                dropdownContent.appendChild(optionDiv);
-            }
-        });
-        currentOptionIndex = -1;
-        mostrarOpcoes();
-    }
+ function filtrarOpcoes() {
+    const filter = searchInput.value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    const filterWords = filter.split(/\s+/);
+    dropdownContent.innerHTML = '';
+    let options = Object.keys(database);
+    options.forEach((key, index) => {
+        const text = key.replace(/_/g, ' ');
+        const normalizedOption = text.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+        const optionDiv = document.createElement('div');
+        if (filterWords.every(word => normalizedOption.includes(word))) {
+            optionDiv.textContent = text;
+            optionDiv.onclick = () => selecionarOpcao(index);
+            dropdownContent.appendChild(optionDiv);
+        }
+    });
+    currentOptionIndex = -1;
+}
+
 
     function selecionarOpcao(index) {
         const filter = searchInput.value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
