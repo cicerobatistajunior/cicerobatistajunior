@@ -75,7 +75,7 @@ APLICAR 3 BORRIFADAS NA BOCA 3 A 4 VEZES AO DIA.`
         // Function to filter dropdown options based on user input
         function filterOptions(searchTerm) {
             const filteredKeys = Object.keys(database).filter(key => key.toLowerCase().includes(searchTerm.toLowerCase()));
-            select.innerHTML = '<option value="" disabled selected>Select a condition</option>';
+            select.innerHTML = '';
             filteredKeys.forEach(key => {
                 const option = document.createElement('option');
                 option.value = key;
@@ -86,7 +86,7 @@ APLICAR 3 BORRIFADAS NA BOCA 3 A 4 VEZES AO DIA.`
 
         // Function to toggle the dropdown and populate options
         function toggleDropdown() {
-            if (select.innerHTML === '<option value="" disabled selected>Select a condition</option>') {
+            if (select.innerHTML === '') {
                 populateDropdown();
             }
         }
@@ -98,7 +98,8 @@ APLICAR 3 BORRIFADAS NA BOCA 3 A 4 VEZES AO DIA.`
             if (selectedCondition && database[selectedCondition]) {
                 const infoText = database[selectedCondition].replace(/\n/g, '<br>'); // Preserve line breaks
                 infoDiv.innerHTML = `<h2>${selectedCondition.replace(/_/g, ' ')}</h2><p>${infoText}</p>`;
-            } else {
+            } else
+ {
                 infoDiv.innerHTML = '<h2>Selected Condition Information</h2><p>Please select a condition from the dropdown list.</p>';
             }
         });
