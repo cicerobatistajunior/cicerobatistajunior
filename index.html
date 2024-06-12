@@ -182,26 +182,29 @@ APLICAR UMA PEQUENA QUANTIDADE, SEM ESFREGAR, SOBRE A LESÃO 2 A 3 VEZES AO DIA,
         function mostrarDropdown() {
             dropdownContent.style.display = 'block';
         }
-
+searchInput.addEventListener('click', mostrarDropdown);
         function ocultarDropdown() {
             dropdownContent.style.display = 'none';
         }
 
-        function filtrarOpcoes() {
-            const texto = searchInput.value.toLowerCase();
-            dropdownContent.innerHTML = '';
+function filtrarOpcoes() {
+    // Existing code...
+    dropdownContent.innerHTML = '';
 
-            const opcoesFiltradas = Object.keys(database).filter(opcao => opcao.toLowerCase().includes(texto));
-
-            opcoesFiltradas.forEach(opcao => {
-                const div = document.createElement('div');
-                div.textContent = opcao.replace(/_/g, ' ');
-                div.addEventListener('click', () => selecionarOpcao(opcao));
-                dropdownContent.appendChild(div);
-            });
-
-            mostrarDropdown();
+    // Instead of filtering options, iterate over all options
+    Object.keys(database).forEach(opcao => {
+        // Check if the option includes the entered text
+        if (opcao.toLowerCase().includes(texto)) {
+            const div = document.createElement('div');
+            div.textContent = opcao.replace(/_/g, ' ');
+            // Change event to click
+            div.addEventListener('click', () => selecionarOpcao(opcao));
+            dropdownContent.appendChild(div);
         }
+    });
+
+    mostrarDropdown();
+}
 
         function selecionarOpcao(opcao) {
             searchInput.value = opcao.replace(/_/g, ' ');
