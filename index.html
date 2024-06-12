@@ -19,10 +19,13 @@
     <h1>Medical Information</h1>
 
     <!-- Dropdown list with search/filter functionality -->
-    <select id="conditions" oninput="filterOptions(this.value)">
-        <option value="" disabled selected>Select a condition</option>
-        <!-- Options will be populated dynamically with JavaScript -->
-    </select>
+    <div class="dropdown">
+        <input type="text" id="filterInput" oninput="filterOptions(this.value)" placeholder="Search for a condition...">
+        <select id="conditions">
+            <option value="" disabled selected>Select a condition</option>
+            <!-- Options will be populated dynamically with JavaScript -->
+        </select>
+    </div>
 
     <div id="info">
         <h2>Selected Condition Information</h2>
