@@ -314,7 +314,8 @@ dropdownContent.addEventListener('focus', mostrarOpcoes); // Adiciona um ouvinte
         const optionDiv = document.createElement('div');
         if (filterWords.every(word => normalizedOption.includes(word))) {
             optionDiv.textContent = text;
-            optionDiv.onclick = () => selecionarOpcao(index); // Add this line to handle selection
+            optionDiv.onclick = () => selecionarOpcao(index); // Attach event listener to select the option
+            optionDiv.classList.add('filtered-option'); // Add a class to identify filtered options
             dropdownContent.appendChild(optionDiv);
             }
         });
@@ -336,29 +337,20 @@ dropdownContent.addEventListener('focus', mostrarOpcoes); // Adiciona um ouvinte
         }
     }
 
-    function navegarAnterior() {
-        const filter = searchInput.value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-        const filterWords = filter.split(/\s+/);
-        const options = Object.keys(database).filter(option => {
-            const normalizedOption = option.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/_/g, ' ');
-            return filterWords.every(word => normalizedOption.includes(word));
-        });
-        if (options.length === 0) return;
-        currentOptionIndex = (currentOptionIndex - 1 + options.length) % options.length;
-        selecionarOpcao(currentOptionIndex);
-    }
+function navegarAnterior() {
+    const filteredOptions = document.querySelectorAll('.filtered-option'); // Select all filtered options
+    if (filteredOptions.length === 0) return;
+    currentOptionIndex = (currentOptionIndex - 1 + filteredOptions.length) % filteredOptions.length;
+    selecionarOpcao(currentOptionIndex); // Select the option with the updated index
+}
 
-    function navegarProximo() {
-        const filter = searchInput.value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-        const filterWords = filter.split(/\s+/);
-        const options = Object.keys(database).filter(option => {
-            const normalizedOption = option.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/_/g, ' ');
-            return filterWords.every(word => normalizedOption.includes(word));
-        });
-        if (options.length === 0) return;
-        currentOptionIndex = (currentOptionIndex + 1) % options.length;
-        selecionarOpcao(currentOptionIndex);
-    }
+function navegarProximo() {
+    const filteredOptions = document.querySelectorAll('.filtered-option'); // Select all filtered options
+    if (filteredOptions.length === 0) return;
+    currentOptionIndex = (currentOptionIndex + 1) % filteredOptions.length;
+    selecionarOpcao(currentOptionIndex); // Select the option with the updated index
+}
+
 
     function navegarTeclado(event) {
         const key = event.key;
