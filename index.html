@@ -358,10 +358,9 @@ function filtrarOpcoes() {
                 navegarAnterior();
             }
         }
-                document.addEventListener('click', function(event) {
-            const dropdown = document.querySelector('.dropdown');
-            const isClickInsideDropdown = dropdown.contains(event.target);
+        document.addEventListener('click', function(event) {
             const dropdownContent = document.getElementById('dropdownContent');
+            const isClickInsideDropdown = dropdownContent.contains(event.target);
 
             if (!isClickInsideDropdown) {
                 dropdownContent.style.display = 'none';
