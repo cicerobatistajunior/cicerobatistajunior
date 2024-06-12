@@ -235,9 +235,13 @@ APLICAR 3 BORRIFADAS NA BOCA 3 A 4 VEZES AO DIA.`
 
 function mostrarOpcoes() {
     dropdownContent.style.display = 'block';
+    if (searchInput.value.trim() === '') {
+        filtrarOpcoes(); // Se o campo de pesquisa estiver vazio, mostramos todas as opções
+    }
     searchInput.addEventListener('blur', ocultarOpcoes); // Adiciona um ouvinte de evento para ocultar a lista ao clicar fora
     dropdownContent.addEventListener('blur', ocultarOpcoes); // Adiciona um ouvinte de evento para ocultar a lista ao clicar fora
 }
+
 
 searchInput.addEventListener('focus', mostrarOpcoes); // Adiciona um ouvinte de evento para mostrar a lista ao receber foco
 dropdownContent.addEventListener('focus', mostrarOpcoes); // Adiciona um ouvinte de evento para mostrar a lista ao receber foco
