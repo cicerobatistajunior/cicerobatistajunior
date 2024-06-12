@@ -358,16 +358,6 @@ function filtrarOpcoes() {
                 navegarAnterior();
             }
         }
-        document.addEventListener('click', function(event) {
-            const dropdownContent = document.getElementById('dropdownContent');
-            const isClickInsideDropdown = dropdownContent.contains(event.target);
-            const searchInput = document.getElementById('searchInput');
-            const isClickInsideSearchInput = searchInput.contains(event.target);
-
-            if (!isClickInsideDropdown && !isClickInsideSearchInput) {
-                dropdownContent.style.display = 'none';
-            }
-        });
     </script>
 </body>
 </html>
