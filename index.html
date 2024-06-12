@@ -19,13 +19,10 @@
     <h1>Medical Information</h1>
 
     <!-- Dropdown list with search/filter functionality -->
-    <div class="dropdown">
-        <input type="text" id="filterInput" oninput="filterOptions(this.value)" placeholder="Search for a condition...">
-        <select id="conditions">
-            <option value="" disabled selected>Select a condition</option>
-            <!-- Options will be populated dynamically with JavaScript -->
-        </select>
-    </div>
+    <select id="conditions" onclick="toggleDropdown()">
+        <option value="" disabled selected>Select a condition</option>
+        <!-- Options will be populated dynamically with JavaScript -->
+    </select>
 
     <div id="info">
         <h2>Selected Condition Information</h2>
@@ -65,25 +62,32 @@ APLICAR 3 BORRIFADAS NA BOCA 3 A 4 VEZES AO DIA.`
 
         const select = document.getElementById('conditions');
 
-        // Populate dropdown options
-        Object.keys(database).forEach(key => {
-            const option = document.createElement('option');
-            option.value = key;
-            option.textContent = key.replace(/_/g, ' '); // Replace underscores with spaces
-            select.appendChild(option);
-        });
+        // Function to populate dropdown options
+        function populateDropdown() {
+            Object.keys(database).forEach(key => {
+                const option = document.createElement('option');
+                option.value = key;
+                option.textContent = key.replace(/_/g, ' '); // Replace underscores with spaces
+                select.appendChild(option);
+            });
+        }
 
         // Function to filter dropdown options based on user input
         function filterOptions(searchTerm) {
-            searchTerm = searchTerm.toLowerCase();
-            const options = select.getElementsByTagName('option');
-            for (let i = 0; i < options.length; i++) {
-                const optionText = options[i].textContent.toLowerCase();
-                if (optionText.includes(searchTerm)) {
-                    options[i].style.display = '';
-                } else {
-                    options[i].style.display = 'none';
-                }
+            const filteredKeys = Object.keys(database).filter(key => key.toLowerCase().includes(searchTerm.toLowerCase()));
+            select.innerHTML = '<option value="" disabled selected>Select a condition</option>';
+            filteredKeys.forEach(key => {
+                const option = document.createElement('option');
+                option.value = key;
+                option.textContent = key.replace(/_/g, ' '); // Replace underscores with spaces
+                select.appendChild(option);
+            });
+        }
+
+        // Function to toggle the dropdown and populate options
+        function toggleDropdown() {
+            if (select.innerHTML === '<option value="" disabled selected>Select a condition</option>') {
+                populateDropdown();
             }
         }
 
