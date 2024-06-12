@@ -6,7 +6,7 @@
     <title>Medical Information</title>
     <style>
         /* Style for the dropdown input */
-        #filterInput {
+        #conditions {
             width: 300px;
             padding: 8px;
             margin-bottom: 10px;
@@ -18,11 +18,8 @@
 <body>
     <h1>Medical Information</h1>
 
-    <!-- Input field for filtering dropdown options -->
-    <input type="text" id="filterInput" placeholder="Search for a condition...">
-    
-    <!-- Dropdown list -->
-    <select id="conditions">
+    <!-- Dropdown list with search/filter functionality -->
+    <select id="conditions" oninput="filterOptions(this.value)">
         <option value="" disabled selected>Select a condition</option>
         <!-- Options will be populated dynamically with JavaScript -->
     </select>
@@ -64,7 +61,6 @@ APLICAR 3 BORRIFADAS NA BOCA 3 A 4 VEZES AO DIA.`
         };
 
         const select = document.getElementById('conditions');
-        const filterInput = document.getElementById('filterInput');
 
         // Populate dropdown options
         Object.keys(database).forEach(key => {
@@ -75,18 +71,18 @@ APLICAR 3 BORRIFADAS NA BOCA 3 A 4 VEZES AO DIA.`
         });
 
         // Function to filter dropdown options based on user input
-        filterInput.addEventListener('input', function() {
-            const filterValue = this.value.toLowerCase();
+        function filterOptions(searchTerm) {
+            searchTerm = searchTerm.toLowerCase();
             const options = select.getElementsByTagName('option');
             for (let i = 0; i < options.length; i++) {
                 const optionText = options[i].textContent.toLowerCase();
-                if (optionText.includes(filterValue)) {
+                if (optionText.includes(searchTerm)) {
                     options[i].style.display = '';
                 } else {
                     options[i].style.display = 'none';
                 }
             }
-        });
+        }
 
         // Function to display information when an option is selected
         select.addEventListener('change', function() {
