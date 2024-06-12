@@ -22,7 +22,7 @@
             font-size: 24px;
             font-weight: bold;
             margin-bottom: 20px;
-            color: #0056b3; /* Azul escuro para o título */
+            color: #0056b3;
         }
         .dropdown {
             position: relative;
@@ -71,31 +71,18 @@
             white-space: pre-wrap;
             text-align: left;
         }
-        .copy-button {
+        .copy-button, .add-button, .delete-button, .nav-button {
             padding: 8px 16px;
             font-size: 14px;
             background-color: #007BFF;
             color: white;
             border: none;
             cursor: pointer;
-            display: block;
             margin: 10px auto;
-        }
-        .copy-button:hover {
-            background-color: #0056b3;
-        }
-        .add-button {
-            padding: 6px 12px;
-            font-size: 12px;
-            background-color: #555;
-            color: white;
-            border: none;
-            cursor: pointer;
             display: block;
-            margin: 15px auto;
         }
-        .add-button:hover {
-            background-color: #333;
+        .copy-button:hover, .add-button:hover, .delete-button:hover, .nav-button:hover {
+            background-color: #0056b3;
         }
         .editor-box {
             border: 1px solid #ccc;
@@ -106,19 +93,7 @@
             white-space: pre-wrap;
             text-align: left;
             min-height: 100px;
-        }
-        .nav-button {
-            padding: 8px 16px;
-            font-size: 14px;
-            background-color: #f9f9f9;
-            color: gray;
-            border: none;
-            cursor: pointer;
-            display: inline-block;
-            margin: 0 5px;
-        }
-        .nav-button:hover {
-            background-color: #e0e0e0;
+            display: none;
         }
         .alert {
             display: none;
@@ -146,19 +121,6 @@
             color: gray;
             white-space: pre-wrap;
         }
-        .delete-button {
-            padding: 6px 12px;
-            font-size: 12px;
-            background-color: #FFA500;
-            color: white;
-            border: none;
-            cursor: pointer;
-            display: block;
-            margin: 10px auto;
-        }
-        .delete-button:hover {
-            background-color: #cc8400;
-        }
     </style>
 </head>
 <body>
@@ -179,12 +141,11 @@
         </div>
         <button id="copyButton" class="copy-button" style="display: none;" onclick="copiarTexto()">Copiar para a área de transferência</button>
         <button id="addButton" class="add-button" style="display: none;" onclick="adicionarAoEditor()">Adicionar ao editor</button>
-        <div id="editorBox" class="editor-box" contenteditable="true" style="display: none;"></div>
+        <div id="editorBox" class="editor-box" contenteditable="true"></div>
         <button id="copyEditedButton" class="copy-button" style="display: none; background-color: #0056b3;" onclick="copiarTextoEditado()">Copiar texto editado para a área de transferência</button>
         <button id="deleteButton" class="delete-button" style="display: none;" onclick="apagarTexto()">Apagar texto</button>
         <div id="alertBox" class="alert">Texto copiado para a área de transferência!</div>
-        <!-- Créditos do autor -->
-                <div class="credits">Autor: Cícero Batista. Direitos reservados.</div>
+        <div class="credits">Autor: Cícero Batista. Direitos reservados.</div>
         <div class="disclaimer">Aplicativo destinado apenas a profissionais médicos, para uso educacional.<br>O autor não se responsabiliza pelo uso indevido das informações aqui contidas.</div>
     </div>
 
@@ -197,12 +158,12 @@ TOMAR 1 COMPRIMIDO DE 6 – 6 H, 7 DIAS A 10 DIAS (OU ATÉ FLUTUAR / RESOLVER)
 - CUIDADOS GERAIS
 COMPRESSA MORNA --- APLICAR COMPRESSA MORNA SOBRE O ABSCESSO 6 VEZES AO DIA, ATÉ FLUTUAR / RESOLVER
 RETORNAR PARA REAVALIAÇÃO EM 72 HORAS SE NÃO HOUVER MELHORA.`,
-'Abscesso_flutuante_–_cefalexina_(pós-drenagem)': `USO ORAL
+            'Abscesso_flutuante_–_cefalexina_(pós-drenagem)': `USO ORAL
 1 - CEFALEXINA 500 MG COMPRIMIDO ------------------------------------- 28-40 CPS
 TOMAR 1 COMPRIMIDO DE 6 – 6 H, 7 DIAS A 10 DIAS.
 
 ORIENTAÇÃO: PROCURAR UBS OU EMERGÊNCIA PARA RETIRADA DE PONTOS / DRENO EM 7 DIAS.`,
-'Afta_/_estomatite_–_tipo_1_(triancinolona_acetonida_-_corticoide_genérico)': `USO TÓPICO
+            'Afta_/_estomatite_–_tipo_1_(triancinolona_acetonida_-_corticoide_genérico)': `USO TÓPICO
 1 - TRIANCINOLONA ACETONIDA 1MG/G POMADA ------------------- 01 BISNAGA
 APLICAR UMA PEQUENA QUANTIDADE, SEM ESFREGAR, SOBRE A LESÃO 2 A 3 VEZES AO DIA, APÓS ALIMENTAÇÃO E HIGIENE ORAL, ATÉ MELHORA.` 
         };
