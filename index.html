@@ -166,7 +166,7 @@
         <div class="welcome-message">Seja bem-vindo(a) ao</div>
         <h1>SISTEMA DE PRESCRIÇÕES DA ROTINA</h1>
         <div class="dropdown">
-        <input type="text" id="searchInput" placeholder="Digite para pesquisar / Clique aqui e tecle ↑↓ para navegar" oninput="filtrarOpcoes()" onkeydown="navegarTeclado(event)" onfocus="mostrarOpcoes()">
+            <input type="text" id="searchInput" placeholder="Digite para pesquisar / Clique aqui e tecle ↑↓ para navegar" oninput="filtrarOpcoes()" onkeydown="navegarTeclado(event)">
             <div id="dropdownContent" class="dropdown-content"></div>
         </div>
         <div>
@@ -184,7 +184,7 @@
         <button id="deleteButton" class="delete-button" style="display: none;" onclick="apagarTexto()">Apagar texto</button>
         <div id="alertBox" class="alert">Texto copiado para a área de transferência!</div>
         <!-- Créditos do autor -->
-        <div class="credits">Autor: Cícero Batista. Direitos reservados.</div>
+                <div class="credits">Autor: Cícero Batista. Direitos reservados.</div>
         <div class="disclaimer">Aplicativo destinado apenas a profissionais médicos, para uso educacional.<br>O autor não se responsabiliza pelo uso indevido das informações aqui contidas.</div>
     </div>
 
@@ -233,17 +233,22 @@ APLICAR 3 BORRIFADAS NA BOCA 3 A 4 VEZES AO DIA.`
 
     let currentOptionIndex = -1;
 
-function mostrarOpcoes() {
-    dropdownContent.style.display = 'block';
-    // Remover a chamada para filtrarOpcoes()
-}
+    function mostrarOpcoes() {
+        dropdownContent.style.display = 'block';
+        document.addEventListener('click', fecharOpcoesForaClique);
+    }
+
+    function fecharOpcoesForaClique(event) {
+        if (!event.target.matches('.dropdown, .dropdown-content')) {
+            ocultarOpcoes();
+            document.removeEventListener('click', fecharOpcoesForaClique);
+        }
+    }
 
     function ocultarOpcoes() {
         dropdownContent.style.display = 'none';
     }
 
-searchInput.onfocus = mostrarOpcoes;
-        
     function atualizarConteudo(key) {
         if (key) {
             conteudoElement.textContent = database[key];
@@ -294,23 +299,24 @@ searchInput.onfocus = mostrarOpcoes;
         deleteButton.style.display = 'none';
     }
 
-function filtrarOpcoes() {
-    const filter = searchInput.value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-    const filterWords = filter.split(/\s+/);
-    dropdownContent.innerHTML = '';
-    let options = Object.keys(database);
-    options.forEach((key, index) => {
-        const text = key.replace(/_/g, ' ');
-        const normalizedOption = text.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-        const optionDiv = document.createElement('div');
-        if (filterWords.every(word => normalizedOption.includes(word))) {
-            optionDiv.textContent = text;
-            optionDiv.onclick = () => selecionarOpcao(index);
-            dropdownContent.appendChild(optionDiv);
-        }
-    });
-    currentOptionIndex = -1;
-}
+    function filtrarOpcoes() {
+        const filter = searchInput.value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+        const filterWords = filter.split(/\s+/);
+        dropdownContent.innerHTML = '';
+        let options = Object.keys(database);
+        options.forEach((key, index) => {
+            const text = key.replace(/_/g, ' ');
+            const normalizedOption = text.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+            const optionDiv = document.createElement('div');
+            if (filterWords.every(word => normalizedOption.includes(word))) {
+                optionDiv.textContent = text;
+                optionDiv.onclick = () => selecionarOpcao(index);
+                dropdownContent.appendChild(optionDiv);
+            }
+        });
+        currentOptionIndex = -1;
+        mostrarOpcoes();
+    }
 
     function selecionarOpcao(index) {
         const filter = searchInput.value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
@@ -356,10 +362,12 @@ function filtrarOpcoes() {
             event.preventDefault();
             navegarProximo();
         } else if (key === 'ArrowUp' || key === 'ArrowLeft') {
-                event.preventDefault();
-                navegarAnterior();
-            }
+            event.preventDefault();
+            navegarAnterior();
         }
+    }
     </script>
 </body>
 </html>
+
+
