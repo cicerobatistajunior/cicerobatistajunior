@@ -308,14 +308,14 @@ dropdownContent.addEventListener('focus', mostrarOpcoes); // Adiciona um ouvinte
         const filterWords = filter.split(/\s+/);
         dropdownContent.innerHTML = '';
         let options = Object.keys(database);
-        options.forEach((key, index) => {
-            const text = key.replace(/_/g, ' ');
-            const normalizedOption = text.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-            const optionDiv = document.createElement('div');
-            if (filterWords.every(word => normalizedOption.includes(word))) {
-                optionDiv.textContent = text;
-                optionDiv.onclick = () => selecionarOpcao(index);
-                dropdownContent.appendChild(optionDiv);
+    options.forEach((key, index) => {
+        const text = key.replace(/_/g, ' ');
+        const normalizedOption = text.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+        const optionDiv = document.createElement('div');
+        if (filterWords.every(word => normalizedOption.includes(word))) {
+            optionDiv.textContent = text;
+            optionDiv.onclick = () => selecionarOpcao(index); // Add this line to handle selection
+            dropdownContent.appendChild(optionDiv);
             }
         });
         currentOptionIndex = -1;
@@ -323,16 +323,16 @@ dropdownContent.addEventListener('focus', mostrarOpcoes); // Adiciona um ouvinte
     }
 
     function selecionarOpcao(index) {
-        const filter = searchInput.value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-        const filterWords = filter.split(/\s+/);
-        const options = Object.keys(database).filter(option => {
-            const normalizedOption = option.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/_/g, ' ');
-            return filterWords.every(word => normalizedOption.includes(word));
-        });
-        if (index >= 0 && index < options.length) {
-            const key = options[index];
-            atualizarConteudo(key);
-            currentOptionIndex = index;
+    const filter = searchInput.value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    const filterWords = filter.split(/\s+/);
+    const options = Object.keys(database).filter(option => {
+        const normalizedOption = option.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/_/g, ' ');
+        return filterWords.every(word => normalizedOption.includes(word));
+    });
+    if (index >= 0 && index < options.length) {
+        const key = options[index];
+        atualizarConteudo(key);
+        currentOptionIndex = index;
         }
     }
 
