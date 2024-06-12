@@ -159,6 +159,9 @@
         .delete-button:hover {
             background-color: #cc8400;
         }
+        .focus {
+            background-color: #f1f1f1;
+        }
     </style>
 </head>
 <body>
@@ -166,7 +169,7 @@
         <div class="welcome-message">Seja bem-vindo(a) ao</div>
         <h1>SISTEMA DE PRESCRIÇÕES DA ROTINA</h1>
         <div class="dropdown">
-            <input type="text" id="searchInput" placeholder="Digite para pesquisar / Clique aqui e tecle ↑↓ para navegar" oninput="filtrarOpcoes()" onkeydown="navegarTeclado(event)">
+            <input type="text" id="searchInput" placeholder="Digite para pesquisar / Clique aqui e tecle ↑↓ para navegar" oninput="filtrarOpcoes()" onfocus="mostrarOpcoes()" onkeydown="navegarTeclado(event)">
             <div id="dropdownContent" class="dropdown-content"></div>
         </div>
         <div>
