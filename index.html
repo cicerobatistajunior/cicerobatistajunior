@@ -233,15 +233,11 @@ APLICAR 3 BORRIFADAS NA BOCA 3 A 4 VEZES AO DIA.`
 
     let currentOptionIndex = -1;
 
-function mostrarOpcoes() {
-    dropdownContent.style.display = 'block';
-    searchInput.addEventListener('blur', ocultarOpcoes); // Adiciona um ouvinte de evento para ocultar a lista ao clicar fora
-    dropdownContent.addEventListener('blur', ocultarOpcoes); // Adiciona um ouvinte de evento para ocultar a lista ao clicar fora
-}
+    function mostrarOpcoes() {
+        dropdownContent.style.display = 'block';
+        document.addEventListener('click', fecharOpcoesForaClique);
+    }
 
-searchInput.addEventListener('focus', mostrarOpcoes); // Adiciona um ouvinte de evento para mostrar a lista ao receber foco
-dropdownContent.addEventListener('focus', mostrarOpcoes); // Adiciona um ouvinte de evento para mostrar a lista ao receber foco
-        
     function fecharOpcoesForaClique(event) {
         if (!event.target.matches('.dropdown, .dropdown-content')) {
             ocultarOpcoes();
@@ -373,3 +369,4 @@ dropdownContent.addEventListener('focus', mostrarOpcoes); // Adiciona um ouvinte
     </script>
 </body>
 </html>
+
