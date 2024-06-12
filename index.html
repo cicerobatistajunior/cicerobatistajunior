@@ -134,31 +134,60 @@ ORIENTAÇÃO: PROCURAR UBS OU EMERGÊNCIA PARA RETIRADA DE PONTOS / DRENO EM 7 D
 APLICAR UMA PEQUENA QUANTIDADE, SEM ESFREGAR, SOBRE A LESÃO 2 A 3 VEZES AO DIA.`
         };
 
-        const dropdownSelect = document.getElementById('dropdownSelect');
-        const selectedOption = document.getElementById('selectedOption');
-        const conteudo = document.getElementById('conteudo');
-        const copyButton = document.getElementById('copyButton');
-        const addButton = document.getElementById('addButton');
-        const editorBox = document.getElementById('editorBox');
-        const copyEditedButton = document.getElementById('copyEditedButton');
-        const deleteButton = document.getElementById('deleteButton');
-        const alertBox = document.getElementById('alertBox');
+const dropdownSelect = document.getElementById('dropdownSelect');
+const selectedOption = document.getElementById('selectedOption');
+const conteudo = document.getElementById('conteudo');
+const copyButton = document.getElementById('copyButton');
+const addButton = document.getElementById('addButton');
+const editorBox = document.getElementById('editorBox');
+const copyEditedButton = document.getElementById('copyEditedButton');
+const deleteButton = document.getElementById('deleteButton');
+const alertBox = document.getElementById('alertBox');
 
-        function selecionarOpcao() {
-            const selectedValue = dropdownSelect.value;
-            if (selectedValue) {
-                const key = selectedValue.replace(/_/g, ' ');
-                selectedOption.textContent = 'Opção selecionada: ' + key;
-                conteudo.textContent = database[selectedValue];
-                copyButton.style.display = 'block';
-                addButton.style.display = 'block';
-            } else {
-                selectedOption.textContent = '';
-                conteudo.textContent = 'Selecione uma opção para ver a prescrição.';
-                copyButton.style.display = 'none';
-                addButton.style.display = 'none';
-            }
-        }
+let filteredOptions = Object.keys(database);
+
+function selecionarOpcao() {
+    const selectedValue = dropdownSelect.value;
+    if (selectedValue) {
+        const key = selectedValue.replace(/_/g, ' ');
+        selectedOption.textContent = 'Opção selecionada: ' + key;
+        conteudo.textContent = database[selectedValue];
+        copyButton.style.display = 'block';
+        addButton.style.display = 'block';
+    } else {
+        selectedOption.textContent = '';
+        conteudo.textContent = 'Selecione uma opção para ver a prescrição.';
+        copyButton.style.display = 'none';
+        addButton.style.display = 'none';
+    }
+}
+
+function filtrarOpcoes() {
+    const searchText = dropdownSelect.value.trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    filteredOptions = Object.keys(database).filter(option => {
+        const optionText = option.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+        return optionText.includes(searchText);
+    });
+    atualizarDropdown();
+}
+
+function atualizarDropdown() {
+    dropdownSelect.innerHTML = '<option value="">Selecione uma opção...</option>';
+    filteredOptions.forEach(option => {
+        const key = option.replace(/_/g, ' ');
+        const optionElement = document.createElement('option');
+        optionElement.textContent = key;
+        optionElement.value = option;
+        dropdownSelect.appendChild(optionElement);
+    });
+}
+
+dropdownSelect.addEventListener('input', () => {
+    selecionarOpcao();
+    filtrarOpcoes();
+});
+
+selecionarOpcao(); // Initialize selected option
 
         function copiarTexto() {
             navigator.clipboard.writeText(conteudo.textContent)
