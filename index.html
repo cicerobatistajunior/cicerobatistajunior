@@ -242,6 +242,8 @@ function mostrarOpcoes() {
         dropdownContent.style.display = 'none';
     }
 
+searchInput.onfocus = mostrarOpcoes;
+        
     function atualizarConteudo(key) {
         if (key) {
             conteudoElement.textContent = database[key];
