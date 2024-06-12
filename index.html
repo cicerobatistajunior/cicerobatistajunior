@@ -241,10 +241,6 @@ function mostrarOpcoes() {
     searchInput.addEventListener('blur', ocultarOpcoes); // Adiciona um ouvinte de evento para ocultar a lista ao clicar fora
     dropdownContent.addEventListener('blur', ocultarOpcoes); // Adiciona um ouvinte de evento para ocultar a lista ao clicar fora
 }
-
-
-searchInput.addEventListener('focus', mostrarOpcoes); // Adiciona um ouvinte de evento para mostrar a lista ao receber foco
-dropdownContent.addEventListener('focus', mostrarOpcoes); // Adiciona um ouvinte de evento para mostrar a lista ao receber foco
         
     function fecharOpcoesForaClique(event) {
         if (!event.target.matches('.dropdown, .dropdown-content')) {
