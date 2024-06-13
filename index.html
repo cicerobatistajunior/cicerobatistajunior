@@ -11,7 +11,7 @@
             position: relative;
         }
         .custom-select {
-            width: calc(100% - 30px); /* Ajusta para o tamanho do botão */
+            width: calc(100% - 30px);
             padding: 10px;
             font-size: 16px;
         }
@@ -34,7 +34,7 @@
             border: 1px solid #ccc;
             border-radius: 5px;
             background-color: #f9f9f9;
-            white-space: pre-line; /* Preserve line breaks */
+            white-space: pre-line;
         }
         #copy-success {
             display: none;
@@ -42,13 +42,14 @@
             margin-top: 10px;
         }
         .custom-options {
-            max-height: 240px; /* Adjust as needed */
+            max-height: 240px;
             overflow-y: auto;
         }
     </style>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
-    <h1>Medical Information</h1>
+    <h1 class="text-center mt-4">Medical Information</h1>
 
     <div class="custom-select-wrapper">
         <div style="position: relative;">
@@ -62,12 +63,20 @@
         </select>
     </div>
 
-    <div>
-        <h2 id="selected-condition">Please select a condition.</h2>
-        <div id="condition-content" class="condition-box"></div>
-        <button id="copy-button">Copy to Clipboard</button>
-        <div id="copy-success">Content copied to clipboard!</div>
+    <div class="container mt-4">
+        <div class="card">
+            <div class="card-body">
+                <h2 id="selected-condition">Please select a condition.</h2>
+                <div id="condition-content" class="condition-box"></div>
+                <button id="copy-button" class="btn btn-primary mt-3">Copy to Clipboard</button>
+                <div id="copy-success" class="mt-3 text-success" style="display: none;">Content copied to clipboard!</div>
+            </div>
+        </div>
     </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
     <script>
         const database = {
@@ -188,28 +197,28 @@ APLICAR 3 BORRIFADAS NA BOCA 3 A 4 VEZES AO DIA.`
             copyToClipboard();
         });
 
-// Function to copy content to clipboard
-function copyToClipboard() {
-    const content = conditionContentElement.innerHTML.replace(/<br>/g, '\n');
-    navigator.clipboard.writeText(content).then(function() {
-        copySuccess.style.display = 'block'; // Show copy success message
-        setTimeout(() => {
-            copySuccess.style.display = 'none';
-        }, 2000); // Hide message after 2 seconds
-    }, function(err) {
-        console.error('Unable to copy to clipboard: ', err);
-    });
-}
+        // Function to copy content to clipboard
+        function copyToClipboard() {
+            const content = conditionContentElement.innerHTML.replace(/<br>/g, '\n');
+            navigator.clipboard.writeText(content).then(function() {
+                copySuccess.style.display = 'block'; // Show copy success message
+                setTimeout(() => {
+                    copySuccess.style.display = 'none';
+                }, 2000); // Hide message after 2 seconds
+            }, function(err) {
+                console.error('Unable to copy to clipboard: ', err);
+            });
+        }
 
-// Initial population of options
-populateOptions();
+        // Initial population of options
+        populateOptions();
 
-// Close the dropdown if user clicks outside
-document.addEventListener('click', function(e) {
-    if (!input.contains(e.target) && !optionsList.contains(e.target)) {
-        // Do nothing to maintain the scrollable list behavior
-    }
-});
-</script>
+        // Close the dropdown if user clicks outside
+        document.addEventListener('click', function(e) {
+            if (!input.contains(e.target) && !optionsList.contains(e.target)) {
+                // Do nothing to maintain the scrollable list behavior
+            }
+        });
+    </script>
 </body>
 </html>
