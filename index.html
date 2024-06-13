@@ -5,83 +5,139 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Medical Information</title>
     <style>
-        .custom-select-wrapper {
-            width: 300px;
-            margin: 20px auto;
-            position: relative;
+        /* General styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
         }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Header styles */
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        /* Select input styles */
+        .custom-select-wrapper {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
         .custom-select {
-            width: 100%; /* Full width */
+            width: 100%;
             padding: 10px;
             font-size: 16px;
-            box-sizing: border-box; /* Include padding in width calculation */
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
         }
+
+        /* Button container styles */
         .button-container {
             display: flex;
             justify-content: space-between;
+            align-items: center;
             margin-top: 10px;
+            flex-wrap: wrap; /* Ensure buttons wrap on smaller screens */
         }
+
         .button-container button {
-            margin-right: 5px; /* Adjust margin between buttons */
-        }
-        .reset-button, .navigation-button, .previous-button {
-            background-color: transparent;
+            background-color: #007bff;
+            color: #fff;
             border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
             cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 10px; /* Add margin between buttons */
         }
-        .reset-button img, .navigation-button img, .previous-button img {
-            width: 20px;
-            height: auto;
+
+        .button-container button:hover {
+            background-color: #0056b3;
         }
-        .custom-options {
-            max-height: 240px;
-            overflow-y: auto;
-            margin-top: 10px; /* Space between buttons and options */
-        }
+
+        /* Condition details styles */
         .condition-box {
-            padding: 10px;
+            padding: 15px;
             margin-top: 20px;
             border: 1px solid #ccc;
             border-radius: 5px;
             background-color: #f9f9f9;
             white-space: pre-line;
         }
+
+        /* Copy success message */
         #copy-success {
-            display: none;
             color: green;
             margin-top: 10px;
+            text-align: center;
+            display: none;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .custom-select-wrapper {
+                width: 100%;
+            }
+            .button-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            .button-container button {
+                width: 100%;
+                margin-top: 10px;
+            }
         }
     </style>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
-    <h1 class="text-center mt-4">Medical Information</h1>
+    <div class="container">
+        <header class="header">
+            <h1>Medical Information</h1>
+        </header>
 
-    <div class="custom-select-wrapper">
-        <input type="text" id="custom-select-input" class="custom-select" placeholder="Type to filter..." autocomplete="off">
-        <div class="button-container">
-            <button class="reset-button" id="reset-button" title="Clear filter">
-                <img src="https://img.icons8.com/ios-glyphs/30/000000/clear-search.png" alt="Clear">
-            </button>
-            <button class="previous-button" id="previous-button" title="Previous option">
-                <img src="https://img.icons8.com/ios-glyphs/30/000000/circled-chevron-left.png" alt="Previous">
-            </button>
-            <button class="navigation-button" id="navigation-button" title="Navigate options">
-                <img src="https://img.icons8.com/ios-glyphs/30/000000/circled-chevron-right.png" alt="Navigate">
-            </button>
+        <div class="custom-select-wrapper">
+            <input type="text" id="custom-select-input" class="custom-select" placeholder="Type to filter..." autocomplete="off">
+            <select id="custom-options" class="custom-options" size="6">
+                <!-- Options will be populated dynamically -->
+            </select>
+            <div class="button-container">
+                <button class="reset-button" id="reset-button" title="Clear filter">
+                    <img src="https://img.icons8.com/ios-glyphs/30/000000/clear-search.png" alt="Clear">
+                    Clear Filter
+                </button>
+                <button class="previous-button" id="previous-button" title="Previous option">
+                    <img src="https://img.icons8.com/ios-glyphs/30/000000/circled-chevron-left.png" alt="Previous">
+                    Previous
+                </button>
+                <button class="navigation-button" id="navigation-button" title="Next option">
+                    <img src="https://img.icons8.com/ios-glyphs/30/000000/circled-chevron-right.png" alt="Navigate">
+                    Next
+                </button>
+            </div>
         </div>
-        <select id="custom-options" class="custom-options" size="6">
-            <!-- Options will be populated dynamically -->
-        </select>
-    </div>
 
-    <div class="container mt-4">
         <div class="card">
             <div class="card-body">
                 <h2 id="selected-condition">Please select a condition.</h2>
                 <div id="condition-content" class="condition-box"></div>
                 <button id="copy-button" class="btn btn-primary mt-3">Copy to Clipboard</button>
-                <div id="copy-success" class="mt-3 text-success" style="display: none;">Content copied to clipboard!</div>
+                <div id="copy-success" class="mt-3 text-success">Content copied to clipboard!</div>
             </div>
         </div>
     </div>
