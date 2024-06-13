@@ -11,20 +11,29 @@
             position: relative;
         }
         .custom-select {
-            width: calc(100% - 30px);
+            width: calc(100% - 60px); /* Adjust width to accommodate both buttons */
             padding: 10px;
             font-size: 16px;
         }
-        .reset-button {
+        .reset-button, .navigation-button, .previous-button {
             position: absolute;
             top: 50%;
-            right: 5px;
             transform: translateY(-50%);
             background-color: transparent;
             border: none;
             cursor: pointer;
+            z-index: 1; /* Ensure it's above the input */
         }
-        .reset-button img {
+        .reset-button {
+            right: 65px; /* Adjusted position */
+        }
+        .navigation-button {
+            right: 5px;
+        }
+        .previous-button {
+            right: 35px;
+        }
+        .reset-button img, .navigation-button img, .previous-button img {
             width: 20px;
             height: auto;
         }
@@ -56,6 +65,12 @@
             <input type="text" id="custom-select-input" class="custom-select" placeholder="Type to filter..." autocomplete="off">
             <button class="reset-button" id="reset-button" title="Clear filter">
                 <img src="https://img.icons8.com/ios-glyphs/30/000000/clear-search.png" alt="Clear">
+            </button>
+            <button class="previous-button" id="previous-button" title="Previous option">
+                <img src="https://img.icons8.com/ios-glyphs/30/000000/circled-chevron-left.png" alt="Previous">
+            </button>
+            <button class="navigation-button" id="navigation-button" title="Navigate options">
+                <img src="https://img.icons8.com/ios-glyphs/30/000000/circled-chevron-right.png" alt="Navigate">
             </button>
         </div>
         <select id="custom-options" class="custom-options" size="6">
@@ -116,6 +131,10 @@ APLICAR 3 BORRIFADAS NA BOCA 3 A 4 VEZES AO DIA.`
         const copyButton = document.getElementById('copy-button');
         const copySuccess = document.getElementById('copy-success');
         const resetButton = document.getElementById('reset-button');
+        const navigationButton = document.getElementById('navigation-button');
+        const previousButton = document.getElementById('previous-button');
+
+        let filteredOptions = []; // Array to hold the currently visible options
 
         // Function to remove accents from characters
         function removeAccents(str) {
@@ -131,6 +150,12 @@ APLICAR 3 BORRIFADAS NA BOCA 3 A 4 VEZES AO DIA.`
                 option.textContent = key.replace(/_/g, ' '); // Replace underscores with spaces
                 optionsList.appendChild(option);
             });
+            updateFilteredOptions(); // Update filtered options on initial load
+        }
+
+        // Function to update filtered options
+        function updateFilteredOptions() {
+            filteredOptions = Array.from(optionsList.options).filter(option => option.style.display !== 'none');
         }
 
         // Function to update selected condition details
@@ -154,6 +179,7 @@ APLICAR 3 BORRIFADAS NA BOCA 3 A 4 VEZES AO DIA.`
             selectedConditionElement.textContent = 'Please select a condition.'; // Reset selected condition text
             conditionContentElement.innerHTML = ''; // Clear condition details
             copySuccess.style.display = 'none'; // Hide copy success message
+            updateFilteredOptions(); // Update filtered options after resetting
         }
 
         // Event listener for input typing to filter options
@@ -179,6 +205,7 @@ APLICAR 3 BORRIFADAS NA BOCA 3 A 4 VEZES AO DIA.`
 
             // Show options list
             optionsList.size = Math.min(6, optionsList.options.length); // Adjust size to number of visible options
+            updateFilteredOptions(); // Update filtered options after filtering
         });
 
         // Event listener for change in select option
@@ -190,6 +217,22 @@ APLICAR 3 BORRIFADAS NA BOCA 3 A 4 VEZES AO DIA.`
         // Event listener for reset button
         resetButton.addEventListener('click', function() {
             resetFilter();
+        });
+
+        // Event listener for next button
+        navigationButton.addEventListener('click', function() {
+            const currentIndex = filteredOptions.indexOf(optionsList.options[optionsList.selectedIndex]);
+            const nextIndex = (currentIndex + 1) % filteredOptions.length;
+            optionsList.selectedIndex = filteredOptions[nextIndex].index;
+            updateConditionDetails(filteredOptions[nextIndex].value);
+        });
+
+        // Event listener for previous button
+        previousButton.addEventListener('click', function() {
+            const currentIndex = filteredOptions.indexOf(optionsList.options[optionsList.selectedIndex]);
+            const previousIndex = (currentIndex - 1 + filteredOptions.length) % filteredOptions.length;
+            optionsList.selectedIndex = filteredOptions[previousIndex].index;
+            updateConditionDetails(filteredOptions[previousIndex].value);
         });
 
         // Event listener for copy button
