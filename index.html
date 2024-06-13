@@ -11,31 +11,32 @@
             position: relative;
         }
         .custom-select {
-            width: calc(100% - 60px); /* Adjust width to accommodate both buttons */
+            width: calc(100% - 20px); /* Adjusted width */
             padding: 10px;
             font-size: 16px;
+            box-sizing: border-box; /* Include padding in width calculation */
+        }
+        .button-container {
+            position: absolute;
+            top: calc(100% + 5px); /* Position below input box */
+            right: 0;
+            display: flex;
+            align-items: center;
         }
         .reset-button, .navigation-button, .previous-button {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
             background-color: transparent;
             border: none;
             cursor: pointer;
-            z-index: 1; /* Ensure it's above the input */
-        }
-        .reset-button {
-            right: 65px; /* Adjusted position */
-        }
-        .navigation-button {
-            right: 5px;
-        }
-        .previous-button {
-            right: 35px;
+            margin-left: 5px; /* Adjust spacing between buttons */
         }
         .reset-button img, .navigation-button img, .previous-button img {
             width: 20px;
             height: auto;
+        }
+        .custom-options {
+            max-height: 240px;
+            overflow-y: auto;
+            margin-top: 10px; /* Space between buttons and options */
         }
         .condition-box {
             padding: 10px;
@@ -50,10 +51,6 @@
             color: green;
             margin-top: 10px;
         }
-        .custom-options {
-            max-height: 240px;
-            overflow-y: auto;
-        }
     </style>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
@@ -61,8 +58,8 @@
     <h1 class="text-center mt-4">Medical Information</h1>
 
     <div class="custom-select-wrapper">
-        <div style="position: relative;">
-            <input type="text" id="custom-select-input" class="custom-select" placeholder="Type to filter..." autocomplete="off">
+        <input type="text" id="custom-select-input" class="custom-select" placeholder="Type to filter..." autocomplete="off">
+        <div class="button-container">
             <button class="reset-button" id="reset-button" title="Clear filter">
                 <img src="https://img.icons8.com/ios-glyphs/30/000000/clear-search.png" alt="Clear">
             </button>
