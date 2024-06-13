@@ -11,23 +11,23 @@
             position: relative;
         }
         .custom-select {
-            width: calc(100% - 20px); /* Adjusted width */
+            width: 100%; /* Full width */
             padding: 10px;
             font-size: 16px;
             box-sizing: border-box; /* Include padding in width calculation */
         }
         .button-container {
-            position: absolute;
-            top: calc(100% + 5px); /* Position below input box */
-            right: 0;
             display: flex;
-            align-items: center;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+        .button-container button {
+            margin-right: 5px; /* Adjust margin between buttons */
         }
         .reset-button, .navigation-button, .previous-button {
             background-color: transparent;
             border: none;
             cursor: pointer;
-            margin-left: 5px; /* Adjust spacing between buttons */
         }
         .reset-button img, .navigation-button img, .previous-button img {
             width: 20px;
