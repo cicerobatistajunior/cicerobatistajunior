@@ -28,33 +28,33 @@
             text-align: center;
             margin-bottom: 20px;
         }
-.header h1 {
-    font-size: 28px; /* Adjust the font size as per your preference */
-}
+
+        .header h1 {
+            font-size: 28px; /* Adjust the font size as per your preference */
+        }
+
         /* Select input styles */
         .custom-select-wrapper {
             position: relative;
             margin-bottom: 20px;
         }
 
-.custom-select {
-    /* Remove width: 100%; */
-    padding: 12px; /* Increase padding for better touch interaction */
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-sizing: border-box;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-}
+        .custom-select {
+            padding: 12px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            width: 100%;
+        }
 
-.custom-options {
-    /* Optionally, set width to 100% or remove specific width constraints */
-    width: 100%;
-    /* Ensure other styles (padding, border, etc.) are as required */
-        font-size: 14px; /* Adjust the font size as per your preference */
-}
+        .custom-options {
+            width: 100%;
+            font-size: 14px;
+        }
 
         /* Button container styles */
         .button-container {
@@ -62,19 +62,20 @@
             justify-content: space-between;
             align-items: center;
             margin-top: 10px;
-            flex-wrap: wrap; /* Ensure buttons wrap on smaller screens */
+            flex-wrap: wrap;
         }
 
         .button-container button {
-            width: calc(33.33% - 10px); /* Adjust button width for better spacing */
+            width: calc(33.33% - 20px);
             background-color: #007bff;
             color: #fff;
             border: none;
-            padding: 10px 15px;
-            border-radius: 5px;
+            padding: 4px 18px; /* Adjust padding for larger buttons */
+            border-radius: 10px;
             cursor: pointer;
             transition: background-color 0.3s ease;
             margin-top: 10px; /* Add margin between buttons */
+            font-size: 16px; /* Adjust font size for larger buttons */
         }
 
         .button-container button:hover {
@@ -89,7 +90,7 @@
             border-radius: 5px;
             background-color: #f9f9f9;
             white-space: pre-line;
-            overflow-wrap: break-word; /* Ensure text wraps on smaller screens */
+            overflow-wrap: break-word;
         }
 
         /* Copy success message */
@@ -103,50 +104,79 @@
         /* Responsive adjustments */
         @media (max-width: 768px) {
             .container {
-                padding: 10px; /* Adjust padding for smaller screens */
+                padding: 10px;
             }
+
             .custom-select-wrapper {
                 width: 100%;
             }
+
             .button-container {
                 flex-direction: column;
                 align-items: center;
             }
+
             .button-container button {
-                width: 100%; /* Full width on smaller screens */
+                width: 100%;
                 margin-top: 10px;
+                font-size: 16px; /* Adjust font size for smaller screens */
+                padding: 10px 15px; /* Adjust padding for smaller screens */
             }
         }
+
         #selected-condition {
-    font-size: 18px; /* Adjust the font size as per your preference */
+            font-size: 18px;
+        }
+.header {
+    text-align: center;
+    margin-bottom: 20px;
 }
+
+.header h1 {
+    font-size: 28px; /* Example font size for the main title */
+    color: #333; /* Example color for the main title */
+}
+
+.header p {
+    font-size: 20px; /* Example font size for paragraphs */
+    color: #888; /* Example color for paragraphs */
+}
+
+.header p.credits {
+    font-style: italic; /* Example italic style for credits */
+    margin-top: 20px; /* Example margin top for spacing */
+    color: #555; /* Example color for credits */
+        font-size: 15px; /* Adjust the font size for the credits */
+}
+
     </style>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 
 <body>
     <div class="container">
-        <header class="header">
-            <h1>Medical Information</h1>
-        </header>
-
+<header class="header">
+    <p>Bem-vindo(a) à versão de teste do</p>
+    <h1>SPR - Sistema de Prescrições da Rotina</h1>
+    <p class="credits">Criado por Cícero Batista.</p>
+</header>
         <div class="custom-select-wrapper">
-            <input type="text" id="custom-select-input" class="custom-select" placeholder="Type to filter..." autocomplete="off">
+            <input type="text" id="custom-select-input" class="custom-select" placeholder="Digite para filtrar / pesquisar ou clique abaixo para selecionar item..." autocomplete="off">
             <select id="custom-options" class="custom-options" size="7">
                 <!-- Options will be populated dynamically -->
             </select>
             <div class="button-container">
                 <button class="reset-button" id="reset-button" title="Clear filter">
                     <img src="https://img.icons8.com/ios-glyphs/30/000000/clear-search.png" alt="Clear">
-                    Clear Filter
+                    Limpar filtro
                 </button>
                 <button class="previous-button" id="previous-button" title="Previous option">
                     <img src="https://img.icons8.com/ios-glyphs/30/000000/circled-chevron-left.png" alt="Previous">
-                    Previous
+                    Anterior
                 </button>
                 <button class="navigation-button" id="navigation-button" title="Next option">
                     <img src="https://img.icons8.com/ios-glyphs/30/000000/circled-chevron-right.png" alt="Navigate">
-                    Next
+                    Próximo
                 </button>
             </div>
         </div>
@@ -255,7 +285,7 @@ APLICAR 3 BORRIFADAS NA BOCA 3 A 4 VEZES AO DIA.`
         }
 
         // Event listener for input typing to filter options
-        input.addEventListener('input', function() {
+        input.addEventListener('input', function () {
             const filterValue = removeAccents(this.value.trim().toLowerCase()); // Normalize and remove accents
 
             // Filter options based on user input
@@ -281,18 +311,18 @@ APLICAR 3 BORRIFADAS NA BOCA 3 A 4 VEZES AO DIA.`
         });
 
         // Event listener for change in select option
-        optionsList.addEventListener('change', function() {
+        optionsList.addEventListener('change', function () {
             const selectedConditionKey = this.value;
             updateConditionDetails(selectedConditionKey);
         });
 
         // Event listener for reset button
-        resetButton.addEventListener('click', function() {
+        resetButton.addEventListener('click', function () {
             resetFilter();
         });
 
         // Event listener for next button
-        navigationButton.addEventListener('click', function() {
+        navigationButton.addEventListener('click', function () {
             const currentIndex = filteredOptions.indexOf(optionsList.options[optionsList.selectedIndex]);
             const nextIndex = (currentIndex + 1) % filteredOptions.length;
             optionsList.selectedIndex = filteredOptions[nextIndex].index;
@@ -300,7 +330,7 @@ APLICAR 3 BORRIFADAS NA BOCA 3 A 4 VEZES AO DIA.`
         });
 
         // Event listener for previous button
-        previousButton.addEventListener('click', function() {
+        previousButton.addEventListener('click', function () {
             const currentIndex = filteredOptions.indexOf(optionsList.options[optionsList.selectedIndex]);
             const previousIndex = (currentIndex - 1 + filteredOptions.length) % filteredOptions.length;
             optionsList.selectedIndex = filteredOptions[previousIndex].index;
@@ -308,19 +338,19 @@ APLICAR 3 BORRIFADAS NA BOCA 3 A 4 VEZES AO DIA.`
         });
 
         // Event listener for copy button
-        copyButton.addEventListener('click', function() {
+        copyButton.addEventListener('click', function () {
             copyToClipboard();
         });
 
         // Function to copy content to clipboard
         function copyToClipboard() {
             const content = conditionContentElement.innerHTML.replace(/<br>/g, '\n');
-            navigator.clipboard.writeText(content).then(function() {
+            navigator.clipboard.writeText(content).then(function () {
                 copySuccess.style.display = 'block'; // Show copy success message
                 setTimeout(() => {
                     copySuccess.style.display = 'none';
                 }, 2000); // Hide message after 2 seconds
-            }, function(err) {
+            }, function (err) {
                 console.error('Unable to copy to clipboard: ', err);
             });
         }
@@ -329,12 +359,12 @@ APLICAR 3 BORRIFADAS NA BOCA 3 A 4 VEZES AO DIA.`
         populateOptions();
 
         // Close the dropdown if user clicks outside
-        document.addEventListener('click', function(e) {
+        document.addEventListener('click', function (e) {
             if (!input.contains(e.target) && !optionsList.contains(e.target)) {
                 // Do nothing to maintain the scrollable list behavior
             }
         });
     </script>
 </body>
-
 </html>
+
