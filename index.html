@@ -357,12 +357,6 @@ input.addEventListener('input', function () {
     // Show options list
     optionsList.size = Math.min(6, optionsList.options.length); // Adjust size to number of visible options
     updateFilteredOptions(); // Update filtered options after filtering
-
-    // Reset selection when filtering
-    optionsList.selectedIndex = -1;
-    selectedConditionElement.textContent = 'Selecione uma prescrição acima.';
-    conditionContentElement.innerHTML = '';
-    copySuccess.style.display = 'none';
 });
 
 // Event listener for change in select option
@@ -460,6 +454,8 @@ document.addEventListener('click', function (e) {
     }
 });
 
+
 </script>
 </body>
 </html>
+
