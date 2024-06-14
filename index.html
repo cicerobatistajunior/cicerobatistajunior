@@ -125,17 +125,18 @@
                 width: 100%;
             }
 
-            .button-container {
-                flex-direction: column;
-                align-items: center;
-            }
+    .button-container {
+        flex-direction: row; /* Change from column to row */
+        align-items: center;
+        flex-wrap: nowrap; /* Ensure buttons stay in one line */
+    }
 
-            .button-container button {
-                width: 100%;
-                margin-top: 10px;
-                font-size: 14px;
-                padding: 10px 15px;
-            }
+    .button-container button {
+        width: calc(33.33% - 10px); /* Adjust width as needed for three buttons in one row */
+        margin-top: 10px;
+        font-size: 14px;
+        padding: 10px 15px;
+    }
 
             .condition-box {
                 font-size: 14px;
@@ -153,6 +154,7 @@
             .header p {
                 font-size: 18px;
             }
+            
         }
 
         #selected-condition {
@@ -433,3 +435,4 @@ APLICAR 3 BORRIFADAS NA BOCA 3 A 4 VEZES AO DIA.`
 </script>
 </body>
 </html>
+
