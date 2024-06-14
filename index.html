@@ -336,6 +336,34 @@ APLICAR 3 BORRIFADAS NA BOCA 3 A 4 VEZES AO DIA.`
     // Event listener for input typing to filter options
     input.addEventListener('input', function () {
         const filterValue = removeAccents(this.value.trim().toLowerCase()); // Normalize and remove accents
+        input.addEventListener('input', filterOptions);
+input.addEventListener('keyup', filterOptions);
+input.addEventListener('change', filterOptions);
+
+function filterOptions() {
+    const filterValue = removeAccents(input.value.trim().toLowerCase()); // Normalize and remove accents
+
+    // Filter options based on user input
+    Array.from(optionsList.options).forEach(option => {
+        const optionText = removeAccents(option.textContent.toLowerCase()); // Normalize and remove accents
+        const keywords = filterValue.split(/\s+/);
+
+        // Check if all keywords are present in option text
+        const matchesKeywords = keywords.every(keyword => {
+            return optionText.includes(keyword);
+        });
+
+        if (matchesKeywords) {
+            option.style.display = 'block';
+        } else {
+            option.style.display = 'none';
+        }
+    });
+
+    // Show options list
+    optionsList.size = Math.min(6, optionsList.options.length); // Adjust size to number of visible options
+    updateFilteredOptions(); // Update filtered options after filtering
+}
 
         // Filter options based on user input
         Array.from(optionsList.options).forEach(option => {
