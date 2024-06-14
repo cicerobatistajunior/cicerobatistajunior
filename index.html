@@ -71,20 +71,20 @@
 
         /* Button container styles */
         .button-container {
-            display: inline;
-            justify-content: space-between;
+            display: flex;
+            justify-content: center;
             align-items: center;
             margin-top: 10px;
-            flex-wrap: wrap;
+            flex-wrap: nowrap;
         }
 
         .button-container button {
-            width: 60px;
+            width: calc(15% - 30px);
             background-color: #007bff;
             color: #fff;
             border: none;
             padding: 10px 15px;
-            border-radius: 10px;
+            border-radius: 30px;
             cursor: pointer;
             transition: background-color 0.3s ease;
             margin-top: 10px;
