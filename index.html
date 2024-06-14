@@ -218,158 +218,159 @@ APLICAR 1 A 2 GOTAS, 3 A 6 VEZES AO DIA NA LESÃO.`,
 1 - HEXOMEDINE (HEXAMIDINA + TETRACAÍNA) SPRAY -----------------—- 01 FRASCO
 APLICAR 3 BORRIFADAS NA BOCA 3 A 4 VEZES AO DIA.`
 };
-    const conteudoElement = document.getElementById('conteudo');
-    const copyButton = document.getElementById('copyButton');
-    const addButton = document.getElementById('addButton');
-    const editorBox = document.getElementById('editorBox');
-    const copyEditedButton = document.getElementById('copyEditedButton');
-    const deleteButton = document.getElementById('deleteButton');
-    const alertBox = document.getElementById('alertBox');
-    const searchInput = document.getElementById('searchInput');
-    const dropdownContent = document.getElementById('dropdownContent');
-    const selectedOption = document.getElementById('selectedOption');
-    const anteriorButton = document.getElementById('anteriorButton');
-    const proximoButton = document.getElementById('proximoButton');
+const conteudoElement = document.getElementById('conteudo');
+const copyButton = document.getElementById('copyButton');
+const addButton = document.getElementById('addButton');
+const editorBox = document.getElementById('editorBox');
+const copyEditedButton = document.getElementById('copyEditedButton');
+const deleteButton = document.getElementById('deleteButton');
+const alertBox = document.getElementById('alertBox');
+const searchInput = document.getElementById('searchInput');
+const dropdownContent = document.getElementById('dropdownContent');
+const selectedOption = document.getElementById('selectedOption');
+const anteriorButton = document.getElementById('anteriorButton');
+const proximoButton = document.getElementById('proximoButton');
 
-    let currentOptionIndex = -1;
+let currentOptionIndex = -1;
+
+// Desabilitar autocomplete para o campo de pesquisa
+searchInput.setAttribute('autocomplete', 'off');
 
 function mostrarOpcoes() {
+    // Always display dropdown content
     dropdownContent.style.display = 'block';
-    searchInput.addEventListener('blur', ocultarOpcoes); // Adiciona um ouvinte de evento para ocultar a lista ao clicar fora
-    dropdownContent.addEventListener('blur', ocultarOpcoes); // Adiciona um ouvinte de evento para ocultar a lista ao clicar fora
+
+    // Exibir todos os itens do dropdown
+    exibirTodosItensDropdown();
+
+    // Adicionar listener para fechar a lista ao clicar fora dela
+    document.addEventListener('click', fecharOpcoesForaClique);
 }
 
-searchInput.addEventListener('focus', mostrarOpcoes); // Adiciona um ouvinte de evento para mostrar a lista ao receber foco
-dropdownContent.addEventListener('focus', mostrarOpcoes); // Adiciona um ouvinte de evento para mostrar a lista ao receber foco
-        
-    function fecharOpcoesForaClique(event) {
-        if (!event.target.matches('.dropdown, .dropdown-content')) {
-            ocultarOpcoes();
-            document.removeEventListener('click', fecharOpcoesForaClique);
-        }
-    }
-
-    function ocultarOpcoes() {
-        dropdownContent.style.display = 'none';
-    }
-
-    function atualizarConteudo(key) {
-        if (key) {
-            conteudoElement.textContent = database[key];
-            copyButton.style.display = 'block';
-            addButton.style.display = 'block';
-            selectedOption.textContent = key.replace(/_/g, ' ');
-        } else {
-            conteudoElement.textContent = 'Selecione uma opção para ver a prescrição.';
-            copyButton.style.display = 'none';
-            addButton.style.display = 'none';
-            selectedOption.textContent = '';
-        }
+function fecharOpcoesForaClique(event) {
+    if (!event.target.closest('#dropdownContent') && !event.target.matches('#searchInput')) {
         ocultarOpcoes();
+        document.removeEventListener('click', fecharOpcoesForaClique);
     }
+}
 
-    function copiarTexto() {
-        navigator.clipboard.writeText(conteudoElement.textContent).then(() => {
-            alertBox.style.display = 'block';
-            setTimeout(() => {
-                alertBox.style.display = 'none';
-            }, 3000);
-        }).catch(err => {
-            console.error('Erro ao copiar texto: ', err);
-        });
-    }
+function exibirTodosItensDropdown() {
+    dropdownContent.innerHTML = ''; // Clear existing items
+    Object.keys(database).forEach(key => {
+        const optionDiv = document.createElement('div');
+        optionDiv.textContent = key.replace(/_/g, ' ');
+        optionDiv.onclick = () => selecionarOpcao(key);
+        dropdownContent.appendChild(optionDiv);
+    });
+}
 
-    function adicionarAoEditor() {
-        editorBox.innerHTML += `<div>${conteudoElement.textContent}</div>`;
-        copyEditedButton.style.display = 'block';
-        deleteButton.style.display = 'block';
-        editorBox.style.display = 'block';
-    }
+function ocultarOpcoes() {
+    dropdownContent.style.display = 'none';
+}
 
-    function copiarTextoEditado() {
-        navigator.clipboard.writeText(editorBox.textContent).then(() => {
-            alertBox.style.display = 'block';
-            setTimeout(() => {
-                alertBox.style.display = 'none';
-            }, 3000);
-        }).catch(err => {
-            console.error('Erro ao copiar texto editado: ', err);
-        });
+function atualizarConteudo(key) {
+    if (key) {
+        conteudoElement.textContent = database[key];
+        copyButton.style.display = 'block';
+        addButton.style.display = 'block';
+        selectedOption.textContent = key.replace(/_/g, ' ');
+    } else {
+        conteudoElement.textContent = 'Selecione uma opção para ver a prescrição.';
+        copyButton.style.display = 'none';
+        addButton.style.display = 'none';
+        selectedOption.textContent = '';
     }
+    ocultarOpcoes();
+}
 
-    function apagarTexto() {
-        editorBox.innerHTML = '';
-        copyEditedButton.style.display = 'none';
-        deleteButton.style.display = 'none';
-    }
+function copiarTexto() {
+    navigator.clipboard.writeText(conteudoElement.textContent).then(() => {
+        alertBox.style.display = 'block';
+        setTimeout(() => {
+            alertBox.style.display = 'none';
+        }, 3000);
+    }).catch(err => {
+        console.error('Erro ao copiar texto: ', err);
+    });
+}
 
-    function filtrarOpcoes() {
-        const filter = searchInput.value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-        const filterWords = filter.split(/\s+/);
-        dropdownContent.innerHTML = '';
-        let options = Object.keys(database);
-        options.forEach((key, index) => {
-            const text = key.replace(/_/g, ' ');
-            const normalizedOption = text.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-            const optionDiv = document.createElement('div');
-            if (filterWords.every(word => normalizedOption.includes(word))) {
-                optionDiv.textContent = text;
-                optionDiv.onclick = () => selecionarOpcao(index);
-                dropdownContent.appendChild(optionDiv);
-            }
-        });
-        currentOptionIndex = -1;
-        mostrarOpcoes();
-    }
+function adicionarAoEditor() {
+    editorBox.innerHTML += `<div>${conteudoElement.textContent}</div>`;
+    copyEditedButton.style.display = 'block';
+    deleteButton.style.display = 'block';
+    editorBox.style.display = 'block';
+}
 
-    function selecionarOpcao(index) {
-        const filter = searchInput.value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-        const filterWords = filter.split(/\s+/);
-        const options = Object.keys(database).filter(option => {
-            const normalizedOption = option.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/_/g, ' ');
-            return filterWords.every(word => normalizedOption.includes(word));
-        });
-        if (index >= 0 && index < options.length) {
-            const key = options[index];
-            atualizarConteudo(key);
-            currentOptionIndex = index;
-        }
-    }
+function copiarTextoEditado() {
+    navigator.clipboard.writeText(editorBox.textContent).then(() => {
+        alertBox.style.display = 'block';
+        setTimeout(() => {
+            alertBox.style.display = 'none';
+        }, 3000);
+    }).catch(err => {
+        console.error('Erro ao copiar texto editado: ', err);
+    });
+}
 
-    function navegarAnterior() {
-        const filter = searchInput.value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-        const filterWords = filter.split(/\s+/);
-        const options = Object.keys(database).filter(option => {
-            const normalizedOption = option.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/_/g, ' ');
-            return filterWords.every(word => normalizedOption.includes(word));
-        });
-        if (options.length === 0) return;
-        currentOptionIndex = (currentOptionIndex - 1 + options.length) % options.length;
-        selecionarOpcao(currentOptionIndex);
-    }
+function apagarTexto() {
+    editorBox.innerHTML = '';
+    copyEditedButton.style.display = 'none';
+    deleteButton.style.display = 'none';
+}
 
-    function navegarProximo() {
-        const filter = searchInput.value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-        const filterWords = filter.split(/\s+/);
-        const options = Object.keys(database).filter(option => {
-            const normalizedOption = option.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/_/g, ' ');
-            return filterWords.every(word => normalizedOption.includes(word));
-        });
-        if (options.length === 0) return;
-        currentOptionIndex = (currentOptionIndex + 1) % options.length;
-        selecionarOpcao(currentOptionIndex);
-    }
+function selecionarOpcao(key) {
+    atualizarConteudo(key);
+    ocultarOpcoes();
+}
 
-    function navegarTeclado(event) {
-        const key = event.key;
-        if (key === 'ArrowDown' || key === 'ArrowRight') {
-            event.preventDefault();
-            navegarProximo();
-        } else if (key === 'ArrowUp' || key === 'ArrowLeft') {
-            event.preventDefault();
-            navegarAnterior();
-        }
+function navegarAnterior() {
+    const filter = searchInput.value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    const filterWords = filter.split(/\s+/);
+    const options = Object.keys(database).filter(option => {
+        const normalizedOption = option.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/_/g, ' ');
+        return filterWords.every(word => normalizedOption.includes(word));
+    });
+    if (options.length === 0) return;
+    currentOptionIndex = (currentOptionIndex - 1 + options.length) % options.length;
+    selecionarOpcao(options[currentOptionIndex]);
+}
+
+function navegarProximo() {
+    const filter = searchInput.value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    const filterWords = filter.split(/\s+/);
+    const options = Object.keys(database).filter(option => {
+        const normalizedOption = option.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/_/g, ' ');
+        return filterWords.every(word => normalizedOption.includes(word));
+    });
+    if (options.length === 0) return;
+    currentOptionIndex = (currentOptionIndex + 1) % options.length;
+    selecionarOpcao(options[currentOptionIndex]);
+}
+
+function navegarTeclado(event) {
+    const key = event.key;
+    if (key === 'ArrowDown' || key === 'ArrowRight') {
+        event.preventDefault();
+        navegarProximo();
+    } else if (key === 'ArrowUp' || key === 'ArrowLeft') {
+        event.preventDefault();
+        navegarAnterior();
     }
+}
+
+// Event listeners
+searchInput.addEventListener('focus', mostrarOpcoes);
+dropdownContent.addEventListener('click', function(event) {
+    if (event.target && event.target.matches('div')) {
+        const key = Object.keys(database)[Array.from(this.children).indexOf(event.target)];
+        selecionarOpcao(key);
+    }
+});
+
+// Additional event listener for keyboard navigation
+searchInput.addEventListener('keydown', navegarTeclado);
+
+
     </script>
 </body>
 </html>
