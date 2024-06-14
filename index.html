@@ -1,246 +1,193 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SPR - Sistema de Prescrições da Rotina</title>
+    <title>Menu Suspenso com Conteúdo Dinâmico</title>
     <style>
-        /* General styles */
         body {
             font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
-            margin: 0;
-            padding: 0;
-            font-size: 16px; /* Tamanho base da fonte */
+            margin: 20px;
         }
-
         .container {
-            max-width: 90%;
-            margin: 20px auto;
-            padding: 20px;
-            background-color: #fff;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Header styles */
-        .header {
+            max-width: 600px;
+            margin: 0 auto;
             text-align: center;
+        }
+        .welcome-message {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+        h1 {
+            font-size: 24px;
+            font-weight: bold;
             margin-bottom: 20px;
+            color: #0056b3; /* Azul escuro para o título */
         }
-
-        .header h1 {
-            font-size: 28px;
-        }
-
-        .header p {
-            font-size: 20px;
-            color: #888;
-        }
-
-        .header p.credits {
-            font-style: italic;
-            margin-top: 10px;
-            color: #555;
-            font-size: 15px;
-        }
-
-        /* Select input styles */
-        .custom-select-wrapper {
+        .dropdown {
             position: relative;
-            margin-bottom: 20px;
-        }
-
-        .custom-select {
-            padding: 12px;
-            font-size: 16px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            box-sizing: border-box;
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            appearance: none;
+            display: inline-block;
             width: 100%;
+            margin-bottom: 15px;
         }
-
-        .custom-options {
+        .dropdown input[type="text"] {
             width: 100%;
-            font-size: 14px;
-        }
-
-        /* Button container styles */
-        .button-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-top: 10px;
-            flex-wrap: nowrap;
-        }
-
-        .button-container button {
-            width: calc(15% - 35px);
-            height: 24px;
-            background-color: #FFFFFF;
-            color: 000000;
-            border: none;
-            padding: 0px 12px;
-            border-radius: 30px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-            margin-top: 0px;
-            font-size: 10px;
-        }
-
-        .button-container button:hover {
-            background-color: #DCDCDC;
-        }
-
-        /* Condition details styles */
-        .condition-box {
             padding: 10px;
-            margin-top: 20px;
+            font-size: 13px;
+            box-sizing: border-box;
+            background-color: #e6f3ff;
             border: 1px solid #ccc;
-            border-radius: 5px;
-            background-color: #f9f9f9;
-            white-space: pre-line;
-            overflow-wrap: break-word;
-            font-size: 14px;
         }
-
-        /* Copy success message */
-        #copy-success {
-            color: green;
-            margin-top: 10px;
-            text-align: center;
+        .dropdown-content {
             display: none;
+            position: absolute;
+            background-color: #e6f3ff;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+            width: 100%;
+            max-height: 200px;
+            overflow-y: auto;
+            box-sizing: border-box;
+            text-align: left;
         }
-        
-        .disclaimer {
-            text-align: center;
-            font-size: 10px;
+        .dropdown-content div {
+            color: black;
+            padding: 8px 16px;
+            text-decoration: none;
+            display: block;
+            cursor: pointer;
+            font-size: 13px;
         }
-
-
-        /* Responsive adjustments */
-        @media (max-width: 768px) {
-            .container {
-                padding: 10px;
-            }
-
-            .custom-select-wrapper {
-                width: 100%;
-            }
-
-    .button-container {
-        flex-direction: row; /* Change from column to row */
-        align-items: center;
-        flex-wrap: nowrap; /* Ensure buttons stay in one line */
-    }
-
-    .button-container button {
-        width: calc(33.33% - 10px); /* Adjust width as needed for three buttons in one row */
-        margin-top: 0px;
-        font-size: 12px;
-        padding: 0px 12px;
-    }
-
-            .condition-box {
-                font-size: 11px;
-                padding: 8px;
-            }
-
-            #editable-textarea {
-                font-size: 12px;
-            }
-
-            .header h1 {
-                font-size: 20px;
-            }
-
-            .header p {
-                font-size: 14px;
-            }
-                        #copy-button {
-                font-size: 12px; /* Adjust to the desired font size for mobile */
-            }
-                                    #transfer-button {
-                font-size: 12px; /* Adjust to the desired font size for mobile */
-            }
-                        #copy-editor-button {
-                font-size: 12px; /* Adjust to the desired font size for mobile */
-            }
-                        #clear-editor-button {
-                font-size: 12px; /* Adjust to the desired font size for mobile */
-            }
-            
+        .dropdown-content div:hover, .dropdown-content div:focus {
+            background-color: #f1f1f1;
+            outline: none;
         }
-
-        #selected-condition {
+        .content-box {
+            border: 1px solid #ccc;
+            padding: 20px;
+            font-size: 11px;
+            background-color: #f9f9f9;
+            margin-bottom: 20px;
+            white-space: pre-wrap;
+            text-align: left;
+        }
+        .copy-button {
+            padding: 8px 16px;
             font-size: 14px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+            display: block;
+            margin: 10px auto;
+        }
+        .copy-button:hover {
+            background-color: #0056b3;
+        }
+        .add-button {
+            padding: 6px 12px;
+            font-size: 12px;
+            background-color: #555;
+            color: white;
+            border: none;
+            cursor: pointer;
+            display: block;
+            margin: 15px auto;
+        }
+        .add-button:hover {
+            background-color: #333;
+        }
+        .editor-box {
+            border: 1px solid #ccc;
+            padding: 20px;
+            font-size: 11px;
+            background-color: #f9f9f9;
+            margin-bottom: 20px;
+            white-space: pre-wrap;
+            text-align: left;
+            min-height: 100px;
+        }
+        .nav-button {
+            padding: 8px 16px;
+            font-size: 14px;
+            background-color: #f9f9f9;
+            color: gray;
+            border: none;
+            cursor: pointer;
+            display: inline-block;
+            margin: 0 5px;
+        }
+        .nav-button:hover {
+            background-color: #e0e0e0;
+        }
+        .alert {
+            display: none;
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .credits {
+            font-size: 10px;
+            margin-top: 10px;
+        }
+        .selected-option {
+            font-weight: bold;
+            margin-top: 10px;
+            text-align: left;
+        }
+        .disclaimer {
+            font-size: 10px;
+            margin-top: 10px;
+            font-style: italic;
+            color: gray;
+            white-space: pre-wrap;
+        }
+        .delete-button {
+            padding: 6px 12px;
+            font-size: 12px;
+            background-color: #FFA500;
+            color: white;
+            border: none;
+            cursor: pointer;
+            display: block;
+            margin: 10px auto;
+        }
+        .delete-button:hover {
+            background-color: #cc8400;
         }
     </style>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
-
 <body>
     <div class="container">
-        <header class="header">
-            <p>Bem-vindo(a) à versão de teste do</p>
-            <h1>Sistema de Prescrições da Rotina</h1>
-            <p class="credits">Adm.: Cícero Batista</p>
-        </header>
-        <div class="custom-select-wrapper">
-            <input type="text" id="custom-select-input" class="custom-select"
-                placeholder="Digite para filtrar / pesquisar ou clique abaixo para selecionar item..." autocomplete="off">
-            <select id="custom-options" class="custom-options" size="7">
-                <!-- Options will be populated dynamically -->
-            </select>
-            <div class="button-container">
-                <button class="reset-button" id="reset-button" title="Clear filter">
-                    <img src="https://img.icons8.com/?size=20&id=K0PgplAMoV8p&format=png&color=000000" alt="Clear">
-                    
-                </button>
-                <button class="previous-button" id="previous-button" title="Previous option">
-                    <img src="https://img.icons8.com/?size=20&id=kUym3nBJiKMn&format=png&color=000000"
-                        alt="Previous">
-                    
-                </button>
-                <button class="navigation-button" id="navigation-button" title="Next option">
-                    <img src="https://img.icons8.com/?size=20&id=zFM1g5BQ0QvY&format=png&color=000000"
-                        alt="Navigate">
-                    
-                </button>
-            </div>
+        <div class="welcome-message">Seja bem-vindo(a) ao</div>
+        <h1>SISTEMA DE PRESCRIÇÕES DA ROTINA</h1>
+        <div class="dropdown">
+            <input type="text" id="searchInput" placeholder="Digite para pesquisar / Clique aqui e tecle ↑↓ para navegar" oninput="filtrarOpcoes()" onkeydown="navegarTeclado(event)">
+            <div id="dropdownContent" class="dropdown-content"></div>
         </div>
-
-        <div class="card">
-            <div class="card-body">
-                <h2 id="selected-condition">Selecione uma prescrição acima.</h2>
-                <div id="condition-content" class="condition-box"></div>
-                <button id="copy-button" class="btn btn-primary mt-3" >Copiar texto (Ctrl+C)</button>
-                <button id="transfer-button" class="btn btn-success mt-3 ml-2">Transferir ao editor</button>
-                <div id="copy-success" class="mt-3 text-success">Texto copiado para a área de transferência!</div>
-            </div>
+        <div>
+            <button id="anteriorButton" class="nav-button" onclick="navegarAnterior()">&#9664;</button>
+            <button id="proximoButton" class="nav-button" onclick="navegarProximo()">&#9654;</button>
         </div>
-
-        <!-- New textarea for editing -->
-        <textarea id="editable-textarea" class="form-control mt-3" rows="10"
-            placeholder="Editar texto..."></textarea>
-
-        <!-- Button to copy editor content to clipboard -->
-        <button id="copy-editor-button" class="btn btn-primary mt-3 ml-2">Copiar (Ctrl+C) texto do editor</button>
-
-        <!-- Clear editor button -->
-        <button id="clear-editor-button" class="btn btn-danger mt-3 ml-2">Apagar texto do editor</button>
+        <div id="selectedOption" class="selected-option"></div>
+        <div id="conteudo" class="content-box">
+            Selecione uma opção para ver a prescrição.
+        </div>
+        <button id="copyButton" class="copy-button" style="display: none;" onclick="copiarTexto()">Copiar para a área de transferência</button>
+        <button id="addButton" class="add-button" style="display: none;" onclick="adicionarAoEditor()">Adicionar ao editor</button>
+        <div id="editorBox" class="editor-box" contenteditable="true" style="display: none;"></div>
+        <button id="copyEditedButton" class="copy-button" style="display: none; background-color: #0056b3;" onclick="copiarTextoEditado()">Copiar texto editado para a área de transferência</button>
+        <button id="deleteButton" class="delete-button" style="display: none;" onclick="apagarTexto()">Apagar texto</button>
+        <div id="alertBox" class="alert">Texto copiado para a área de transferência!</div>
+        <!-- Créditos do autor -->
+                <div class="credits">Autor: Cícero Batista. Direitos reservados.</div>
+        <div class="disclaimer">Aplicativo destinado apenas a profissionais médicos, para uso educacional.<br>O autor não se responsabiliza pelo uso indevido das informações aqui contidas.</div>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-            <disclaimer class="disclaimer">
-            <p>DISCLAIMER: Site de uso exclusivo por médicos. O autor deste site não se responsabiliza pelo uso inadequado das informações contidas. Uso restrito a pessoas autorizadas pelo administrador. Direitos da produção reservados.</p>
-        </disclaimer>
     <script>
         const database = {
             'Abscesso_não-flutuante_(cefalexina_+_compressa_morna)': `USO ORAL
@@ -250,214 +197,179 @@ TOMAR 1 COMPRIMIDO DE 6 – 6 H, 7 DIAS A 10 DIAS (OU ATÉ FLUTUAR / RESOLVER)
 - CUIDADOS GERAIS
 COMPRESSA MORNA --- APLICAR COMPRESSA MORNA SOBRE O ABSCESSO 6 VEZES AO DIA, ATÉ FLUTUAR / RESOLVER
 RETORNAR PARA REAVALIAÇÃO EM 72 HORAS SE NÃO HOUVER MELHORA.`,
-            'Abscesso_flutuante_–_cefalexina_(pós-drenagem)': `USO ORAL
+'Abscesso_flutuante_–_cefalexina_(pós-drenagem)': `USO ORAL
 1 - CEFALEXINA 500 MG COMPRIMIDO ------------------------------------- 28-40 CPS
 TOMAR 1 COMPRIMIDO DE 6 – 6 H, 7 DIAS A 10 DIAS.
 
 ORIENTAÇÃO: PROCURAR UBS OU EMERGÊNCIA PARA RETIRADA DE PONTOS / DRENO EM 7 DIAS.`,
-            'Afta_/_estomatite_–_tipo_1_(triancinolona_acetonida_-_corticoide_genérico)': `USO TÓPICO
+'Afta_/_estomatite_–_tipo_1_(triancinolona_acetonida_-_corticoide_genérico)': `USO TÓPICO
 1 - TRIANCINOLONA ACETONIDA 1MG/G POMADA ------------------- 01 BISNAGA
 APLICAR UMA PEQUENA QUANTIDADE, SEM ESFREGAR, SOBRE A LESÃO 2 A 3 VEZES AO DIA.`,
-            'Afta_/_estomatite_–_tipo_2_(omcilon_orabase_-_corticoide_marca)': `USO TÓPICO
+'Afta_/_estomatite_–_tipo_2_(omcilon_orabase_-_corticoide_marca)': `USO TÓPICO
 1 - OMCILON®-A ORABASE --------------------------------------------------- 01 BISNAGA
-APLICAR UMA PEQUENA QUANTIDADE, SEM ESFREGAR, SOBRE A LESÃO 2 A                 3 VEZES AO DIA.`,
-            'Afta_/_estomatite_–_tipo_3_(lidocaína_tópica_-_anestésico)': `USO TÓPICO
+APLICAR UMA PEQUENA QUANTIDADE, SEM ESFREGAR, SOBRE A LESÃO 2 A 3 VEZES AO DIA.`,
+'Afta_/_estomatite_–_tipo_3_(lidocaína_tópica_-_anestésico)': `USO TÓPICO
 1 - LIDOCAÍNA 50MG/G CREME ----------------------------------- 01 BISNAGA
 ALICAR UMA PEQUENA QUANTIDADE SOBRE A LESÃO, 2 A 3 VEZES AO DIA.`,
-            'Afta_/_estomatite_–_combinação_em_gotas,_crianças_>_3_anos': `USO TÓPICO
+'Afta_/_estomatite_–_combinação_em_gotas,_crianças_>_3_anos': `USO TÓPICO
 1 - BISMU-JET (NEOMICINA + BISMUTO E SÓDIO + PROCAÍNA) GOTAS —- 01 FRASCO
 APLICAR 1 A 2 GOTAS, 3 A 6 VEZES AO DIA NA LESÃO.`,
-            'Afta_/_estomatite_-_combinação_-_spray_$$$,_crianças_>_3_anos': `USO TÓPICO
+'Afta_/_estomatite_-_combinação_-_spray_$$$,_crianças_>_3_anos': `USO TÓPICO
 1 - HEXOMEDINE (HEXAMIDINA + TETRACAÍNA) SPRAY -----------------—- 01 FRASCO
 APLICAR 3 BORRIFADAS NA BOCA 3 A 4 VEZES AO DIA.`
-        };
-const input = document.getElementById('custom-select-input');
-const optionsList = document.getElementById('custom-options');
-const selectedConditionElement = document.getElementById('selected-condition');
-const conditionContentElement = document.getElementById('condition-content');
-const copyButton = document.getElementById('copy-button');
-const copyEditorButton = document.getElementById('copy-editor-button');
-const copySuccess = document.getElementById('copy-success');
-const resetButton = document.getElementById('reset-button');
-const navigationButton = document.getElementById('navigation-button');
-const previousButton = document.getElementById('previous-button');
-const transferButton = document.getElementById('transfer-button');
-const editableTextarea = document.getElementById('editable-textarea');
-const clearEditorButton = document.getElementById('clear-editor-button');
+};
+    const conteudoElement = document.getElementById('conteudo');
+    const copyButton = document.getElementById('copyButton');
+    const addButton = document.getElementById('addButton');
+    const editorBox = document.getElementById('editorBox');
+    const copyEditedButton = document.getElementById('copyEditedButton');
+    const deleteButton = document.getElementById('deleteButton');
+    const alertBox = document.getElementById('alertBox');
+    const searchInput = document.getElementById('searchInput');
+    const dropdownContent = document.getElementById('dropdownContent');
+    const selectedOption = document.getElementById('selectedOption');
+    const anteriorButton = document.getElementById('anteriorButton');
+    const proximoButton = document.getElementById('proximoButton');
 
-let filteredOptions = []; // Array to hold the currently visible options
+    let currentOptionIndex = -1;
 
-// Function to remove accents from characters
-function removeAccents(str) {
-    return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+function mostrarOpcoes() {
+    dropdownContent.style.display = 'block';
+    searchInput.addEventListener('blur', ocultarOpcoes); // Adiciona um ouvinte de evento para ocultar a lista ao clicar fora
+    dropdownContent.addEventListener('blur', ocultarOpcoes); // Adiciona um ouvinte de evento para ocultar a lista ao clicar fora
 }
 
-// Function to populate options
-function populateOptions() {
-    // Populate dropdown options
-    Object.keys(database).forEach(key => {
-        const option = document.createElement('option');
-        option.value = key;
-        option.textContent = key.replace(/_/g, ' '); // Replace underscores with spaces
-        optionsList.appendChild(option);
-    });
-    updateFilteredOptions(); // Update filtered options on initial load
-}
-
-// Function to update filtered options
-function updateFilteredOptions() {
-    filteredOptions = Array.from(optionsList.options).filter(option => option.style.display !== 'none');
-}
-
-// Function to update selected condition details
-function updateConditionDetails(selectedConditionKey) {
-    const selectedConditionName = selectedConditionKey.replace(/_/g, ' ');
-    const selectedConditionContent = database[selectedConditionKey];
-
-    // Update UI
-    selectedConditionElement.textContent = selectedConditionName;
-    conditionContentElement.innerHTML = selectedConditionContent.replace(/\n/g, '<br>');
-    copySuccess.style.display = 'none'; // Hide copy success message
-}
-
-// Function to reset filter input
-function resetFilter() {
-    input.value = ''; // Clear input field
-    filterOptions();
-    selectedConditionElement.textContent = 'Selecione uma prescrição acima.'; // Reset selected condition text
-    conditionContentElement.innerHTML = ''; // Clear condition details
-    copySuccess.style.display = 'none'; // Hide copy success message
-    updateFilteredOptions(); // Update filtered options after resetting
-}
-
-// Function to filter options based on input value
-function filterOptions() {
-    const filterValue = removeAccents(input.value.trim().toLowerCase()); // Normalize and remove accents
-
-    // Filter options based on user input
-    Array.from(optionsList.options).forEach(option => {
-        const optionText = removeAccents(option.textContent.toLowerCase()); // Normalize and remove accents
-        const keywords = filterValue.split(/\s+/);
-
-        // Check if all keywords are present in option text
-        const matchesKeywords = keywords.every(keyword => {
-            return optionText.includes(keyword);
-        });
-
-        if (matchesKeywords) {
-            option.style.display = 'block';
-        } else {
-            option.style.display = 'none';
+searchInput.addEventListener('focus', mostrarOpcoes); // Adiciona um ouvinte de evento para mostrar a lista ao receber foco
+dropdownContent.addEventListener('focus', mostrarOpcoes); // Adiciona um ouvinte de evento para mostrar a lista ao receber foco
+        
+    function fecharOpcoesForaClique(event) {
+        if (!event.target.matches('.dropdown, .dropdown-content')) {
+            ocultarOpcoes();
+            document.removeEventListener('click', fecharOpcoesForaClique);
         }
-    });
+    }
 
-    // Show options list
-    optionsList.size = Math.min(6, optionsList.options.length); // Adjust size to number of visible options
-    updateFilteredOptions(); // Update filtered options after filtering
-}
+    function ocultarOpcoes() {
+        dropdownContent.style.display = 'none';
+    }
 
-// Event listener for input typing to filter options
-input.addEventListener('input', function () {
-    filterOptions();
-});
+    function atualizarConteudo(key) {
+        if (key) {
+            conteudoElement.textContent = database[key];
+            copyButton.style.display = 'block';
+            addButton.style.display = 'block';
+            selectedOption.textContent = key.replace(/_/g, ' ');
+        } else {
+            conteudoElement.textContent = 'Selecione uma opção para ver a prescrição.';
+            copyButton.style.display = 'none';
+            addButton.style.display = 'none';
+            selectedOption.textContent = '';
+        }
+        ocultarOpcoes();
+    }
 
-// Event listener for change in select option
-optionsList.addEventListener('change', function () {
-    const selectedConditionKey = this.value;
-    updateConditionDetails(selectedConditionKey);
-});
-
-// Event listener for reset button
-resetButton.addEventListener('click', function () {
-    resetFilter();
-});
-
-// Event listener for next button
-navigationButton.addEventListener('click', function () {
-    const currentIndex = filteredOptions.indexOf(optionsList.options[optionsList.selectedIndex]);
-    const nextIndex = (currentIndex + 1) % filteredOptions.length;
-    optionsList.selectedIndex = filteredOptions[nextIndex].index;
-    updateConditionDetails(filteredOptions[nextIndex].value);
-});
-
-// Event listener for previous button
-previousButton.addEventListener('click', function () {
-    const currentIndex = filteredOptions.indexOf(optionsList.options[optionsList.selectedIndex]);
-    const previousIndex = (currentIndex - 1 + filteredOptions.length) % filteredOptions.length;
-    optionsList.selectedIndex = filteredOptions[previousIndex].index;
-    updateConditionDetails(filteredOptions[previousIndex].value);
-});
-
-// Event listener for copy button
-copyButton.addEventListener('click', function () {
-    copyToClipboard();
-});
-
-// Event listener for copy editor button
-copyEditorButton.addEventListener('click', function () {
-    copyEditorToClipboard();
-});
-
-// Event listener for transfer button
-transferButton.addEventListener('click', function () {
-    transferToEditor();
-});
-
-// Event listener for clear editor button
-clearEditorButton.addEventListener('click', function () {
-    editableTextarea.value = ''; // Clear editor textarea
-});
-
-// Function to copy content to clipboard
-function copyToClipboard() {
-    const content = conditionContentElement.innerHTML.replace(/<br>/g, '\n');
-    navigator.clipboard.writeText(content).then(function () {
-        copySuccess.style.display = 'block'; // Show copy success message
-        setTimeout(() => {
-            copySuccess.style.display = 'none';
-        }, 2000); // Hide message after 2 seconds
-    }, function (err) {
-        console.error('Unable to copy to clipboard: ', err);
-    });
-}
-
-// Function to copy editor content to clipboard
-function copyEditorToClipboard() {
-    const content = editableTextarea.value.trim();
-    if (content !== '') {
-        navigator.clipboard.writeText(content).then(function () {
-            copySuccess.style.display = 'block'; // Show copy success message
+    function copiarTexto() {
+        navigator.clipboard.writeText(conteudoElement.textContent).then(() => {
+            alertBox.style.display = 'block';
             setTimeout(() => {
-                copySuccess.style.display = 'none';
-            }, 2000); // Hide message after 2 seconds
-        }, function (err) {
-            console.error('Unable to copy editor content to clipboard: ', err);
+                alertBox.style.display = 'none';
+            }, 3000);
+        }).catch(err => {
+            console.error('Erro ao copiar texto: ', err);
         });
     }
-}
 
-// Function to transfer content to editable textarea
-function transferToEditor() {
-    const content = conditionContentElement.innerHTML.replace(/<br>/g, '\n');
-    if (editableTextarea.value.trim() === '') {
-        editableTextarea.value = content.trim(); // If editor is empty, directly set the content
-    } else {
-        editableTextarea.value += '\n' + content.trim(); // Otherwise, append with a newline
+    function adicionarAoEditor() {
+        editorBox.innerHTML += `<div>${conteudoElement.textContent}</div>`;
+        copyEditedButton.style.display = 'block';
+        deleteButton.style.display = 'block';
+        editorBox.style.display = 'block';
     }
-}
 
-// Initial population of options
-populateOptions();
-
-// Close the dropdown if user clicks outside
-document.addEventListener('click', function (e) {
-    if (!input.contains(e.target) && !optionsList.contains(e.target)) {
-        // Do nothing to maintain the scrollable list behavior
+    function copiarTextoEditado() {
+        navigator.clipboard.writeText(editorBox.textContent).then(() => {
+            alertBox.style.display = 'block';
+            setTimeout(() => {
+                alertBox.style.display = 'none';
+            }, 3000);
+        }).catch(err => {
+            console.error('Erro ao copiar texto editado: ', err);
+        });
     }
-});
 
+    function apagarTexto() {
+        editorBox.innerHTML = '';
+        copyEditedButton.style.display = 'none';
+        deleteButton.style.display = 'none';
+    }
 
-</script>
+    function filtrarOpcoes() {
+        const filter = searchInput.value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+        const filterWords = filter.split(/\s+/);
+        dropdownContent.innerHTML = '';
+        let options = Object.keys(database);
+        options.forEach((key, index) => {
+            const text = key.replace(/_/g, ' ');
+            const normalizedOption = text.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+            const optionDiv = document.createElement('div');
+            if (filterWords.every(word => normalizedOption.includes(word))) {
+                optionDiv.textContent = text;
+                optionDiv.onclick = () => selecionarOpcao(index);
+                dropdownContent.appendChild(optionDiv);
+            }
+        });
+        currentOptionIndex = -1;
+        mostrarOpcoes();
+    }
+
+    function selecionarOpcao(index) {
+        const filter = searchInput.value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+        const filterWords = filter.split(/\s+/);
+        const options = Object.keys(database).filter(option => {
+            const normalizedOption = option.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/_/g, ' ');
+            return filterWords.every(word => normalizedOption.includes(word));
+        });
+        if (index >= 0 && index < options.length) {
+            const key = options[index];
+            atualizarConteudo(key);
+            currentOptionIndex = index;
+        }
+    }
+
+    function navegarAnterior() {
+        const filter = searchInput.value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+        const filterWords = filter.split(/\s+/);
+        const options = Object.keys(database).filter(option => {
+            const normalizedOption = option.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/_/g, ' ');
+            return filterWords.every(word => normalizedOption.includes(word));
+        });
+        if (options.length === 0) return;
+        currentOptionIndex = (currentOptionIndex - 1 + options.length) % options.length;
+        selecionarOpcao(currentOptionIndex);
+    }
+
+    function navegarProximo() {
+        const filter = searchInput.value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+        const filterWords = filter.split(/\s+/);
+        const options = Object.keys(database).filter(option => {
+            const normalizedOption = option.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/_/g, ' ');
+            return filterWords.every(word => normalizedOption.includes(word));
+        });
+        if (options.length === 0) return;
+        currentOptionIndex = (currentOptionIndex + 1) % options.length;
+        selecionarOpcao(currentOptionIndex);
+    }
+
+    function navegarTeclado(event) {
+        const key = event.key;
+        if (key === 'ArrowDown' || key === 'ArrowRight') {
+            event.preventDefault();
+            navegarProximo();
+        } else if (key === 'ArrowUp' || key === 'ArrowLeft') {
+            event.preventDefault();
+            navegarAnterior();
+        }
+    }
+    </script>
 </body>
 </html>
-
