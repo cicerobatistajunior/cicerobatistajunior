@@ -323,19 +323,16 @@ function updateConditionDetails(selectedConditionKey) {
 // Function to reset filter input
 function resetFilter() {
     input.value = ''; // Clear input field
-    Array.from(optionsList.options).forEach(option => {
-        option.style.display = 'block'; // Show all options
-    });
-    optionsList.selectedIndex = -1; // Deselect any selected option
+    filterOptions();
     selectedConditionElement.textContent = 'Selecione uma prescrição acima.'; // Reset selected condition text
     conditionContentElement.innerHTML = ''; // Clear condition details
     copySuccess.style.display = 'none'; // Hide copy success message
     updateFilteredOptions(); // Update filtered options after resetting
 }
 
-// Event listener for input typing to filter options
-input.addEventListener('input', function () {
-    const filterValue = removeAccents(this.value.trim().toLowerCase()); // Normalize and remove accents
+// Function to filter options based on input value
+function filterOptions() {
+    const filterValue = removeAccents(input.value.trim().toLowerCase()); // Normalize and remove accents
 
     // Filter options based on user input
     Array.from(optionsList.options).forEach(option => {
@@ -357,6 +354,11 @@ input.addEventListener('input', function () {
     // Show options list
     optionsList.size = Math.min(6, optionsList.options.length); // Adjust size to number of visible options
     updateFilteredOptions(); // Update filtered options after filtering
+}
+
+// Event listener for input typing to filter options
+input.addEventListener('input', function () {
+    filterOptions();
 });
 
 // Event listener for change in select option
