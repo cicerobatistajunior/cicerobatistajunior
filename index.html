@@ -79,16 +79,16 @@
         }
 
         .button-container button {
-            width: calc(15% - 30px);
+            width: calc(15% - 35px);
             background-color: #007bff;
             color: #fff;
             border: none;
-            padding: 10px 15px;
+            padding: 6px 12px;
             border-radius: 30px;
             cursor: pointer;
             transition: background-color 0.3s ease;
             margin-top: 10px;
-            font-size: 16px;
+            font-size: 10px;
         }
 
         .button-container button:hover {
@@ -134,31 +134,31 @@
     .button-container button {
         width: calc(33.33% - 10px); /* Adjust width as needed for three buttons in one row */
         margin-top: 10px;
-        font-size: 14px;
+        font-size: 12px;
         padding: 10px 15px;
     }
 
             .condition-box {
-                font-size: 14px;
+                font-size: 12px;
                 padding: 8px;
             }
 
             #editable-textarea {
-                font-size: 14px;
+                font-size: 12px;
             }
 
             .header h1 {
-                font-size: 24px;
+                font-size: 20px;
             }
 
             .header p {
-                font-size: 18px;
+                font-size: 14px;
             }
             
         }
 
         #selected-condition {
-            font-size: 18px;
+            font-size: 14px;
         }
     </style>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -168,8 +168,8 @@
     <div class="container">
         <header class="header">
             <p>Bem-vindo(a) à versão de teste do</p>
-            <h1>SPR - Sistema de Prescrições da Rotina</h1>
-            <p class="credits">Criado por Cícero Batista.</p>
+            <h1>Sistema de Prescrições da Rotina</h1>
+            <p class="credits">Adm.: Cícero Batista</p>
         </header>
         <div class="custom-select-wrapper">
             <input type="text" id="custom-select-input" class="custom-select"
@@ -179,16 +179,16 @@
             </select>
             <div class="button-container">
                 <button class="reset-button" id="reset-button" title="Clear filter">
-                    <img src="https://img.icons8.com/ios-glyphs/30/000000/clear-search.png" alt="Clear">
+                    <img src="https://img.icons8.com/?size=20&id=K0PgplAMoV8p&format=png&color=FFFFFF" alt="Clear">
                     
                 </button>
                 <button class="previous-button" id="previous-button" title="Previous option">
-                    <img src="https://img.icons8.com/ios-glyphs/30/000000/circled-chevron-left.png"
+                    <img src="https://img.icons8.com/?size=20&id=kUym3nBJiKMn&format=png&color=FFFFFF"
                         alt="Previous">
                     
                 </button>
                 <button class="navigation-button" id="navigation-button" title="Next option">
-                    <img src="https://img.icons8.com/ios-glyphs/30/000000/circled-chevron-right.png"
+                    <img src="https://img.icons8.com/?size=20&id=zFM1g5BQ0QvY&format=png&color=FFFFFF"
                         alt="Navigate">
                     
                 </button>
@@ -197,23 +197,23 @@
 
         <div class="card">
             <div class="card-body">
-                <h2 id="selected-condition">Please select a condition.</h2>
+                <h2 id="selected-condition">Selecione uma prescrição acima.</h2>
                 <div id="condition-content" class="condition-box"></div>
-                <button id="copy-button" class="btn btn-primary mt-3">Copy to Clipboard</button>
-                <button id="transfer-button" class="btn btn-success mt-3 ml-2">Transfer to Editor</button>
-                <div id="copy-success" class="mt-3 text-success">Content copied to clipboard!</div>
+                <button id="copy-button" class="btn btn-primary mt-3">Copiar texto (Ctrl+C)</button>
+                <button id="transfer-button" class="btn btn-success mt-3 ml-2">Transferir ao editor</button>
+                <div id="copy-success" class="mt-3 text-success">Texto copiado para a área de transferência!</div>
             </div>
         </div>
 
         <!-- New textarea for editing -->
         <textarea id="editable-textarea" class="form-control mt-3" rows="10"
-            placeholder="Edit the transferred text here..."></textarea>
+            placeholder="Editar texto..."></textarea>
 
         <!-- Button to copy editor content to clipboard -->
-        <button id="copy-editor-button" class="btn btn-primary mt-3 ml-2">Copy Editor to Clipboard</button>
+        <button id="copy-editor-button" class="btn btn-primary mt-3 ml-2">Copiar (Ctrl+C) texto do editor</button>
 
         <!-- Clear editor button -->
-        <button id="clear-editor-button" class="btn btn-danger mt-3 ml-2">Clear Editor</button>
+        <button id="clear-editor-button" class="btn btn-danger mt-3 ml-2">Apagar texto do editor</button>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
@@ -435,4 +435,3 @@ APLICAR 3 BORRIFADAS NA BOCA 3 A 4 VEZES AO DIA.`
 </script>
 </body>
 </html>
-
