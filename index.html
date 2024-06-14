@@ -271,77 +271,71 @@ APLICAR 1 A 2 GOTAS, 3 A 6 VEZES AO DIA NA LESÃO.`,
 1 - HEXOMEDINE (HEXAMIDINA + TETRACAÍNA) SPRAY -----------------—- 01 FRASCO
 APLICAR 3 BORRIFADAS NA BOCA 3 A 4 VEZES AO DIA.`
         };
-    const input = document.getElementById('custom-select-input');
-    const optionsList = document.getElementById('custom-options');
-    const selectedConditionElement = document.getElementById('selected-condition');
-    const conditionContentElement = document.getElementById('condition-content');
-    const copyButton = document.getElementById('copy-button');
-    const copyEditorButton = document.getElementById('copy-editor-button');
-    const copySuccess = document.getElementById('copy-success');
-    const resetButton = document.getElementById('reset-button');
-    const navigationButton = document.getElementById('navigation-button');
-    const previousButton = document.getElementById('previous-button');
-    const transferButton = document.getElementById('transfer-button');
-    const editableTextarea = document.getElementById('editable-textarea');
-    const clearEditorButton = document.getElementById('clear-editor-button');
+const input = document.getElementById('custom-select-input');
+const optionsList = document.getElementById('custom-options');
+const selectedConditionElement = document.getElementById('selected-condition');
+const conditionContentElement = document.getElementById('condition-content');
+const copyButton = document.getElementById('copy-button');
+const copyEditorButton = document.getElementById('copy-editor-button');
+const copySuccess = document.getElementById('copy-success');
+const resetButton = document.getElementById('reset-button');
+const navigationButton = document.getElementById('navigation-button');
+const previousButton = document.getElementById('previous-button');
+const transferButton = document.getElementById('transfer-button');
+const editableTextarea = document.getElementById('editable-textarea');
+const clearEditorButton = document.getElementById('clear-editor-button');
 
-    let filteredOptions = []; // Array to hold the currently visible options
+let filteredOptions = []; // Array to hold the currently visible options
 
-    // Function to remove accents from characters
-    function removeAccents(str) {
-        return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-    }
+// Function to remove accents from characters
+function removeAccents(str) {
+    return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+}
 
-    // Function to populate options
-    function populateOptions() {
-        // Populate dropdown options
-        Object.keys(database).forEach(key => {
-            const option = document.createElement('option');
-            option.value = key;
-            option.textContent = key.replace(/_/g, ' '); // Replace underscores with spaces
-            optionsList.appendChild(option);
-        });
-        updateFilteredOptions(); // Update filtered options on initial load
-    }
+// Function to populate options
+function populateOptions() {
+    // Populate dropdown options
+    Object.keys(database).forEach(key => {
+        const option = document.createElement('option');
+        option.value = key;
+        option.textContent = key.replace(/_/g, ' '); // Replace underscores with spaces
+        optionsList.appendChild(option);
+    });
+    updateFilteredOptions(); // Update filtered options on initial load
+}
 
-    // Function to update filtered options
-    function updateFilteredOptions() {
-        filteredOptions = Array.from(optionsList.options).filter(option => option.style.display !== 'none');
-    }
+// Function to update filtered options
+function updateFilteredOptions() {
+    filteredOptions = Array.from(optionsList.options).filter(option => option.style.display !== 'none');
+}
 
-    // Function to update selected condition details
-    function updateConditionDetails(selectedConditionKey) {
-        const selectedConditionName = selectedConditionKey.replace(/_/g, ' ');
-        const selectedConditionContent = database[selectedConditionKey];
+// Function to update selected condition details
+function updateConditionDetails(selectedConditionKey) {
+    const selectedConditionName = selectedConditionKey.replace(/_/g, ' ');
+    const selectedConditionContent = database[selectedConditionKey];
 
-        // Update UI
-        selectedConditionElement.textContent = selectedConditionName;
-        conditionContentElement.innerHTML = selectedConditionContent.replace(/\n/g, '<br>');
-        copySuccess.style.display = 'none'; // Hide copy success message
-    }
+    // Update UI
+    selectedConditionElement.textContent = selectedConditionName;
+    conditionContentElement.innerHTML = selectedConditionContent.replace(/\n/g, '<br>');
+    copySuccess.style.display = 'none'; // Hide copy success message
+}
 
-    // Function to reset filter input
-    function resetFilter() {
-        input.value = ''; // Clear input field
-        Array.from(optionsList.options).forEach(option => {
-            option.style.display = 'block'; // Show all options
-        });
-        optionsList.selectedIndex = -1; // Deselect any selected option
-        selectedConditionElement.textContent = 'Selecione uma prescrição acima.'; // Reset selected condition text
-        conditionContentElement.innerHTML = ''; // Clear condition details
-        copySuccess.style.display = 'none'; // Hide copy success message
-        updateFilteredOptions(); // Update filtered options after resetting
-    }
+// Function to reset filter input
+function resetFilter() {
+    input.value = ''; // Clear input field
+    Array.from(optionsList.options).forEach(option => {
+        option.style.display = 'block'; // Show all options
+    });
+    optionsList.selectedIndex = -1; // Deselect any selected option
+    selectedConditionElement.textContent = 'Selecione uma prescrição acima.'; // Reset selected condition text
+    conditionContentElement.innerHTML = ''; // Clear condition details
+    copySuccess.style.display = 'none'; // Hide copy success message
+    updateFilteredOptions(); // Update filtered options after resetting
+}
 
-    // Event listener for input typing to filter options
-    input.addEventListener('input', function () {
-        const filterValue = removeAccents(this.value.trim().toLowerCase()); // Normalize and remove accents
-        input.addEventListener('input', filterOptions);
-input.addEventListener('keyup', filterOptions);
-input.addEventListener('change', filterOptions);
-
-function filterOptions() {
-    const filterValue = removeAccents(input.value.trim().toLowerCase()); // Normalize and remove accents
+// Event listener for input typing to filter options
+input.addEventListener('input', function () {
+    const filterValue = removeAccents(this.value.trim().toLowerCase()); // Normalize and remove accents
 
     // Filter options based on user input
     Array.from(optionsList.options).forEach(option => {
@@ -363,124 +357,109 @@ function filterOptions() {
     // Show options list
     optionsList.size = Math.min(6, optionsList.options.length); // Adjust size to number of visible options
     updateFilteredOptions(); // Update filtered options after filtering
+
+    // Reset selection when filtering
+    optionsList.selectedIndex = -1;
+    selectedConditionElement.textContent = 'Selecione uma prescrição acima.';
+    conditionContentElement.innerHTML = '';
+    copySuccess.style.display = 'none';
+});
+
+// Event listener for change in select option
+optionsList.addEventListener('change', function () {
+    const selectedConditionKey = this.value;
+    updateConditionDetails(selectedConditionKey);
+});
+
+// Event listener for reset button
+resetButton.addEventListener('click', function () {
+    resetFilter();
+});
+
+// Event listener for next button
+navigationButton.addEventListener('click', function () {
+    const currentIndex = filteredOptions.indexOf(optionsList.options[optionsList.selectedIndex]);
+    const nextIndex = (currentIndex + 1) % filteredOptions.length;
+    optionsList.selectedIndex = filteredOptions[nextIndex].index;
+    updateConditionDetails(filteredOptions[nextIndex].value);
+});
+
+// Event listener for previous button
+previousButton.addEventListener('click', function () {
+    const currentIndex = filteredOptions.indexOf(optionsList.options[optionsList.selectedIndex]);
+    const previousIndex = (currentIndex - 1 + filteredOptions.length) % filteredOptions.length;
+    optionsList.selectedIndex = filteredOptions[previousIndex].index;
+    updateConditionDetails(filteredOptions[previousIndex].value);
+});
+
+// Event listener for copy button
+copyButton.addEventListener('click', function () {
+    copyToClipboard();
+});
+
+// Event listener for copy editor button
+copyEditorButton.addEventListener('click', function () {
+    copyEditorToClipboard();
+});
+
+// Event listener for transfer button
+transferButton.addEventListener('click', function () {
+    transferToEditor();
+});
+
+// Event listener for clear editor button
+clearEditorButton.addEventListener('click', function () {
+    editableTextarea.value = ''; // Clear editor textarea
+});
+
+// Function to copy content to clipboard
+function copyToClipboard() {
+    const content = conditionContentElement.innerHTML.replace(/<br>/g, '\n');
+    navigator.clipboard.writeText(content).then(function () {
+        copySuccess.style.display = 'block'; // Show copy success message
+        setTimeout(() => {
+            copySuccess.style.display = 'none';
+        }, 2000); // Hide message after 2 seconds
+    }, function (err) {
+        console.error('Unable to copy to clipboard: ', err);
+    });
 }
 
-        // Filter options based on user input
-        Array.from(optionsList.options).forEach(option => {
-            const optionText = removeAccents(option.textContent.toLowerCase()); // Normalize and remove accents
-            const keywords = filterValue.split(/\s+/);
-
-            // Check if all keywords are present in option text
-            const matchesKeywords = keywords.every(keyword => {
-                return optionText.includes(keyword);
-            });
-
-            if (matchesKeywords) {
-                option.style.display = 'block';
-            } else {
-                option.style.display = 'none';
-            }
-        });
-
-        // Show options list
-        optionsList.size = Math.min(6, optionsList.options.length); // Adjust size to number of visible options
-        updateFilteredOptions(); // Update filtered options after filtering
-    });
-
-    // Event listener for change in select option
-    optionsList.addEventListener('change', function () {
-        const selectedConditionKey = this.value;
-        updateConditionDetails(selectedConditionKey);
-    });
-
-    // Event listener for reset button
-    resetButton.addEventListener('click', function () {
-        resetFilter();
-    });
-
-    // Event listener for next button
-    navigationButton.addEventListener('click', function () {
-        const currentIndex = filteredOptions.indexOf(optionsList.options[optionsList.selectedIndex]);
-        const nextIndex = (currentIndex + 1) % filteredOptions.length;
-        optionsList.selectedIndex = filteredOptions[nextIndex].index;
-        updateConditionDetails(filteredOptions[nextIndex].value);
-    });
-
-    // Event listener for previous button
-    previousButton.addEventListener('click', function () {
-        const currentIndex = filteredOptions.indexOf(optionsList.options[optionsList.selectedIndex]);
-        const previousIndex = (currentIndex - 1 + filteredOptions.length) % filteredOptions.length;
-        optionsList.selectedIndex = filteredOptions[previousIndex].index;
-        updateConditionDetails(filteredOptions[previousIndex].value);
-    });
-
-    // Event listener for copy button
-    copyButton.addEventListener('click', function () {
-        copyToClipboard();
-    });
-
-    // Event listener for copy editor button
-    copyEditorButton.addEventListener('click', function () {
-        copyEditorToClipboard();
-    });
-
-    // Event listener for transfer button
-    transferButton.addEventListener('click', function () {
-        transferToEditor();
-    });
-
-    // Event listener for clear editor button
-    clearEditorButton.addEventListener('click', function () {
-        editableTextarea.value = ''; // Clear editor textarea
-    });
-
-    // Function to copy content to clipboard
-    function copyToClipboard() {
-        const content = conditionContentElement.innerHTML.replace(/<br>/g, '\n');
+// Function to copy editor content to clipboard
+function copyEditorToClipboard() {
+    const content = editableTextarea.value.trim();
+    if (content !== '') {
         navigator.clipboard.writeText(content).then(function () {
             copySuccess.style.display = 'block'; // Show copy success message
             setTimeout(() => {
                 copySuccess.style.display = 'none';
             }, 2000); // Hide message after 2 seconds
         }, function (err) {
-            console.error('Unable to copy to clipboard: ', err);
+            console.error('Unable to copy editor content to clipboard: ', err);
         });
     }
+}
 
-    // Function to copy editor content to clipboard
-    function copyEditorToClipboard() {
-        const content = editableTextarea.value.trim();
-        if (content !== '') {
-            navigator.clipboard.writeText(content).then(function () {
-                copySuccess.style.display = 'block'; // Show copy success message
-                setTimeout(() => {
-                    copySuccess.style.display = 'none';
-                }, 2000); // Hide message after 2 seconds
-            }, function (err) {
-                console.error('Unable to copy editor content to clipboard: ', err);
-            });
-        }
+// Function to transfer content to editable textarea
+function transferToEditor() {
+    const content = conditionContentElement.innerHTML.replace(/<br>/g, '\n');
+    if (editableTextarea.value.trim() === '') {
+        editableTextarea.value = content.trim(); // If editor is empty, directly set the content
+    } else {
+        editableTextarea.value += '\n' + content.trim(); // Otherwise, append with a newline
     }
+}
 
-    // Function to transfer content to editable textarea
-    function transferToEditor() {
-        const content = conditionContentElement.innerHTML.replace(/<br>/g, '\n');
-        if (editableTextarea.value.trim() === '') {
-            editableTextarea.value = content.trim(); // If editor is empty, directly set the content
-        } else {
-            editableTextarea.value += '\n' + content.trim(); // Otherwise, append with a newline
-        }
+// Initial population of options
+populateOptions();
+
+// Close the dropdown if user clicks outside
+document.addEventListener('click', function (e) {
+    if (!input.contains(e.target) && !optionsList.contains(e.target)) {
+        // Do nothing to maintain the scrollable list behavior
     }
+});
 
-    // Initial population of options
-    populateOptions();
-
-    // Close the dropdown if user clicks outside
-    document.addEventListener('click', function (e) {
-        if (!input.contains(e.target) && !optionsList.contains(e.target)) {
-            // Do nothing to maintain the scrollable list behavior
-        }
-    });
 </script>
 </body>
 </html>
