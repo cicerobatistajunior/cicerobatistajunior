@@ -37,6 +37,10 @@
         input[type="submit"]:hover {
             background-color: #45a049;
         }
+        .error {
+            color: red;
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
@@ -46,6 +50,7 @@
             <input type="text" id="username" name="username" placeholder="Usuário" required><br>
             <input type="password" id="password" name="password" placeholder="Senha" required><br>
             <input type="submit" value="Login">
+            <div id="errorMessage" class="error"></div>
         </form>
     </div>
 
@@ -55,14 +60,17 @@
             
             var username = document.getElementById('username').value;
             var password = document.getElementById('password').value;
+            var errorMessage = document.getElementById('errorMessage');
+
+            // Limpa a mensagem de erro
+            errorMessage.textContent = '';
 
             // Exemplo simples de lógica de autenticação
             if (username === 'usuario' && password === 'senha') {
-                alert('Login bem-sucedido!');
                 localStorage.setItem('isLoggedIn', 'true'); // Armazena o estado de login
                 window.location.href = 'prescricao.html'; // Redireciona para a página home.html
             } else {
-                alert('Usuário ou senha inválidos!');
+                errorMessage.textContent = 'Usuário ou senha inválidos!';
             }
         });
     </script>
