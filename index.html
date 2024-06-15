@@ -1,6 +1,40 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+   
+  <title>Homepage</title>
+  <!-- Add Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-auth.js"></script>
+
+  <script>
+    // Initialize Firebase with your project's config
+    var firebaseConfig = {
+  apiKey: "AIzaSyAJFzWCuZ18d-zF_B6DkGcBqo1ZMrZWdlQ",
+  authDomain: "security-prescricao.firebaseapp.com",
+  projectId: "security-prescricao",
+  storageBucket: "security-prescricao.appspot.com",
+  messagingSenderId: "742082379614",
+  appId: "1:742082379614:web:06d958071fef7d500919cf",
+  measurementId: "G-P7ZHF4CWKN"
+    };
+    firebase.initializeApp(firebaseConfig);
+
+    // Function to check if a user is logged in or not
+    function checkAuthState() {
+      firebase.auth().onAuthStateChanged(function(user) {
+        if (!user) {
+          // User is not signed in, redirect to the login page
+          window.location.href = "login.html";
+        }
+      });
+    }
+  </script>
+</head>
+<body onload="checkAuthState()">
+
+
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SPR V-1.0 (Beta)</title>
@@ -80,7 +114,7 @@
             margin-bottom: 20px;
             white-space: pre-wrap;
             text-align: left;
-            font-weight: bold; /* Deixa o texto em negrito */
+            font-weight: normal; /* Deixa o texto em negrito */
             line-height: 2.0; /* Adjust line height to add more space between lines */
             font-family: Segoe UI, sans-serif; /* Altera a fonte para Arial ou uma fonte sans-serif genérica */
 
@@ -378,6 +412,7 @@ function copiarTextoEditado() {
     });
 }
 
+
 function apagarTexto() {
     editorBox.innerHTML = '';
     copyEditedButton.style.display = 'none';
@@ -416,26 +451,17 @@ function filterAndDisplayDropdownItems() {
     const filter = searchInput.value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
     const filterWords = filter.split(/\s+/);
     dropdownContent.innerHTML = ''; // Clear existing items
-
-    // Fazer solicitação AJAX para obter os dados
-    fetch('https://cicerobatistajunior.github.io/cicerobatistajunior/data')
-        .then(response => response.json())
-        .then(data => {
-            filteredOptions = Object.keys(data).filter(option => {
-                const normalizedOption = option.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/_/g, ' ');
-                return filterWords.every(word => normalizedOption.includes(word));
-            });
-            filteredOptions.forEach(key => {
-                const optionDiv = document.createElement('div');
-                optionDiv.textContent = key.replace(/_/g, ' ');
-                optionDiv.onclick = () => selecionarOpcao(key);
-                dropdownContent.appendChild(optionDiv);
-            });
-            currentOptionIndex = filteredOptions.length > 0 ? 0 : -1;
-        })
-        .catch(error => {
-            console.error('Erro ao obter dados do servidor:', error);
-        });
+    filteredOptions = Object.keys(database).filter(option => {
+        const normalizedOption = option.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/_/g, ' ');
+        return filterWords.every(word => normalizedOption.includes(word));
+    });
+    filteredOptions.forEach(key => {
+        const optionDiv = document.createElement('div');
+        optionDiv.textContent = key.replace(/_/g, ' ');
+        optionDiv.onclick = () => selecionarOpcao(key);
+        dropdownContent.appendChild(optionDiv);
+    });
+    currentOptionIndex = filteredOptions.length > 0 ? 0 : -1;
 }
 
 // Event listeners
