@@ -442,8 +442,29 @@ dropdownContent.addEventListener('click', function(event) {
 
 // Additional event listener for keyboard navigation
 searchInput.addEventListener('keydown', navegarTeclado);
+    document.getElementById('loginForm').addEventListener('submit', function(event) {
+        event.preventDefault(); // Impede o envio do formulário padrão
+        
+        var username = document.getElementById('username').value;
+        var password = document.getElementById('password').value;
 
+        // Exemplo simples de lógica de autenticação
+        if (username === 'usuario' && password === 'senha') {
+            alert('Login bem-sucedido!');
+            localStorage.setItem('isLoggedIn', 'true'); // Armazena o estado de login
+            window.location.href = 'prescricao.html'; // Redireciona para a página home.html
+        } else {
+            alert('Usuário ou senha inválidos!');
+        }
+    });
 
+            if (localStorage.getItem('isLoggedIn') !== 'true') {
+            window.location.href = 'index.html'; // Redireciona para a página de login se não estiver logado
+        }
     </script>
+     <div class="container">
+        <h1>Bem-vindo à Página Inicial!</h1>
+        <p>Você fez login com sucesso.</p>
+    </div>   
 </body>
 </html>
