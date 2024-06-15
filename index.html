@@ -232,18 +232,14 @@ const anteriorButton = document.getElementById('anteriorButton');
 const proximoButton = document.getElementById('proximoButton');
 
 let currentOptionIndex = -1;
+let filteredOptions = [];
 
-// Desabilitar autocomplete para o campo de pesquisa
+// Disable autocomplete for the search input
 searchInput.setAttribute('autocomplete', 'off');
 
 function mostrarOpcoes() {
-    // Always display dropdown content
     dropdownContent.style.display = 'block';
-
-    // Exibir todos os itens do dropdown
-    exibirTodosItensDropdown();
-
-    // Adicionar listener para fechar a lista ao clicar fora dela
+    filterAndDisplayDropdownItems();
     document.addEventListener('click', fecharOpcoesForaClique);
 }
 
@@ -252,16 +248,6 @@ function fecharOpcoesForaClique(event) {
         ocultarOpcoes();
         document.removeEventListener('click', fecharOpcoesForaClique);
     }
-}
-
-function exibirTodosItensDropdown() {
-    dropdownContent.innerHTML = ''; // Clear existing items
-    Object.keys(database).forEach(key => {
-        const optionDiv = document.createElement('div');
-        optionDiv.textContent = key.replace(/_/g, ' ');
-        optionDiv.onclick = () => selecionarOpcao(key);
-        dropdownContent.appendChild(optionDiv);
-    });
 }
 
 function ocultarOpcoes() {
@@ -295,14 +281,22 @@ function copiarTexto() {
 }
 
 function adicionarAoEditor() {
-    editorBox.innerHTML += `<div>${conteudoElement.textContent}</div>`;
+    const newText = conteudoElement.textContent;
+    if (editorBox.innerHTML.trim() !== '') {
+        editorBox.innerHTML += `\n\n${newText}`; // Add newline characters before new text
+    } else {
+        editorBox.innerHTML += `${newText}`; // No newline characters for the first text
+    }
+    // Replace \n with <br> for visual line breaks in the editorBox
+    editorBox.innerHTML = editorBox.innerHTML.replace(/\n/g, '<br>');
     copyEditedButton.style.display = 'block';
     deleteButton.style.display = 'block';
     editorBox.style.display = 'block';
 }
 
 function copiarTextoEditado() {
-    navigator.clipboard.writeText(editorBox.textContent).then(() => {
+    const editedText = editorBox.innerHTML.replace(/<br>/g, '\n'); // Replace <br> with newline characters
+    navigator.clipboard.writeText(editedText).then(() => {
         alertBox.style.display = 'block';
         setTimeout(() => {
             alertBox.style.display = 'none';
@@ -324,27 +318,15 @@ function selecionarOpcao(key) {
 }
 
 function navegarAnterior() {
-    const filter = searchInput.value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-    const filterWords = filter.split(/\s+/);
-    const options = Object.keys(database).filter(option => {
-        const normalizedOption = option.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/_/g, ' ');
-        return filterWords.every(word => normalizedOption.includes(word));
-    });
-    if (options.length === 0) return;
-    currentOptionIndex = (currentOptionIndex - 1 + options.length) % options.length;
-    selecionarOpcao(options[currentOptionIndex]);
+    if (filteredOptions.length === 0) return;
+    currentOptionIndex = (currentOptionIndex - 1 + filteredOptions.length) % filteredOptions.length;
+    selecionarOpcao(filteredOptions[currentOptionIndex]);
 }
 
 function navegarProximo() {
-    const filter = searchInput.value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-    const filterWords = filter.split(/\s+/);
-    const options = Object.keys(database).filter(option => {
-        const normalizedOption = option.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/_/g, ' ');
-        return filterWords.every(word => normalizedOption.includes(word));
-    });
-    if (options.length === 0) return;
-    currentOptionIndex = (currentOptionIndex + 1) % options.length;
-    selecionarOpcao(options[currentOptionIndex]);
+    if (filteredOptions.length === 0) return;
+    currentOptionIndex = (currentOptionIndex + 1) % filteredOptions.length;
+    selecionarOpcao(filteredOptions[currentOptionIndex]);
 }
 
 function navegarTeclado(event) {
@@ -358,11 +340,29 @@ function navegarTeclado(event) {
     }
 }
 
+function filterAndDisplayDropdownItems() {
+    const filter = searchInput.value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    const filterWords = filter.split(/\s+/);
+    dropdownContent.innerHTML = ''; // Clear existing items
+    filteredOptions = Object.keys(database).filter(option => {
+        const normalizedOption = option.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/_/g, ' ');
+        return filterWords.every(word => normalizedOption.includes(word));
+    });
+    filteredOptions.forEach(key => {
+        const optionDiv = document.createElement('div');
+        optionDiv.textContent = key.replace(/_/g, ' ');
+        optionDiv.onclick = () => selecionarOpcao(key);
+        dropdownContent.appendChild(optionDiv);
+    });
+    currentOptionIndex = filteredOptions.length > 0 ? 0 : -1;
+}
+
 // Event listeners
 searchInput.addEventListener('focus', mostrarOpcoes);
+searchInput.addEventListener('input', filterAndDisplayDropdownItems); // Filter items as the user types
 dropdownContent.addEventListener('click', function(event) {
     if (event.target && event.target.matches('div')) {
-        const key = Object.keys(database)[Array.from(this.children).indexOf(event.target)];
+        const key = filteredOptions[Array.from(this.children).indexOf(event.target)];
         selecionarOpcao(key);
     }
 });
