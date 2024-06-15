@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
     <style>
-        /* Estilos opcionais para melhorar a apresentação */
         body {
             font-family: Arial, sans-serif;
             background-color: #f0f0f0;
@@ -60,7 +59,8 @@
             // Exemplo simples de lógica de autenticação
             if (username === 'usuario' && password === 'senha') {
                 alert('Login bem-sucedido!');
-                window.location.href = 'prescricao.html'; // Redireciona para a página home.html
+                localStorage.setItem('isLoggedIn', 'true'); // Armazena o estado de login
+                window.location.href = 'home.html'; // Redireciona para a página home.html
             } else {
                 alert('Usuário ou senha inválidos!');
             }
