@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Menu Suspenso com Conteúdo Dinâmico</title>
+    <title>SPR V-1.0 (Beta)</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -24,44 +24,49 @@
             margin-bottom: 20px;
             color: #0056b3; /* Azul escuro para o título */
         }
-        .dropdown {
-            position: relative;
-            display: inline-block;
-            width: 100%;
-            margin-bottom: 15px;
-        }
-        .dropdown input[type="text"] {
-            width: 100%;
-            padding: 10px;
-            font-size: 13px;
-            box-sizing: border-box;
-            background-color: #e6f3ff;
-            border: 1px solid #ccc;
-        }
-        .dropdown-content {
-            display: none;
-            position: absolute;
-            background-color: #e6f3ff;
-            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-            z-index: 1;
-            width: 100%;
-            max-height: 200px;
-            overflow-y: auto;
-            box-sizing: border-box;
-            text-align: left;
-        }
-        .dropdown-content div {
-            color: black;
-            padding: 8px 16px;
-            text-decoration: none;
-            display: block;
-            cursor: pointer;
-            font-size: 13px;
-        }
-        .dropdown-content div:hover, .dropdown-content div:focus {
-            background-color: #f1f1f1;
-            outline: none;
-        }
+.dropdown {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    margin-bottom: 15px;
+}
+
+.dropdown input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    font-size: 13px;
+    box-sizing: border-box;
+    background-color: #f5deb3; /* Bege Claro */
+    border: 1px solid #8b4513; /* Marrom Sela */
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f5deb3; /* Bege Claro */
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    width: 100%;
+    max-height: 200px;
+    overflow-y: auto;
+    box-sizing: border-box;
+    text-align: left;
+}
+
+.dropdown-content div {
+    color: #8b4513; /* Marrom Sela */
+    padding: 8px 16px;
+    text-decoration: none;
+    display: block;
+    cursor: pointer;
+    font-size: 13px;
+}
+
+.dropdown-content div:hover, .dropdown-content div:focus {
+    background-color: #d2b48c; /* Marrom Claro */
+    outline: none;
+}
+
         .content-box {
             border: 1px solid #ccc;
             padding: 20px;
@@ -163,7 +168,7 @@
 </head>
 <body>
     <div class="container">
-        <div class="welcome-message">Seja bem-vindo(a) ao</div>
+        <div class="welcome-message">Seja bem-vindo(a) a versão de teste do</div>
         <h1>SISTEMA DE PRESCRIÇÕES DA ROTINA</h1>
         <div class="dropdown">
             <input type="text" id="searchInput" placeholder="Digite para pesquisar / Clique aqui e tecle ↑↓ para navegar" oninput="filtrarOpcoes()" onkeydown="navegarTeclado(event)">
@@ -185,7 +190,7 @@
         <div id="alertBox" class="alert">Texto copiado para a área de transferência!</div>
         <!-- Créditos do autor -->
                 <div class="credits">Autor: Cícero Batista. Direitos reservados.</div>
-        <div class="disclaimer">Aplicativo destinado apenas a profissionais médicos, para uso educacional.<br>O autor não se responsabiliza pelo uso indevido das informações aqui contidas.</div>
+        <div class="disclaimer">Aplicativo de uso exclusivo por profissionais médicos.<br>O autor não se responsabiliza pelo uso indevido das informações aqui contidas.</div>
     </div>
 
     <script>
