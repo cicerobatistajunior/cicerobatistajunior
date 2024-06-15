@@ -358,7 +358,7 @@ function adicionarAoEditor() {
 }
 
 function copiarTextoEditado() {
-    const editedText = editorBox.innerHTML.replace(/<br>/g, '\n'); // Replace <br> with newline characters
+    const editedText = editorBox.innerText; // Use innerText to get only the text without HTML tags
     navigator.clipboard.writeText(editedText).then(() => {
         alertBox.style.display = 'block';
         setTimeout(() => {
@@ -368,6 +368,7 @@ function copiarTextoEditado() {
         console.error('Erro ao copiar texto editado: ', err);
     });
 }
+
 
 function apagarTexto() {
     editorBox.innerHTML = '';
