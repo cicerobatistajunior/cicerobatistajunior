@@ -418,7 +418,7 @@ function filterAndDisplayDropdownItems() {
     dropdownContent.innerHTML = ''; // Clear existing items
 
     // Fazer solicitação AJAX para obter os dados
-    fetch('http://seuservidor.com/api/data')
+    fetch('https://cicerobatistajunior.github.io/cicerobatistajunior/data.json')
         .then(response => response.json())
         .then(data => {
             filteredOptions = Object.keys(data).filter(option => {
